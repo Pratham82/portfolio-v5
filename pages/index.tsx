@@ -1,8 +1,25 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useQuery, gql } from "@apollo/client";
 
+const query = gql`
+  query {
+    allProject {
+      projectName
+      project {
+        title
+        techStackUsed
+        projectCategory
+      }
+    }
+  }
+`;
 const Home: NextPage = () => {
+  const { data } = useQuery(query);
+
+  console.log({ data });
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
