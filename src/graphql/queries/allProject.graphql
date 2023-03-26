@@ -1,0 +1,10 @@
+query {
+  allProject {
+    projectName
+    project {
+      title
+      techStackUsed
+      projectCategory
+    }
+  }
+}
