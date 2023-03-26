@@ -4,6 +4,7 @@ import homePage from "./homePage.graphql";
 import fetchProjectsByCategory from "./fetchProjectsByCategory.graphql";
 import aboutPage from "./aboutPage.graphql";
 import contactsPage from "./contactsPage.graphql";
+import fetchPostBySlug from "./fetchPostBySlug.graphql";
 
 export {
   allCategories,
@@ -12,4 +13,5 @@ export {
   fetchProjectsByCategory,
   aboutPage,
   contactsPage,
+  fetchPostBySlug,
 };
