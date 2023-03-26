@@ -1,0 +1,12 @@
+query ($projectCategory: String) {
+  allProject(
+    where: { project: { projectCategory: { eq: $projectCategory } } }
+  ) {
+    projectName
+    project {
+      title
+      techStackUsed
+      projectCategory
+    }
+  }
+}
