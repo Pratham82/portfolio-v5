@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 const Document = () => {
   return (
-    <Html className="dark" lang="eng">
+    <Html>
       <Head />
       <body className="dark:bg-gray-950">
         <Main />

@@ -7,7 +7,7 @@ import Layout from "../components/Layout";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <ThemeProvider>
+    <ThemeProvider attribute="class">
       <ApolloProvider client={apolloClient}>
         <Layout>
           <Component {...pageProps} />
