@@ -1,5 +1,5 @@
 const getCurrentHeadTitle = ({ pathname }: { pathname: string }) => {
-  const path = pathname.replace("/", "");
+  const path = pathname !== "/" ? pathname.replace("/", "") : "/";
   const pageTitle = path[0].toUpperCase() + path.slice(1) || "Pratham82";
   return pageTitle;
 };
