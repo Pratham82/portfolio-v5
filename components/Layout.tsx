@@ -12,7 +12,7 @@ const Container: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
     <>
       <Header />
       <div className="flex min-h-[85vh] justify-center pb-8 pt-32">
-        <div className="max-w-sm sm:max-w-2xl lg:max-w-5xl">{children}</div>
+        <div className="max-w-sm sm:max-w-xl lg:max-w-2xl">{children}</div>
       </div>
       <Footer />
     </>
