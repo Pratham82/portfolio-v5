@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import classNames from "classnames";
 import Head from "next/head";
+import Link from "next/link";
 
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -19,7 +20,9 @@ const Header = () => {
       </Head>
       <div className="z-11 fixed top-0 w-full border-slate-400 py-4 shadow-sm shadow-gray-800 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-[280px] justify-between">
-          <h1 className="text-center text-lg font-semibold">Pratham82</h1>
+          <h1 className="text-center text-lg font-semibold">
+            <Link href="home">Pratham82</Link>
+          </h1>
           <ThemeToggler />
         </div>
         <div className="space-x-1a flex justify-center pt-4">
