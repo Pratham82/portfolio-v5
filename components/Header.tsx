@@ -4,14 +4,14 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
 import ThemeToggler from "./ThemeSwitcher";
 import { tabsData } from "../src/data/headerData";
 import { getCurrentHeadTitle } from "../src/helpers";
 
 const Header = () => {
   const { pathname, push } = useRouter();
-  const [activeTab, setActiveTab] = useState(tabsData[0].id);
+
+  const currentPath = pathname.replace("/", "");
 
   return (
     <>
@@ -31,7 +31,6 @@ const Header = () => {
               type="button"
               key={tab.id}
               onClick={() => {
-                setActiveTab(tab.id);
                 push(tab.id);
               }}
               className={`relative
@@ -40,7 +39,7 @@ const Header = () => {
                 WebkitTapHighlightColor: "transparent",
               }}
             >
-              {activeTab === tab.id && (
+              {currentPath === tab.id && (
                 <motion.span
                   layoutId="nav-pill"
                   className="absolute inset-0 z-10 rounded-md bg-slate-900 dark:bg-slate-100"
@@ -50,7 +49,7 @@ const Header = () => {
               <span
                 className={classNames(
                   "relative z-10 mix-blend-exclusion",
-                  activeTab === tab.id && "text-slate-50",
+                  currentPath === tab.id && "text-slate-50",
                 )}
               >
                 {tab.label}
