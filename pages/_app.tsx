@@ -10,7 +10,7 @@ import Layout from "../components/Layout";
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider attribute="class">
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="wait" initial>
         <ApolloProvider client={apolloClient}>
           <Layout>
             <Component {...pageProps} />
