@@ -1,0 +1,47 @@
+{
+  "allHomePage": [
+    {
+      "__typename": "HomePage",
+      "pageName": "HomePage",
+      "title": "Hi 👋 I'm Prathamesh;",
+      "subtitle": "I'm a Full-stack Software Developer ; based in Mumbai 📍",
+      "avatar": {
+        "__typename": "Image",
+        "asset": {
+          "__typename": "SanityImageAsset",
+          "altText": null,
+          "url": "https://cdn.sanity.io/images/sfjfod25/production/005e9e223e2628b34af0acfbc5c264ceecc70168-800x800.jpg"
+        }
+      },
+      "techStack": {
+        "__typename": "TechStack",
+        "techStackTitle": "My current tech stack:",
+        "techStacks": [
+          "JavaScript",
+          "TypeScript",
+          "React.js",
+          "Next.js",
+          "Styled Components",
+          "StoryBook"
+        ]
+      },
+      "contributions": {
+        "__typename": "Contributions",
+        "contributionsTitle": "My github contributions:",
+        "contributionsLink": "https://ghchart.rshah.org/pratham82"
+      },
+      "pageRedirects": [
+        {
+          "__typename": "PageRedirect",
+          "link": "/projects",
+          "linkTitle": "Projects ↗ "
+        },
+        {
+          "__typename": "PageRedirect",
+          "link": "/blogs",
+          "linkTitle": " Blog ↗"
+        }
+      ]
+    }
+  ]
+}
