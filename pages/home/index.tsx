@@ -6,8 +6,8 @@ import { ArrowUpRight } from "phosphor-react";
 
 import { homePage } from "../../src/graphql/queries";
 import useGetPageData from "../../src/hooks/useGetPageData";
-import { IHomePageResponse } from "./home.interface";
-import HomepageSkeleton from "./home.skeleton";
+import { IHomePageResponse } from "../../@types/home.interface";
+import HomepageSkeleton from "../../components/loadingPages/home.skeleton";
 
 const HomePage = () => {
   const { data, loading } = useQuery(homePage);
