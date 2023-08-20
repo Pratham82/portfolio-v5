@@ -13,7 +13,7 @@ const HomePage = () => {
   const { data, loading } = useQuery(homePage);
   const { title = "", subtitle = "", pageData } = useGetPageData(data);
 
-  const { avatar, contributions, pageRedirects }: IHomePageResponse =
+  const { avatar, contributions, pageRedirects, techStack }: IHomePageResponse =
     pageData || {};
 
   if (loading) {
@@ -39,20 +39,27 @@ const HomePage = () => {
         <Image
           src={avatar?.asset?.url || ""}
           alt="profile"
-          width={130}
-          height={130}
-          className="rounded-2xl grayscale"
+          width={110}
+          height={110}
+          className="relative rounded-2xl grayscale"
         />
       </motion.div>
-      <h1 className="mb-2 mt-8 text-3xl">{title}</h1>
-      <h1 className="my-2 text-xl">{subtitle}</h1>
+      <h1 className="mb-2 mt-6 text-2xl">{title}</h1>
+      <h1 className="mt-2 text-lg">{subtitle}</h1>
+
+      <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2>
+      <div className="flex flex-wrap">
+        {techStack?.techStacks?.map((tech) => (
+          <span className="text-md pr-1">{tech},</span>
+        ))}
+      </div>
 
       <h2 className="mb-2 mt-4 text-xl">{contributions?.contributionsTitle}</h2>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={contributions?.contributionsLink}
         alt="github-contributions-chart"
-        className="grayscale"
+        className="h-[90px] grayscale"
       />
       <div className="flex pt-8">
         {pageRedirects?.map((page) => (
