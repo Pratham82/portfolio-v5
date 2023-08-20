@@ -18,7 +18,7 @@ const Header = () => {
       <Head>
         <title>{getCurrentHeadTitle({ pathname })}</title>
       </Head>
-      <div className="z-11 fixed top-0 w-full border-slate-400 py-4 shadow-sm shadow-gray-800 backdrop-blur-2xl">
+      <div className="fixed top-0 z-10 w-full border-slate-400 py-4 shadow-sm shadow-gray-800 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-[280px] justify-between">
           <h1 className="text-center text-lg font-semibold">
             <Link href="home">Pratham82</Link>
