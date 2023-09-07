@@ -12,9 +12,9 @@ const HomepageSkeleton = () => (
     <div className="flex h-14 pt-8">
       {Array(2)
         .fill(0)
-        ?.map((page) => (
+        ?.map(() => (
           <div
-            key={page.linkTitle}
+            key={Math.random()}
             className="mr-4 flex h-7 w-24 items-center rounded-md bg-slate-700"
           >
             {" "}
