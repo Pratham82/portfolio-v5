@@ -50,7 +50,9 @@ const HomePage = () => {
       <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2>
       <div className="flex flex-wrap">
         {techStack?.techStacks?.map((tech) => (
-          <span className="text-md pr-1">{tech},</span>
+          <span className="text-md pr-1" key={tech}>
+            {tech},
+          </span>
         ))}
       </div>
 
