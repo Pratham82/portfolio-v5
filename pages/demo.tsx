@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+
 import { aboutPage } from "../src/graphql/queries";
 
 const Demo = () => {

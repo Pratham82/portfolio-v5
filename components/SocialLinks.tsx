@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TwitterLogo, GithubLogo, LinkedinLogo } from "phosphor-react";
+import { GithubLogo, LinkedinLogo, TwitterLogo } from "phosphor-react";
 
 import { socialLinks } from "../src/data/headerData";
 

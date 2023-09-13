@@ -3,8 +3,18 @@ query {
     projectName
     project {
       title
+      mark
+      subTitle
       techStackUsed
       projectCategory
+      githubURL {
+        linkText
+        link
+      }
+      liveURL {
+        linkText
+        link
+      }
     }
   }
 }

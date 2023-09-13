@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "phosphor-react";
 
+import HomepageSkeleton from "../../components/loadingPages/home.skeleton";
+import { IHomePageResponse } from "../../interface/home.interface";
 import { homePage } from "../../src/graphql/queries";
 import useGetPageData from "../../src/hooks/useGetPageData";
-import { IHomePageResponse } from "../../@types/home.interface";
-import HomepageSkeleton from "../../components/loadingPages/home.skeleton";
 
 const HomePage = () => {
   const { data, loading } = useQuery(homePage);
