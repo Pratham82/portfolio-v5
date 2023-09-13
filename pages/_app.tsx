@@ -1,11 +1,11 @@
-import type { AppProps } from "next/app";
+import "../styles/globals.css";
 import { ApolloProvider } from "@apollo/client";
 import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
+import type { AppProps } from "next/app";
 
-import "../styles/globals.css";
-import apolloClient from "../lib/apollo";
 import Layout from "../components/Layout";
+import apolloClient from "../lib/apollo";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

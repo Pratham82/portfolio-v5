@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
+import { MoonStars, Sun } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { Sun, MoonStars } from "phosphor-react";
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);

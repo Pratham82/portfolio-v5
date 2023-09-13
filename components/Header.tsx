@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
 import classNames from "classnames";
+import { motion } from "framer-motion";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { motion } from "framer-motion";
-import ThemeToggler from "./ThemeSwitcher";
 import { tabsData } from "../src/data/headerData";
 import { getCurrentHeadTitle } from "../src/helpers";
+import ThemeToggler from "./ThemeSwitcher";
 
 const Header = () => {
   const { pathname, push } = useRouter();
