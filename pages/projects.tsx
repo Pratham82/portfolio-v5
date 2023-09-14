@@ -1,8 +1,10 @@
 import { useQuery } from "@apollo/client";
 import classNames from "classnames";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 import ProjectCard from "../components/ProjectCard";
+import ProjectsSkeleton from "../components/loadingPages/projects.skeleton";
 import { IProjectsPage } from "../interface/projects.interface";
 import { allProjects } from "../src/graphql/queries";
 import getProjectsByCategories from "../src/utils/getProjectsByCategories";
@@ -21,11 +23,15 @@ const Projects = () => {
   );
 
   if (loading) {
-    return <>Loading...</>;
+    return <ProjectsSkeleton />;
   }
 
   return (
-    <div className="">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
+    >
       <h1 className="text-3xl">Projects</h1>
       <div className="py-3">
         {filteredProjectCategories.map((val) => (
@@ -43,12 +49,17 @@ const Projects = () => {
           </button>
         ))}
       </div>
-      <div className="grid-cols-2 grid gap-3">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="grid-cols-2 grid gap-3"
+      >
         {filteredProjects?.[selectedProject]?.map(({ project }) => {
           return <ProjectCard {...project} key={project.title} />;
         })}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
