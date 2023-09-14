@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { GithubLogo, LinkSimple } from "phosphor-react";
 
@@ -6,7 +7,10 @@ import { IProject } from "../interface/projects.interface";
 const ProjectCard = (props: IProject) => {
   const { title, subTitle, techStackUsed, githubURL, liveURL } = props;
   return (
-    <div className="border dark:border-slate-100 border-slate-300 p-3 rounded-xl shadow-lg dark:shadow-lg dark:shadow-slate-500">
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className="border dark:border-slate-100 border-slate-300 p-3 rounded-xl shadow-lg dark:shadow-lg dark:shadow-slate-500"
+    >
       <h3 className="text-lg font-semibold">{title}</h3>
       <h4 className="font-thin">{subTitle}</h4>
       <div className="flex my-2">
@@ -43,7 +47,7 @@ const ProjectCard = (props: IProject) => {
           </h5>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
