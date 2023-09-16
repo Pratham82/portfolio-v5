@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import { GithubLogo, LinkedinLogo, TwitterLogo } from "phosphor-react";
 
@@ -16,10 +17,19 @@ const iconSwitch = (id: string): JSX.Element => {
   }
 };
 
-const SocialLinks = () => {
+type SocialLinksProps = {
+  align: string;
+};
+
+const SocialLinks = (props: SocialLinksProps) => {
+  const { align = "" } = props;
   return (
-    // <div className="mt-2 flex h-10 w-full items-end justify-center ">
-    <div className="flex w-full items-end justify-center ">
+    <div
+      className={classNames(
+        "flex w-full items-end",
+        align === "left" ? "justify-start" : "justify-center",
+      )}
+    >
       {socialLinks?.map(({ id, link }) => (
         <div className="mx-2" key={id}>
           <Link href={link} rel="noopener noreferrer" target="_blank">

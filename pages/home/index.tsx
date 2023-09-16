@@ -45,10 +45,10 @@ const HomePage = () => {
         />
       </motion.div>
       <h1 className="mb-2 mt-6 text-2xl">{title}</h1>
-      <h1 className="mt-2 text-lg">{subtitle}</h1>
+      <h1 className="mt-2 text-lg text-center">{subtitle}</h1>
 
       <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap justify-center">
         {techStack?.techStacks?.map((tech) => (
           <span className="text-md pr-1" key={tech}>
             {tech},
