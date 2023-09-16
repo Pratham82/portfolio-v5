@@ -22,8 +22,9 @@ const About = () => {
 
   const { contactsLinks }: IAllContactsPageResponse = contactsPageData || {};
 
-  const { link: linkedInLink } =
-    contactsLinks?.find((item) => item.socialLink === "LinkedIn") || "";
+  const linkedIn = contactsLinks?.find(
+    (item) => item?.socialLink === "LinkedIn",
+  );
 
   const {
     resume,
@@ -56,7 +57,7 @@ const About = () => {
       <div className="flex flex-col">
         {workExperience?.map((workEx) => (
           <Link
-            href={linkedInLink || ""}
+            href={linkedIn?.link || ""}
             target="_blank"
             key={workEx?.companyName}
           >
