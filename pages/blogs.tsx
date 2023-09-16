@@ -3,8 +3,7 @@ import { useQuery } from "@apollo/client";
 import { aboutPage } from "../src/graphql/queries";
 
 const Blogs = () => {
-  const { data, loading } = useQuery(aboutPage);
-  console.log({ data });
+  const { loading } = useQuery(aboutPage);
 
   if (loading) {
     return <>Loading...</>;
