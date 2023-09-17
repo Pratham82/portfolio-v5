@@ -6,14 +6,7 @@ import { Blog } from "../interface/blogs.interface";
 import getFormattedDate from "../src/utils/getFormattedDate";
 
 const BlogCard = (props: Blog) => {
-  const {
-    title = "",
-    subTitle = "",
-    slug = "",
-    publishedAt = "",
-    author = "",
-    readTime = "",
-  } = props;
+  const { title = "", subTitle = "", publishedAt = "", readTime = "" } = props;
 
   const blogPublishedDate = getFormattedDate(publishedAt, "dd MMM yyyy");
 
