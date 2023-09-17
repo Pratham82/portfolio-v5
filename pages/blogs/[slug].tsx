@@ -1,9 +1,8 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { ArrowLeft, ArrowRight } from "phosphor-react";
+import { ArrowLeft } from "phosphor-react";
 import React from "react";
 
-import { Blog } from "../../interface/blogs.interface";
 import { AllPostResponse } from "../../interface/post.interface";
 import { fetchPostBySlug } from "../../src/graphql/queries";
 
