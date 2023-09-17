@@ -1,4 +1,5 @@
 import aboutPage from "./aboutPage.graphql";
+import allBlogsPage from "./allBlogsPage.graphql";
 import allCategories from "./allCategories.graphql";
 import allProjects from "./allProject.graphql";
 import contactsPage from "./contactsPage.graphql";
@@ -14,4 +15,5 @@ export {
   aboutPage,
   contactsPage,
   fetchPostBySlug,
+  allBlogsPage,
 };
