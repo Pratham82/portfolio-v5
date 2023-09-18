@@ -45,5 +45,5 @@ export interface BioRaw {
   markDefs?: any[] | null;
 }
 export interface AllPostResponse {
-  allPost?: AllPost[] | null;
+  allPost: AllPost[];
 }

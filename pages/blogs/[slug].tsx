@@ -15,7 +15,9 @@ const Post = () => {
 
   const { allPost }: AllPostResponse = data || {};
 
-  const { title = "" } = allPost?.[0] || [];
+  const blogData = allPost?.[0];
+
+  const { title = "" } = blogData || {};
 
   if (loading) {
     return <div>Loading....</div>;
