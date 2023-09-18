@@ -39,8 +39,6 @@ const Post = ({ post }: { post: IMDXPost }) => {
   const authorUrl =
     "https://cdn.sanity.io/images/sfjfod25/production/005e9e223e2628b34af0acfbc5c264ceecc70168-800x800.jpg";
 
-  console.log({ blogData });
-
   const pbDate = publishedAt
     ? getFormattedDate(publishedAt, "MMM dd, yyyy")
     : "";
@@ -95,7 +93,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params as { slug: string };
   const { content, meta } = getPostFromSlug(slug);
 
-  console.log({ content });
   const mdxSource = await serialize(content, {
     mdxOptions: {
       rehypePlugins: [
