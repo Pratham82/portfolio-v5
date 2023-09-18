@@ -7,11 +7,20 @@ import BlogSkeleton from "../../components/loadingPages/blog.skeleton";
 import { IBlogsPageResponse } from "../../interface/blogs.interface";
 import { allBlogsPage } from "../../src/graphql/queries";
 import useGetPageData from "../../src/hooks/useGetPageData";
+import { PostMeta, getAllPosts } from "../api/blogPosts";
 
-const Blogs = () => {
+interface IBlogsProps {
+  posts: {
+    content: string;
+    meta: PostMeta;
+  }[];
+}
+
+const Blogs = (props: IBlogsProps) => {
+  const { posts } = props;
   const { loading, data } = useQuery(allBlogsPage);
   const { pageData } = useGetPageData(data);
-  const { pageName = "", blog }: IBlogsPageResponse = pageData || {};
+  const { pageName = "" }: IBlogsPageResponse = pageData || {};
 
   if (loading) {
     return <BlogSkeleton />;
@@ -26,8 +35,8 @@ const Blogs = () => {
     >
       <h1 className="text-3xl">{pageName}</h1>
       <div className="flex flex-col py-3 gap-2">
-        {blog?.map((blogData) => (
-          <Link href={`/blogs/${blogData?.slug.current}`} key={blogData.title}>
+        {posts?.map(({ meta: blogData }) => (
+          <Link href={`/blogs/${blogData.slug}`} key={blogData.title}>
             <BlogCard {...blogData} />
           </Link>
         ))}
@@ -37,3 +46,13 @@ const Blogs = () => {
 };
 
 export default Blogs;
+
+export async function getStaticProps() {
+  const posts = getAllPosts();
+
+  return {
+    props: {
+      posts,
+    },
+  };
+}

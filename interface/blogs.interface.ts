@@ -5,13 +5,10 @@ export interface IBlogsPageResponse {
   blog?: Blog[] | null;
 }
 export interface Blog {
-  __typename: string;
   title: string;
-  _createdAt: string;
-  subTitle?: null;
-  publishedAt?: string;
-  author: Author;
-  slug: Slug;
+  subTitle?: string;
+  date?: string;
+  slug: string;
   readTime: string;
 }
 export interface Author {

@@ -6,9 +6,11 @@ import { Blog } from "../interface/blogs.interface";
 import getFormattedDate from "../src/utils/getFormattedDate";
 
 const BlogCard = (props: Blog) => {
-  const { title = "", subTitle = "", publishedAt = "", readTime = "" } = props;
+  const { title = "", subTitle = "", readTime = "", date = "" } = props;
 
-  const blogPublishedDate = getFormattedDate(publishedAt, "dd MMM yyyy");
+  const blogPublishedDate = getFormattedDate(date, "dd MMM yyyy");
+
+  console.log({ blogPublishedDate });
 
   return (
     <motion.div

@@ -10,6 +10,7 @@ export interface AllPost {
   createdAt: string;
   publishedAt: string;
   blogBody: string;
+  readTime: string;
 }
 export interface Slug {
   __typename: string;
