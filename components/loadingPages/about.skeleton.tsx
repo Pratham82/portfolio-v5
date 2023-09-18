@@ -8,21 +8,11 @@ const AboutPageSkeleton = () => (
       {Array(3)
         .fill(0)
         ?.map(() => (
-          <div className="my-4">
-            <div
-              key={Math.random()}
-              className="my-1 flex w-3/6 h-6 items-center rounded-md bg-slate-700"
-            />
+          <div className="my-4" key={Math.random()}>
+            <div className="my-1 flex w-3/6 h-6 items-center rounded-md bg-slate-700" />
+            <div className="my-1 flex w-3/6 h-5 items-center rounded-md bg-slate-700" />
 
-            <div
-              key={Math.random()}
-              className="my-1 flex w-3/6 h-5 items-center rounded-md bg-slate-700"
-            />
-
-            <div
-              key={Math.random()}
-              className="my-1 flex w-3/6 h-4 items-center rounded-md bg-slate-700"
-            />
+            <div className="my-1 flex w-3/6 h-4 items-center rounded-md bg-slate-700" />
           </div>
         ))}
     </div>
@@ -33,16 +23,10 @@ const AboutPageSkeleton = () => (
       {Array(2)
         .fill(0)
         ?.map(() => (
-          <div className="my-2">
-            <div
-              key={Math.random()}
-              className="my-1 flex w-3/6 h-5 items-center rounded-md bg-slate-700"
-            />
+          <div className="my-2" key={Math.random()}>
+            <div className="my-1 flex w-3/6 h-5 items-center rounded-md bg-slate-700" />
 
-            <div
-              key={Math.random()}
-              className="my-1 flex w-3/6 h-5 items-center rounded-md bg-slate-700"
-            />
+            <div className="my-1 flex w-3/6 h-5 items-center rounded-md bg-slate-700" />
           </div>
         ))}
     </div>
