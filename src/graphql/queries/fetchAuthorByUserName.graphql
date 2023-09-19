@@ -1,0 +1,13 @@
+query ($username: String) {
+  allAuthor(where: { username: { eq: $username } }) {
+    _id
+    _key
+    name
+    username
+    image {
+      asset {
+        url
+      }
+    }
+  }
+}

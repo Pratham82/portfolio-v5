@@ -48,3 +48,6 @@ export interface BioRaw {
 export interface AllPostResponse {
   allPost: AllPost[];
 }
+export interface AllAuthorResponse {
+  allAuthor: Author[];
+}
