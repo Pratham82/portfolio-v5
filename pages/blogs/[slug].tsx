@@ -10,38 +10,32 @@ import { ArrowLeft } from "phosphor-react";
 import React from "react";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
-import rehypeSlug from "rehype-slug";
 
-import { AllPostResponse } from "../../interface/post.interface";
-import { fetchPostBySlug } from "../../src/graphql/queries";
+import { AllAuthorResponse } from "../../interface/post.interface";
+import { fetchAuthorByUserName } from "../../src/graphql/queries";
 import getFormattedDate from "../../src/utils/getFormattedDate";
 import { PostMeta, getPostFromSlug, getSlugs } from "../api/blogPosts";
 
 interface IMDXPost {
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
   meta: PostMeta;
-  content: any;
 }
 
 const Post = ({ post }: { post: IMDXPost }) => {
   const router = useRouter();
-  const { query, back } = router || {};
-  const { slug = "" } = query || {};
+  const { push } = router || {};
 
-  const { loading, data } = useQuery(fetchPostBySlug, { variables: { slug } });
+  const { loading, data: authorsData } = useQuery(fetchAuthorByUserName, {
+    variables: { username: post.meta.author || "pratham82" },
+  });
 
-  const { allPost }: AllPostResponse = data || {};
+  const { allAuthor }: AllAuthorResponse = authorsData || {};
 
-  const blogData = allPost?.[0];
+  const authorData = allAuthor?.[0];
 
-  const { author, readTime = "", publishedAt = "" } = blogData || {};
+  const date = post?.meta?.date;
 
-  const authorUrl =
-    "https://cdn.sanity.io/images/sfjfod25/production/005e9e223e2628b34af0acfbc5c264ceecc70168-800x800.jpg";
-
-  const pbDate = publishedAt
-    ? getFormattedDate(publishedAt, "MMM dd, yyyy")
-    : "";
+  const newPdDate = date ? getFormattedDate(date, "MMM dd, yyyy") : "";
 
   if (loading) {
     return <div>Loading....</div>;
@@ -52,7 +46,7 @@ const Post = ({ post }: { post: IMDXPost }) => {
       <button
         type="button"
         className="flex items-center py-2 hover:scale-105 transition ease-in"
-        onClick={() => back()}
+        onClick={() => push("/blogs")}
       >
         <ArrowLeft />
         <span className="pl-2">back</span>
@@ -60,20 +54,20 @@ const Post = ({ post }: { post: IMDXPost }) => {
       <h1 className="text-4xl">{post.meta?.title}</h1>
       <div className="flex items-center py-2">
         <Image
-          src={authorUrl}
+          src={authorData?.image?.asset?.url}
           alt="author"
           width={45}
           height={45}
           className="rounded-full"
         />
         <div className="flex flex-col pl-2">
-          <span className="text-sm">{author?.name}</span>
+          <span className="text-sm">{authorData?.name}</span>
           <span className="text-xs font-thin">
-            {readTime}. {pbDate}
+            {post?.meta?.readTime}. {newPdDate}
           </span>
         </div>
       </div>
-      <div className="mt-8">
+      <div className="mt-8 prose dark:prose-invert">
         <MDXRemote {...post.source} />
       </div>
     </div>
@@ -96,13 +90,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const mdxSource = await serialize(content, {
     mdxOptions: {
       rehypePlugins: [
-        rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: "wrap" }],
-        rehypeHighlight,
+        rehypeHighlight as any,
       ],
     },
   });
-  return { props: { post: { source: mdxSource, content, meta } } };
+  return {
+    props: { post: { source: mdxSource, meta } },
+  };
 };
 
 export default Post;
