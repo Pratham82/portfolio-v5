@@ -29,6 +29,7 @@ query ($slug: String) {
     }
     createdAt
     publishedAt
+    readTime
     blogBody
   }
 }

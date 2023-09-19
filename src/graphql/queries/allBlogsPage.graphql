@@ -1,0 +1,26 @@
+{
+  allBlogsPage {
+    pageName
+    subTitle
+    blog {
+      title
+      _createdAt
+      subTitle
+      publishedAt
+      readTime
+      author {
+        name
+        username
+        image {
+          asset {
+            url
+          }
+        }
+      }
+      slug {
+        current
+        source
+      }
+    }
+  }
+}

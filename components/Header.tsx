@@ -31,7 +31,7 @@ const Header = () => {
               type="button"
               key={tab.id}
               onClick={() => {
-                push(tab.id);
+                push(`/${tab.id}`);
               }}
               className={`relative
               px-3 py-1.5 text-sm font-medium transition focus-visible:outline-2 `}
