@@ -13,11 +13,6 @@ const Header = () => {
 
   const currentPath = pathname.replace("/", "");
 
-  const isActivePath = (tabId: string) => {
-    if (tabId.includes("blogs")) return true;
-    return tabId === currentPath;
-  };
-
   return (
     <>
       <Head>
@@ -44,7 +39,7 @@ const Header = () => {
                 WebkitTapHighlightColor: "transparent",
               }}
             >
-              {isActivePath(tab.id) && (
+              {currentPath.includes(tab.id) && (
                 <motion.span
                   layoutId="nav-pill"
                   className="absolute inset-0 z-10 rounded-md bg-slate-900 dark:bg-slate-100"
@@ -54,7 +49,7 @@ const Header = () => {
               <span
                 className={classNames(
                   "relative z-10 mix-blend-exclusion",
-                  isActivePath(tab.id) && "text-slate-50",
+                  currentPath.includes(tab.id) && "text-slate-50",
                 )}
               >
                 {tab.label}
