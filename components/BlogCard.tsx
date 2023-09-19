@@ -10,8 +10,6 @@ const BlogCard = (props: Blog) => {
 
   const blogPublishedDate = getFormattedDate(date, "dd MMM yyyy");
 
-  console.log({ blogPublishedDate });
-
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
