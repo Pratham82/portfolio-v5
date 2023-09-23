@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
+import PageAnimationContainer from "../components/PageAnimationContainer";
 import ProjectCard from "../components/ProjectCard";
 import ProjectsSkeleton from "../components/loadingPages/projects.skeleton";
 import { IProjectsPage } from "../interface/projects.interface";
@@ -27,11 +28,7 @@ const Projects = () => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2 }}
-    >
+    <PageAnimationContainer>
       <h1 className="text-3xl">Projects</h1>
       <div className="py-3">
         {filteredProjectCategories.map((val) => (
@@ -53,13 +50,13 @@ const Projects = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="grid-cols-2 grid gap-3"
+        className="grid-cols-1 sm:grid-cols-2 grid gap-3"
       >
         {filteredProjects?.[selectedProject]?.map(({ project }) => {
           return <ProjectCard {...project} key={project.title} />;
         })}
       </motion.div>
-    </motion.div>
+    </PageAnimationContainer>
   );
 };
 

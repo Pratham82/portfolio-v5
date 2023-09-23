@@ -1,9 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { DownloadSimple } from "phosphor-react";
 
 import EducationCard from "../components/EducationCard";
+import PageAnimationContainer from "../components/PageAnimationContainer";
 import SocialLinks from "../components/SocialLinks";
 import WorkExCard from "../components/WorkExCard";
 import AboutPageSkeleton from "../components/loadingPages/about.skeleton";
@@ -37,12 +37,7 @@ const About = () => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2 }}
-      className="w-100%"
-    >
+    <PageAnimationContainer className="w-100%">
       <h1 className="text-3xl">{title}</h1>
       <h2 className="py-2">{subtitle}</h2>
       <h4 className="text-2xl mt-8 flex items-center">
@@ -75,7 +70,7 @@ const About = () => {
       <div className="mt-2">
         <SocialLinks align="left" />
       </div>
-    </motion.div>
+    </PageAnimationContainer>
   );
 };
 
