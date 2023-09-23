@@ -4,21 +4,25 @@ import "highlight.js/styles/atom-one-dark.css";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ArrowLeft } from "phosphor-react";
-import React from "react";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
 
+import PageAnimationContainer from "../../components/PageAnimationContainer";
+import BlogSkeleton from "../../components/loadingPages/blog.skeleton";
 import { AllAuthorResponse } from "../../interface/post.interface";
 import { fetchAuthorByUserName } from "../../src/graphql/queries";
 import getFormattedDate from "../../src/utils/getFormattedDate";
+import getReadTime from "../../src/utils/getReadTime";
 import { PostMeta, getPostFromSlug, getSlugs } from "../api/blogPosts";
 
 interface IMDXPost {
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
   meta: PostMeta;
+  content: string;
 }
 
 const Post = ({ post }: { post: IMDXPost }) => {
@@ -37,12 +41,17 @@ const Post = ({ post }: { post: IMDXPost }) => {
 
   const newPdDate = date ? getFormattedDate(date, "MMM dd, yyyy") : "";
 
+  const readTime = getReadTime(post.content);
+
   if (loading) {
-    return <div>Loading....</div>;
+    return <BlogSkeleton />;
   }
 
   return (
-    <div className="sm:w-[575px]">
+    <PageAnimationContainer className="sm:w-[575px]">
+      <Head>
+        <title>{post.meta.title}</title>
+      </Head>
       <button
         type="button"
         className="flex items-center py-2 hover:scale-105 transition ease-in"
@@ -63,14 +72,14 @@ const Post = ({ post }: { post: IMDXPost }) => {
         <div className="flex flex-col pl-2">
           <span className="text-sm">{authorData?.name}</span>
           <span className="text-xs font-thin">
-            {post?.meta?.readTime}. {newPdDate}
+            {readTime} min read . {newPdDate}
           </span>
         </div>
       </div>
       <div className="mt-8 prose dark:prose-invert">
         <MDXRemote {...post.source} />
       </div>
-    </div>
+    </PageAnimationContainer>
   );
 };
 
@@ -96,7 +105,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   });
   return {
-    props: { post: { source: mdxSource, meta } },
+    props: { post: { source: mdxSource, meta, content } },
   };
 };
 

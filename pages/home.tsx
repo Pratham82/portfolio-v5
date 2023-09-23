@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "phosphor-react";
 
-import HomepageSkeleton from "../../components/loadingPages/home.skeleton";
-import { IHomePageResponse } from "../../interface/home.interface";
-import { homePage } from "../../src/graphql/queries";
-import useGetPageData from "../../src/hooks/useGetPageData";
+import PageAnimationContainer from "../components/PageAnimationContainer";
+import HomepageSkeleton from "../components/loadingPages/home.skeleton";
+import { IHomePageResponse } from "../interface/home.interface";
+import { socialLinks } from "../src/data/headerData";
+import { homePage } from "../src/graphql/queries";
+import useGetPageData from "../src/hooks/useGetPageData";
 
 const HomePage = () => {
   const { data, loading } = useQuery(homePage);
@@ -21,12 +23,7 @@ const HomePage = () => {
   }
 
   return (
-    <motion.div
-      className="flex flex-col items-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2 }}
-    >
+    <PageAnimationContainer className="flex flex-col items-center">
       <motion.div
         initial={{ scale: 0 }}
         animate={{ rotate: 360, scale: 1 }}
@@ -58,11 +55,13 @@ const HomePage = () => {
 
       <h2 className="mb-2 mt-4 text-xl">{contributions?.contributionsTitle}</h2>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={contributions?.contributionsLink}
-        alt="github-contributions-chart"
-        className="h-[90px] grayscale"
-      />
+      <Link href={socialLinks[0].link} target="_blank">
+        <img
+          src={contributions?.contributionsLink}
+          alt="github-contributions-chart"
+          className="h-[90px] grayscale"
+        />
+      </Link>
       <div className="flex pt-8">
         {pageRedirects?.map((page) => (
           <Link
@@ -74,7 +73,7 @@ const HomePage = () => {
           </Link>
         ))}
       </div>
-    </motion.div>
+    </PageAnimationContainer>
   );
 };
 
