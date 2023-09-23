@@ -1,5 +1,5 @@
 const HomepageSkeleton = () => (
-  <div className="flex w-[575px] animate-pulse flex-col items-center ">
+  <div className="flex sm:w-[575px] animate-pulse flex-col items-center ">
     <div className="h-[110px] w-[110px] rounded-2xl bg-slate-700" />
     <h1 className="mb-2 mt-6 h-9 w-4/6 rounded-md bg-slate-700"> </h1>
     <h1 className="mt-2 h-7 w-full rounded-md bg-slate-700"> </h1>
