@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { motion } from "framer-motion";
 import Link from "next/link";
 
 import BlogCard from "../../components/BlogCard";
+import PageAnimationContainer from "../../components/PageAnimationContainer";
 import BlogSkeleton from "../../components/loadingPages/blog.skeleton";
 import { IBlogsPageResponse } from "../../interface/blogs.interface";
 import { allBlogsPage } from "../../src/graphql/queries";
@@ -27,12 +27,7 @@ const Blogs = (props: IBlogsProps) => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2 }}
-      className="sm:w-[575px]"
-    >
+    <PageAnimationContainer className="sm:w-[575px]">
       <h1 className="text-3xl">{pageName}</h1>
       <div className="flex flex-col py-3 gap-2">
         {posts?.map(({ meta: blogData }) => (
@@ -41,7 +36,7 @@ const Blogs = (props: IBlogsProps) => {
           </Link>
         ))}
       </div>
-    </motion.div>
+    </PageAnimationContainer>
   );
 };
 
