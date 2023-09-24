@@ -1,6 +1,6 @@
 const ProjectsSkeleton = () => {
   return (
-    <div className="flex w-[300px] sm:w-[575px] sm:border sm:border-red-300 animate-pulse flex-col items-left">
+    <div className="flex w-[300px] sm:w-[575px] animate-pulse flex-col items-left">
       <h1 className="mb-2 mt-2 h-9 w-2/6 rounded-md bg-slate-700"> </h1>
       <h2 className="mb-2 mt-2 h-7 w-full rounded-md bg-slate-700 text-xl">
         {" "}
