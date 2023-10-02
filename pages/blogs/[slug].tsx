@@ -12,7 +12,6 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
 
 import PageAnimationContainer from "../../components/PageAnimationContainer";
-import BlogSkeleton from "../../components/loadingPages/blog.skeleton";
 import BlogSinglePageSkeleton from "../../components/loadingPages/blog.skeleton";
 import { AllAuthorResponse } from "../../interface/post.interface";
 import { fetchAuthorByUserName } from "../../src/graphql/queries";
