@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import BlogCard from "../../components/BlogCard";
 import PageAnimationContainer from "../../components/PageAnimationContainer";
-import BlogSkeleton from "../../components/loadingPages/blog.skeleton";
+import BlogsPage from "../../components/loadingPages/blogspage.skeleton";
 import { IBlogsPageResponse } from "../../interface/blogs.interface";
 import { allBlogsPage } from "../../src/graphql/queries";
 import useGetPageData from "../../src/hooks/useGetPageData";
@@ -23,7 +23,7 @@ const Blogs = (props: IBlogsProps) => {
   const { pageName = "" }: IBlogsPageResponse = pageData || {};
 
   if (loading) {
-    return <BlogSkeleton />;
+    return <BlogsPage />;
   }
 
   return (
