@@ -13,6 +13,7 @@ import rehypeHighlight from "rehype-highlight";
 
 import PageAnimationContainer from "../../components/PageAnimationContainer";
 import BlogSkeleton from "../../components/loadingPages/blog.skeleton";
+import BlogSinglePageSkeleton from "../../components/loadingPages/blog.skeleton";
 import { AllAuthorResponse } from "../../interface/post.interface";
 import { fetchAuthorByUserName } from "../../src/graphql/queries";
 import getFormattedDate from "../../src/utils/getFormattedDate";
@@ -44,7 +45,7 @@ const Post = ({ post }: { post: IMDXPost }) => {
   const readTime = getReadTime(post.content);
 
   if (loading) {
-    return <BlogSkeleton />;
+    return <BlogSinglePageSkeleton />;
   }
 
   return (

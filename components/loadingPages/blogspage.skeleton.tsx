@@ -1,4 +1,4 @@
-const BlogSlugSkeleton = () => (
+const BlogsPage = () => (
   <div className="flex w-[300px] sm:w-[575px] animate-pulse flex-col items-left ">
     <h1 className="mb-2 mt-2 h-9 w-2/6 rounded-md bg-slate-700"> </h1>
     <div className="flex flex-col gap-3">
@@ -14,4 +14,4 @@ const BlogSlugSkeleton = () => (
   </div>
 );
 
-export default BlogSlugSkeleton;
+export default BlogsPage;
