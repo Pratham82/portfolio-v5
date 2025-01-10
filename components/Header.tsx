@@ -17,6 +17,34 @@ const Header = () => {
     <>
       <Head>
         <title>{getCurrentHeadTitle({ pathname })}</title>
+        {/* Open Graph */}
+        <meta property="og:title" content="Prathamesh Mali" />
+        <meta
+          property="og:description"
+          content="Welcome to my portfolio! I’m a frontend developer with over 4 years of experience in building web applications and apps"
+        />
+        <meta
+          property="og:image"
+          content="https://cdn.sanity.io/images/sfjfod25/production/005e9e223e2628b34af0acfbc5c264ceecc70168-800x800.jpg"
+        />
+        <meta property="og:url" content="https://www.pratham82.in" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Card */}
+        <meta
+          name="twitter:card"
+          content="https://x.com/Pratham_82/header_photo"
+        />
+        <meta name="twitter:site" content="@Pratham_82" />
+        <meta name="twitter:title" content="Pratham's Portfolio" />
+        <meta
+          name="twitter:description"
+          content="Explore my portfolio showcasing innovative web development projects, including responsive designs, React.js applications, and creative solutions for businesses."
+        />
+        <meta
+          name="twitter:image"
+          content="https://cdn.sanity.io/images/sfjfod25/production/005e9e223e2628b34af0acfbc5c264ceecc70168-800x800.jpg"
+        />
       </Head>
       <div className="fixed top-0 z-10 w-full border-slate-400 py-4 shadow-sm shadow-gray-800 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-[280px] justify-between">
