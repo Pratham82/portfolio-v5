@@ -4,7 +4,6 @@ import { DownloadSimple } from "phosphor-react";
 
 import EducationCard from "../components/EducationCard";
 import PageAnimationContainer from "../components/PageAnimationContainer";
-import SocialLinks from "../components/SocialLinks";
 import WorkExCard from "../components/WorkExCard";
 import AboutPageSkeleton from "../components/loadingPages/about.skeleton";
 import { IAllAboutPageResponse } from "../interface/about.interface";
@@ -65,10 +64,6 @@ const About = () => {
         {education?.map((educationData) => (
           <EducationCard {...educationData} key={educationData?.degree} />
         ))}
-      </div>
-      <h4 className="text-2xl mt-12">Connect with me</h4>
-      <div className="mt-2">
-        <SocialLinks align="left" />
       </div>
     </PageAnimationContainer>
   );
