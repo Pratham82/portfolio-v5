@@ -8,7 +8,7 @@ import path from "path";
 const POSTS_PATH = path.join(process.cwd(), "content/blogs");
 
 export const getSlugs = (): string[] => {
-  const paths = sync(`${POSTS_PATH}/*.mdx`);
+  const paths = sync(`${POSTS_PATH}/*.md`);
 
   return paths.map((pathData) => {
     const parts = pathData.split("/");
@@ -19,7 +19,7 @@ export const getSlugs = (): string[] => {
 };
 
 export const getPostFromSlug = (slug: string): Post => {
-  const postPath = path.join(POSTS_PATH, `${slug}.mdx`);
+  const postPath = path.join(POSTS_PATH, `${slug}.md`);
   const source = fs.readFileSync(postPath, "utf-8");
   const { content, data } = matter(source);
 
