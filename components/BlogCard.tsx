@@ -1,33 +1,27 @@
 import { motion } from "framer-motion";
-import { CalendarBlank, Clock } from "phosphor-react";
+import { CalendarBlank } from "phosphor-react";
 import React from "react";
 
 import { Blog } from "../interface/blogs.interface";
 import getFormattedDate from "../src/utils/getFormattedDate";
 
 const BlogCard = (props: Blog) => {
-  const { title = "", subTitle = "", readTime = "", date = "" } = props;
+  const { title = "", subTitle = "", date = "" } = props;
 
   const blogPublishedDate = getFormattedDate(date, "dd MMM yyyy");
 
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className="flex flex-col cursor-pointer border dark:border-slate-100 border-slate-300 p-4 rounded-md shadow-sm dark:shadow-sm dark:shadow-slate-500 gap-1"
+      className="flex flex-col cursor-pointer my-2 rounded-md gap-1"
     >
-      <h2 className="text-xl dark:text-neutral-100 ">{title}</h2>
-      <h3 className="text-md font-light dark:text-neutral-400">{subTitle}</h3>
+      <h2 className="text-lg dark:text-neutral-100 ">{title}</h2>
+      <h3 className="text-sm font-light dark:text-neutral-400">{subTitle}</h3>
       <div className="flex">
         <div className="flex items-center">
-          <CalendarBlank size={19} />
-          <span className="pl-2">{blogPublishedDate}</span>
+          <CalendarBlank size={16} />
+          <span className="pl-2 text-sm">{blogPublishedDate}</span>
         </div>
-        {readTime && (
-          <div className="flex items-center pl-4">
-            <Clock />
-            <span className="pl-2">{readTime}</span>
-          </div>
-        )}
       </div>
     </motion.div>
   );

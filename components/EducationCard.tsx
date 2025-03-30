@@ -17,7 +17,7 @@ const EducationCard = (props: Education) => {
       whileHover={{ scale: 1.02 }}
       className="flex flex-col my-2 cursor-pointer"
     >
-      <h2 className="">{degree}</h2>
+      <h2 className="text-md">{degree}</h2>
       <h2 className="text-sm">
         {institution}{" "}
         <span className="pl-2">
