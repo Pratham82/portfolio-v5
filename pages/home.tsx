@@ -56,10 +56,10 @@ const HomePage = () => {
       <h2 className="mb-2 mt-4 text-xl">{contributions?.contributionsTitle}</h2>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <Link href={socialLinks[0].link} target="_blank">
-        <Image
+        <img
           src={contributions?.contributionsLink || ""}
           alt="github-contributions-chart"
-          width={200}
+          // width={200}
           height={90}
           className="grayscale"
         />
