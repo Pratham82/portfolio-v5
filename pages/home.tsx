@@ -5,15 +5,29 @@ import Link from "next/link";
 import { ArrowUpRight } from "phosphor-react";
 
 import PageAnimationContainer from "../components/PageAnimationContainer";
+// import SpotifyNowPlayingCard from "../components/SpotifyNowPlayingCard";
+import SpotifyNowPlayingMonoChrome from "../components/SpotifyNowPlayingMonoChrome";
 import HomepageSkeleton from "../components/loadingPages/home.skeleton";
 import { IHomePageResponse } from "../interface/home.interface";
 import { socialLinks } from "../src/data/headerData";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
+import useNowPlaying from "../src/hooks/useNowPlaying";
 
 const HomePage = () => {
   const { data, loading } = useQuery(homePage);
   const { title = "", subtitle = "", pageData } = useGetPageData(data);
+
+  const spotifyNowPlayingData = useNowPlaying();
+
+  const spotifyNowPlayingProps = {
+    album: spotifyNowPlayingData.data?.album || "",
+    albumImageUrl: spotifyNowPlayingData.data?.albumImageUrl || "",
+    artist: spotifyNowPlayingData.data?.artist || "",
+    title: spotifyNowPlayingData.data?.title || "",
+    isPlaying: spotifyNowPlayingData.data?.isPlaying ?? false,
+    songUrl: spotifyNowPlayingData.data?.songUrl || "",
+  };
 
   const { avatar, contributions, pageRedirects, techStack }: IHomePageResponse =
     pageData || {};
@@ -75,6 +89,8 @@ const HomePage = () => {
           </Link>
         ))}
       </div>
+      {/* <SpotifyNowPlayingCard {...spotifyNowPlayingProps} /> */}
+      <SpotifyNowPlayingMonoChrome {...spotifyNowPlayingProps} />
     </PageAnimationContainer>
   );
 };

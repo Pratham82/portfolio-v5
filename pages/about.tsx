@@ -43,9 +43,9 @@ const About = () => {
         Work Experience{" "}
         <Link
           className="text-lg ml-8 flex items-center hover:text-blue-500"
-          href={resume.resumeLink}
+          href={resume?.resumeLink}
         >
-          <DownloadSimple className="mr-2" size={24} /> {resume.resumeText}
+          <DownloadSimple className="mr-2" size={24} /> {resume?.resumeText}
         </Link>
       </h4>
       <div className="flex flex-col">

@@ -18,6 +18,10 @@ module.exports = {
         protocol: "https",
         hostname: "ghchart.rshah.org",
       },
+      {
+        protocol: "https",
+        hostname: "i.scdn.co",
+      },
     ],
   },
   async redirects() {
