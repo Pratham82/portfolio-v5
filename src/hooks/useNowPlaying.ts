@@ -15,7 +15,23 @@ const useNowPlaying = () => {
         const res = await fetch("/api/now-playing");
         if (!res.ok) throw new Error("Failed to fetch now playing");
         const json = await res.json();
-        setData(json);
+
+        if (json && json.isPlaying) {
+          setData(json);
+          localStorage.setItem("LAST_PLAYED", JSON.stringify(json));
+        } else {
+          const cached = localStorage.getItem("LAST_PLAYED");
+          if (cached) {
+            const cachedData = JSON.parse(cached);
+            const finalData = {
+              ...cachedData,
+              isPlaying: false,
+            };
+            setData(finalData);
+          } else {
+            setData(json);
+          }
+        }
         setError(null);
       } catch (err: any) {
         setError(err.message || "Error fetching now playing");
@@ -26,9 +42,8 @@ const useNowPlaying = () => {
     };
 
     fetchNowPlaying();
-
-    // Optionally poll every 30 seconds:
-    const interval = setInterval(fetchNowPlaying, 30000);
+    // every 1 minute:
+    const interval = setInterval(fetchNowPlaying, 60000);
 
     return () => clearInterval(interval);
   }, []);
