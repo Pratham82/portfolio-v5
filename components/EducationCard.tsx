@@ -20,7 +20,7 @@ const EducationCard = (props: Education) => {
       <h2 className="text-md">{degree}</h2>
       <h2 className="text-sm">
         {institution}{" "}
-        <span className="pl-2">
+        <span className="pl-2 text-sm">
           ({formattedStartYear} - {formattedEndYear})
         </span>
       </h2>

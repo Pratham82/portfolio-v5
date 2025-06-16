@@ -25,3 +25,25 @@ const HomepageSkeleton = () => (
 );
 
 export default HomepageSkeleton;
+
+// const HomepageSkeleton = () => (
+//   <div className="flex flex-col animate-pulse">
+//     <h1 className="mb-2 mt-6 h-7 w-2/5 rounded-md bg-slate-700" />
+//     <h1 className="mt-2 h-6 w-3/5 rounded-md bg-slate-700" />
+
+//     <div className="my-4 flex space-x-3">
+//       {Array(4)
+//         .fill(0)
+//         .map((_, i) => (
+//           <div key={i} className="h-8 w-8 rounded-full bg-slate-700" />
+//         ))}
+//     </div>
+
+//     {/* Tech stack and contributions are commented out in your code, so omitted here */}
+
+//     {/* SpotifyNowPlayingMonoChrome skeleton */}
+//     <div className="mt-8 h-16 w-full rounded-md bg-slate-700" />
+//   </div>
+// );
+
+// export default HomepageSkeleton;
