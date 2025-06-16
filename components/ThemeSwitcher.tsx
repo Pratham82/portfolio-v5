@@ -1,5 +1,5 @@
+import { MoonStarsIcon, Sun } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
-import { MoonStars, Sun } from "phosphor-react";
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {
@@ -20,7 +20,7 @@ const ThemeSwitcher = () => {
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className="duration-200 hover:scale-110 active:scale-100"
     >
-      {theme === "light" ? <MoonStars size={24} /> : <Sun size={24} />}
+      {theme === "light" ? <MoonStarsIcon size={24} /> : <Sun size={24} />}
     </button>
   );
 };

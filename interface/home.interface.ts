@@ -32,6 +32,18 @@ export interface PageRedirects {
   link: string;
   linkTitle: string;
 }
+
+export enum HomePageTabs {
+  EXPERIENCE = "Experience",
+  PROJECTS = "Projects",
+  BLOGS = "Blogs",
+}
 export interface IHomePage {
   rootObject?: IHomePage[] | null;
 }
+
+export type TabType = HomePageTabs;
+export type TabOptions = {
+  options: TabType[];
+  selected: TabType;
+};

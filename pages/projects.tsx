@@ -19,8 +19,13 @@ const Projects = () => {
 
   const filteredProjects = getProjectsByCategories(allProjectsData);
   const filteredProjectCategories = Object.keys(filteredProjects);
+
+  const updateCategoriesOrder = [
+    "React",
+    ...filteredProjectCategories.filter((skill) => skill !== "React"),
+  ];
   const [selectedProject, setSelectedProject] = useState(
-    filteredProjectCategories?.[0] || "NeoG Camp",
+    updateCategoriesOrder?.[0] || "NeoG Camp",
   );
 
   if (loading) {
@@ -29,9 +34,8 @@ const Projects = () => {
 
   return (
     <PageAnimationContainer>
-      <h1 className="text-3xl">Projects</h1>
       <div className="py-3">
-        {filteredProjectCategories.map((val) => (
+        {updateCategoriesOrder.map((val) => (
           <button
             className={classNames(
               "text-sm mx-1 rounded-md py-[4px] px-2",

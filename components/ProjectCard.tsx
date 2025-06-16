@@ -1,6 +1,6 @@
+import { GithubLogoIcon, LinkSimpleIcon } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { GithubLogo, LinkSimple } from "phosphor-react";
 
 import { IProject } from "../interface/projects.interface";
 
@@ -21,7 +21,7 @@ const ProjectCard = (props: IProject) => {
             target="_blank"
             className="flex border p-1 mr-2 cursor-pointer rounded-xl px-2 text-xs border-slate-300 items-center"
           >
-            <LinkSimple size={16} />
+            <LinkSimpleIcon size={16} />
             <span className="pl-1">Live</span>
           </Link>
         )}
@@ -32,7 +32,7 @@ const ProjectCard = (props: IProject) => {
             rel="noopener noreferrer"
             className="flex border p-1 mr-2 cursor-pointer rounded-xl px-2 text-xs items-center"
           >
-            <GithubLogo size={16} />
+            <GithubLogoIcon size={16} />
             <span className="pl-1">Github</span>
           </Link>
         )}

@@ -1,22 +1,31 @@
 import { useQuery } from "@apollo/client";
-import { motion } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "phosphor-react";
+import { useEffect, useState } from "react";
 
+import HomeTabs from "../components/HomePageTabs";
 import PageAnimationContainer from "../components/PageAnimationContainer";
-// import SpotifyNowPlayingCard from "../components/SpotifyNowPlayingCard";
+import SocialLinks from "../components/SocialLinks";
 import SpotifyNowPlayingMonoChrome from "../components/SpotifyNowPlayingMonoChrome";
+import ThemToggler from "../components/ThemeSwitcher";
 import HomepageSkeleton from "../components/loadingPages/home.skeleton";
-import { IHomePageResponse } from "../interface/home.interface";
-import { socialLinks } from "../src/data/headerData";
+import { HomePageTabs, TabOptions, TabType } from "../interface/home.interface";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
+import About from "./about";
+import { PostMeta, getAllPosts } from "./api/blogPosts";
+import Blogs from "./blogs";
+import Projects from "./projects";
 
-const HomePage = () => {
+type HomeProps = {
+  posts: {
+    content: string;
+    meta: PostMeta;
+  }[];
+};
+const HomePage = (props: HomeProps) => {
+  const { posts } = props;
   const { data, loading } = useQuery(homePage);
-  const { title = "", subtitle = "", pageData } = useGetPageData(data);
+  const { title = "", subtitle = "" } = useGetPageData(data);
 
   const spotifyNowPlayingData = useNowPlaying();
 
@@ -29,47 +38,95 @@ const HomePage = () => {
     songUrl: spotifyNowPlayingData.data?.songUrl || "",
   };
 
-  const { avatar, contributions, pageRedirects, techStack }: IHomePageResponse =
-    pageData || {};
+  // const { pageRedirects }: IHomePageResponse = pageData || {};
+
+  const [tabs, setTabs] = useState<TabOptions>({
+    options: [
+      HomePageTabs.EXPERIENCE,
+      HomePageTabs.PROJECTS,
+      HomePageTabs.BLOGS,
+    ],
+    selected: HomePageTabs.EXPERIENCE,
+  });
+
+  const handleTabChange = (tab: TabType) => {
+    setTabs((prev) => ({
+      ...prev,
+      selected: tab,
+    }));
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "p":
+        case "P":
+        case "2": {
+          // setTabs((prev) => ({
+          //   ...prev,
+          //   selected: HomePageTabs.PROJECTS,
+          // }));
+          handleTabChange(HomePageTabs.PROJECTS);
+          break;
+        }
+        case "b":
+        case "B":
+        case "3": {
+          handleTabChange(HomePageTabs.BLOGS);
+          break;
+        }
+        case "e":
+        case "E":
+        case "1": {
+          handleTabChange(HomePageTabs.EXPERIENCE);
+          break;
+        }
+        default: {
+          // Do nothing for other keys
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   if (loading) {
     return <HomepageSkeleton />;
   }
 
   return (
-    <PageAnimationContainer className="flex flex-col items-center">
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ rotate: 360, scale: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 260,
-          damping: 20,
-        }}
+    <PageAnimationContainer className="flex flex-col">
+      <h1 className="mb-2 mt-6 text-xl font-bold flex justify-between items-center">
+        {title} <ThemToggler />
+      </h1>
+      <h1
+        className="mt-2 text-md dark:text-slate-300 text-black
+      "
       >
-        <Image
-          src={avatar?.asset?.url || ""}
-          alt="profile"
-          width={110}
-          height={110}
-          className="relative rounded-2xl grayscale"
-        />
-      </motion.div>
-      <h1 className="mb-2 mt-6 text-2xl">{title}</h1>
-      <h1 className="mt-2 text-lg text-center">{subtitle}</h1>
+        {subtitle}
+      </h1>
 
-      <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2>
-      <div className="flex flex-wrap justify-center">
+      <div className="my-4">
+        <SocialLinks align="left" />
+      </div>
+
+      {/* <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2> */}
+      {/* <div className="flex flex-wrap justify-center">
         {techStack?.techStacks?.map((tech) => (
           <span className="text-md pr-1" key={tech}>
             {tech},
           </span>
         ))}
-      </div>
+      </div> */}
 
-      <h2 className="mb-2 mt-4 text-xl">{contributions?.contributionsTitle}</h2>
+      {/* <h2 className="mb-2 mt-4 text-xl">{contributions?.contributionsTitle}</h2> */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <Link href={socialLinks[0].link} target="_blank">
+      {/* <Link href={socialLinks[0].link} target="_blank">
         <img
           src={contributions?.contributionsLink || ""}
           alt="github-contributions-chart"
@@ -77,22 +134,46 @@ const HomePage = () => {
           height={90}
           className="grayscale"
         />
-      </Link>
-      <div className="flex pt-8">
+      </Link> */}
+      {/* <div className="flex pt-8">
         {pageRedirects?.map((page) => (
           <Link
             key={page.linkTitle}
             href={page?.link}
             className="flex items-center pr-4"
           >
-            {page?.linkTitle} <ArrowUpRight className="pl-2" size={26} />
+            {page?.linkTitle} <ArrowUpRightIcon className="pl-2" size={26} />
           </Link>
         ))}
-      </div>
-      {/* <SpotifyNowPlayingCard {...spotifyNowPlayingProps} /> */}
+      </div> */}
+
       <SpotifyNowPlayingMonoChrome {...spotifyNowPlayingProps} />
+
+      {/* {
+        <TabOptions
+          options={selectedTab.options}
+          selected={selectedTab.selected}
+          onTabChange={handleTabChange}
+        />
+      } */}
+      <HomeTabs tabOptions={tabs} onTabChange={handleTabChange} />
+      <section className="mt-4">
+        {tabs.selected === HomePageTabs.EXPERIENCE && <About />}
+        {tabs.selected === HomePageTabs.PROJECTS && <Projects />}
+        {tabs.selected === HomePageTabs.BLOGS && <Blogs posts={posts} />}
+      </section>
     </PageAnimationContainer>
   );
 };
 
 export default HomePage;
+
+export async function getStaticProps() {
+  const posts = getAllPosts();
+
+  return {
+    props: {
+      posts,
+    },
+  };
+}

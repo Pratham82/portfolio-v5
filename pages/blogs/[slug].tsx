@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "highlight.js/styles/atom-one-dark.css";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -7,7 +8,6 @@ import { serialize } from "next-mdx-remote/serialize";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { ArrowLeft } from "phosphor-react";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
 
@@ -55,9 +55,9 @@ const Post = ({ post }: { post: IMDXPost }) => {
       <button
         type="button"
         className="flex items-center py-2 hover:scale-105 transition ease-in"
-        onClick={() => push("/blogs")}
+        onClick={() => push("/home")}
       >
-        <ArrowLeft />
+        <ArrowLeftIcon />
         <span className="pl-2">back</span>
       </button>
       <h1 className="text-4xl">{post.meta?.title}</h1>

@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <>
       <Head>
-        <title>{getCurrentHeadTitle({ pathname })}</title>
+        <title>Pratham82 | {getCurrentHeadTitle({ pathname })}</title>
         {/* Open Graph */}
         <meta property="og:title" content="Prathamesh Mali" />
         <meta
