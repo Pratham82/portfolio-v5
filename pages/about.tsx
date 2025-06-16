@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
+import { DownloadSimpleIcon } from "@phosphor-icons/react";
 import Link from "next/link";
-import { DownloadSimple } from "phosphor-react";
 
-import EducationCard from "../components/EducationCard";
+// import EducationCard from "../components/EducationCard";
 import PageAnimationContainer from "../components/PageAnimationContainer";
 import WorkExCard from "../components/WorkExCard";
 import AboutPageSkeleton from "../components/loadingPages/about.skeleton";
@@ -15,7 +15,7 @@ const About = () => {
   const { data, loading } = useQuery(aboutPage);
   const { data: contactsData, loading: contactsLoading } =
     useQuery(contactsPage);
-  const { title = "", subtitle = "", pageData } = useGetPageData(data);
+  const { pageData } = useGetPageData(data);
 
   const { pageData: contactsPageData } = useGetPageData(contactsData);
 
@@ -27,7 +27,7 @@ const About = () => {
 
   const {
     resume,
-    education = [],
+    // education = [],
     workExperience = [],
   }: IAllAboutPageResponse = pageData;
 
@@ -37,34 +37,34 @@ const About = () => {
 
   return (
     <PageAnimationContainer className="w-100%">
-      <h1 className="text-3xl">{title}</h1>
-      <h2 className="py-2">{subtitle}</h2>
-      <h4 className="text-2xl mt-8 flex items-center">
-        Work Experience{" "}
+      {/* <h1 className="text-2xl font-bold">{title}</h1>
+      <h2 className="py-2">{subtitle}</h2> */}
+
+      <div className="flex gap-4 items-start">
+        <div className="flex flex-col">
+          {workExperience?.map((workEx) => (
+            <Link
+              href={linkedIn?.link || ""}
+              target="_blank"
+              key={workEx?.companyName}
+            >
+              <WorkExCard {...workEx} key={workEx?.companyName} />
+            </Link>
+          ))}
+        </div>
         <Link
-          className="text-lg ml-8 flex items-center hover:text-blue-500"
+          className="text-md mt-2 flex items-center hover:text-gray-500"
           href={resume?.resumeLink}
         >
-          <DownloadSimple className="mr-2" size={24} /> {resume?.resumeText}
+          <DownloadSimpleIcon className="mr-2" size={24} /> {resume?.resumeText}
         </Link>
-      </h4>
-      <div className="flex flex-col">
-        {workExperience?.map((workEx) => (
-          <Link
-            href={linkedIn?.link || ""}
-            target="_blank"
-            key={workEx?.companyName}
-          >
-            <WorkExCard {...workEx} key={workEx?.companyName} />
-          </Link>
-        ))}
       </div>
-      <h4 className="text-2xl mt-14">Education</h4>
-      <div className="flex flex-col">
+      {/* <h4 className="text-lg mt-14">Education</h4> */}
+      {/* <div className="flex flex-col">
         {education?.map((educationData) => (
           <EducationCard {...educationData} key={educationData?.degree} />
         ))}
-      </div>
+      </div> */}
     </PageAnimationContainer>
   );
 };
