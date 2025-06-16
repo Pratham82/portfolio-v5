@@ -16,7 +16,7 @@ const SpotifyNowPlayingCard = (props: SpotifyNowPlayingCardProps) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gray-800 rounded-lg px-4 py-3 max-w-sm mx-auto h-20 flex items-center justify-center"
+        className="bg-gray-800 rounded-lg px-4 py-3 max-w-sm mx-auto h-20 flex items-center justify-center my-4"
       >
         <div className="flex items-center space-x-2 text-gray-400">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
