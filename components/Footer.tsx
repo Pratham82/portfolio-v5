@@ -1,16 +1,19 @@
+import { HeartIcon } from "@phosphor-icons/react";
 import Link from "next/link";
-import { Heart } from "phosphor-react";
 
-import SocialLinks from "./SocialLinks";
+// import SocialLinks from "./SocialLinks";
 
 const Footer = () => {
   return (
-    <footer className="bottom-0 z-0 w-full border-t border-gray-800 pt-4 backdrop-blur-lg">
-      <SocialLinks align="center" />
-      <div className="flex h-14 w-full items-center justify-center ">
+    <footer className="bottom-0 z-0 w-full pt-2 backdrop-blur-lg">
+      {/* <SocialLinks align="center" /> */}
+      <div className="relative w-full mb-8">
+        <div className="absolute inset-0 w-full h-[1px] bg-white/30" />
+      </div>
+      <div className="flex h-12 w-full items-center justify-center ">
         Created with
         <span className="px-1">
-          <Heart size={24} color="red" weight="fill" />
+          <HeartIcon size={24} color="red" weight="fill" />
         </span>
         by
         <Link

@@ -34,4 +34,12 @@ export const socialLinks = [
     id: "TWITTER",
     link: "https://www.twitter.com/pratham_82 ",
   },
+  {
+    id: "INSTA",
+    link: "https://www.instagram.com/pratham82.sh/",
+  },
+  {
+    id: "MAIL",
+    link: "mailto:mali.prathamesh82@gmail.com",
+  },
 ];
