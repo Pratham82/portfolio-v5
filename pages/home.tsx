@@ -1,16 +1,20 @@
 import { useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import { useState } from "react";
+import GitHubCalendar from "react-github-calendar";
 
+import ActiveMiniTabs from "../components/ActiveMiniTab";
 import HomeTabs from "../components/HomePageTabs";
 import PageAnimationContainer from "../components/PageAnimationContainer";
 import SocialLinks from "../components/SocialLinks";
 import SpotifyNowPlayingMonoChrome from "../components/SpotifyNowPlayingMonoChrome";
 import ThemToggler from "../components/ThemeSwitcher";
 import HomepageSkeleton from "../components/loadingPages/home.skeleton";
-import { HomePageTabs, TabOptions, TabType } from "../interface/home.interface";
+import { HomePageTabs } from "../interface/home.interface";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
+import useTabs from "../src/hooks/useTabs";
 import About from "./about";
 import { PostMeta, getAllPosts } from "./api/blogPosts";
 import Blogs from "./blogs";
@@ -26,8 +30,13 @@ const HomePage = (props: HomeProps) => {
   const { posts } = props;
   const { data, loading } = useQuery(homePage);
   const { title = "", subtitle = "" } = useGetPageData(data);
+  const [visibleData, setVisibleData] = useState({
+    isContributionsVisible: false,
+    isNowPlayingVisible: false,
+  });
 
   const spotifyNowPlayingData = useNowPlaying();
+  const { theme } = useTheme();
 
   const spotifyNowPlayingProps = {
     album: spotifyNowPlayingData.data?.album || "",
@@ -38,62 +47,8 @@ const HomePage = (props: HomeProps) => {
     songUrl: spotifyNowPlayingData.data?.songUrl || "",
   };
 
+  const { tabs, handleTabChange } = useTabs();
   // const { pageRedirects }: IHomePageResponse = pageData || {};
-
-  const [tabs, setTabs] = useState<TabOptions>({
-    options: [
-      HomePageTabs.EXPERIENCE,
-      HomePageTabs.PROJECTS,
-      HomePageTabs.BLOGS,
-    ],
-    selected: HomePageTabs.EXPERIENCE,
-  });
-
-  const handleTabChange = (tab: TabType) => {
-    setTabs((prev) => ({
-      ...prev,
-      selected: tab,
-    }));
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "p":
-        case "P":
-        case "2": {
-          // setTabs((prev) => ({
-          //   ...prev,
-          //   selected: HomePageTabs.PROJECTS,
-          // }));
-          handleTabChange(HomePageTabs.PROJECTS);
-          break;
-        }
-        case "b":
-        case "B":
-        case "3": {
-          handleTabChange(HomePageTabs.BLOGS);
-          break;
-        }
-        case "e":
-        case "E":
-        case "1": {
-          handleTabChange(HomePageTabs.EXPERIENCE);
-          break;
-        }
-        default: {
-          // Do nothing for other keys
-          break;
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   if (loading) {
     return <HomepageSkeleton />;
@@ -147,15 +102,23 @@ const HomePage = (props: HomeProps) => {
         ))}
       </div> */}
 
-      <SpotifyNowPlayingMonoChrome {...spotifyNowPlayingProps} />
+      <ActiveMiniTabs
+        setVisibleData={setVisibleData}
+        visibleData={visibleData}
+      />
 
-      {/* {
-        <TabOptions
-          options={selectedTab.options}
-          selected={selectedTab.selected}
-          onTabChange={handleTabChange}
-        />
-      } */}
+      <div className="my-4">
+        {visibleData.isContributionsVisible ? (
+          <GitHubCalendar
+            username="Pratham82"
+            colorScheme={theme === "dark" ? "dark" : "light"}
+          />
+        ) : null}
+        {visibleData.isNowPlayingVisible ? (
+          <SpotifyNowPlayingMonoChrome {...spotifyNowPlayingProps} />
+        ) : null}
+      </div>
+
       <HomeTabs tabOptions={tabs} onTabChange={handleTabChange} />
       <section className="mt-4">
         {tabs.selected === HomePageTabs.EXPERIENCE && <About />}
