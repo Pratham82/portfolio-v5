@@ -20,7 +20,7 @@ const HomeTabs = (props: HomePageTabsProps) => {
           key={tab}
           className={`py-2 rounded-lg ${
             tabOptions.selected === tab
-              ? "dark:text-white text-black"
+              ? "dark:text-white text-black font-bold"
               : "dark:text-slate-400 text-gray-700"
           }`}
           onClick={() => {
