@@ -56,7 +56,7 @@ const HomePage = (props: HomeProps) => {
 
   return (
     <PageAnimationContainer className="flex flex-col">
-      <h1 className="mb-2 mt-6 text-xl font-bold flex justify-between items-center">
+      <h1 className="mb-2 mt-6 text-xl flex justify-between items-center">
         {title} <ThemToggler />
       </h1>
       <h1
