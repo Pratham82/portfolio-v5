@@ -17,6 +17,7 @@ const ThemeSwitcher = () => {
   return (
     <button
       type="button"
+      aria-label="Toggle Theme"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className="duration-200 hover:scale-110 active:scale-100"
     >

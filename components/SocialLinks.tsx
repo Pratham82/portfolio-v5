@@ -42,7 +42,12 @@ const SocialLinks = (props: SocialLinksProps) => {
     >
       {socialLinks?.map(({ id, link }) => (
         <div className="mx-2" key={id}>
-          <Link href={link} rel="noopener noreferrer" target="_blank">
+          <Link
+            href={link}
+            rel="noopener noreferrer"
+            target="_blank"
+            aria-label={`Visit my ${id} profile`}
+          >
             {iconSwitch(id)}
           </Link>
         </div>
