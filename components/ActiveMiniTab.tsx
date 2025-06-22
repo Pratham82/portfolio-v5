@@ -26,7 +26,7 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
         }}
         type="button"
         className={`text-sm text-black dark:text-white hover:underline ${
-          visibleData.isContributionsVisible ? "underline" : ""
+          visibleData.isContributionsVisible ? "font-bold underline" : ""
         }`}
       >
         Show Contributions
@@ -41,7 +41,7 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
         }}
         type="button"
         className={`text-sm text-black dark:text-white hover:underline ${
-          visibleData.isNowPlayingVisible ? "underline" : ""
+          visibleData.isNowPlayingVisible ? "font-bold underline" : ""
         }`}
       >
         Show Now playing

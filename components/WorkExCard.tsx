@@ -20,7 +20,7 @@ const WorkExCard = (props: WorkExperience) => {
       whileHover={{ scale: 1.02 }}
       className="flex flex-col my-2 cursor-pointer"
     >
-      <p className="text-md">{position}</p>
+      <p className="text-md font-bold">{position}</p>
       <p className="text-sm">
         <span>{companyName}</span>
         <span className="ml-2">{location}</span>
