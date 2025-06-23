@@ -6,6 +6,7 @@ import GitHubCalendar from "react-github-calendar";
 import ActiveMiniTabs from "../components/ActiveMiniTab";
 import HomeTabs from "../components/HomePageTabs";
 import PageAnimationContainer from "../components/PageAnimationContainer";
+import ScrambleText from "../components/ScrambleText";
 import SocialLinks from "../components/SocialLinks";
 import SpotifyNowPlayingMonoChrome from "../components/SpotifyNowPlayingMonoChrome";
 import ThemToggler from "../components/ThemeSwitcher";
@@ -29,7 +30,7 @@ type HomeProps = {
 const HomePage = (props: HomeProps) => {
   const { posts } = props;
   const { data, loading } = useQuery(homePage);
-  const { title = "", subtitle = "" } = useGetPageData(data);
+  const { subtitle = "" } = useGetPageData(data);
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
     isNowPlayingVisible: false,
@@ -57,7 +58,10 @@ const HomePage = (props: HomeProps) => {
   return (
     <PageAnimationContainer className="flex flex-col">
       <h1 className="mb-2 mt-6 text-xl font-bold flex justify-between items-center">
-        {title} <ThemToggler />
+        <p>
+          Hey, I&apos;m <ScrambleText text="Prathamesh" className="p-0 m-0" />
+        </p>
+        <ThemToggler />
       </h1>
       <h1
         className="mt-2 text-md dark:text-slate-300 text-black
