@@ -40,18 +40,16 @@ export const getPostFromSlug = (slug: string): Post => {
   };
 };
 
-export const getAllPosts = () => {
-  const posts = getSlugs()
+export const getAllPosts = (): Post[] => {
+  const posts: Post[] = getSlugs()
     .map((slug) => getPostFromSlug(slug))
-    .sort((a, b) => {
-      if (a.meta.date > b.meta.date) return 1;
-      if (a.meta.date < b.meta.date) return -1;
-      return 0;
-    })
-    .reverse();
+    .sort(
+      (a, b) =>
+        new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime(),
+    );
+
   return posts;
 };
-
 interface Post {
   content: string;
   meta: PostMeta;
