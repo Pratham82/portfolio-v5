@@ -7,21 +7,30 @@ import {
 } from "@phosphor-icons/react";
 import classNames from "classnames";
 import Link from "next/link";
+import { FileArrowDown } from "phosphor-react";
+import React from "react";
 
-import { socialLinks } from "../src/data/headerData";
+import { SocialLinkType, socialLinks } from "../src/data/headerData";
+import useGetInfo from "../src/hooks/useGetInfo";
 
-const iconSwitch = (id: string): JSX.Element => {
+const iconSwitch = (id: SocialLinkType): JSX.Element => {
   switch (id) {
-    case "TWITTER":
+    case SocialLinkType.TWITTER:
       return <XLogoIcon size={24} />;
-    case "LINKEDIN":
+    case SocialLinkType.LINKEDIN:
       return <LinkedinLogoIcon size={24} />;
-    case "GITHUB":
+    case SocialLinkType.GITHUB:
       return <GithubLogoIcon size={24} />;
-    case "MAIL":
+    case SocialLinkType.MAIL:
       return <MailboxIcon size={24} />;
-    case "INSTA":
+    case SocialLinkType.INSTA:
       return <InstagramLogoIcon size={24} />;
+    case SocialLinkType.RESUME:
+      return (
+        <div className="flex gap-2 items-center">
+          <FileArrowDown size={20} /> <span className="text-md">Resume</span>
+        </div>
+      );
     default:
       return <>;</>;
   }
@@ -33,6 +42,9 @@ type SocialLinksProps = {
 
 const SocialLinks = (props: SocialLinksProps) => {
   const { align = "" } = props;
+  const { resume } = useGetInfo();
+  const resumeLink = resume?.resumeLink || "";
+
   return (
     <div
       className={classNames(
@@ -43,7 +55,7 @@ const SocialLinks = (props: SocialLinksProps) => {
       {socialLinks?.map(({ id, link }) => (
         <div className="mx-2" key={id}>
           <Link
-            href={link}
+            href={id === SocialLinkType.RESUME ? resumeLink : link}
             rel="noopener noreferrer"
             target="_blank"
             aria-label={`Visit my ${id} profile`}

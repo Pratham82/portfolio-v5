@@ -1,5 +1,7 @@
 import { useQuery } from "@apollo/client";
+// import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 import { useState } from "react";
 import GitHubCalendar from "react-github-calendar";
 
@@ -11,7 +13,7 @@ import SocialLinks from "../components/SocialLinks";
 import SpotifyNowPlayingMonoChrome from "../components/SpotifyNowPlayingMonoChrome";
 import ThemToggler from "../components/ThemeSwitcher";
 import HomepageSkeleton from "../components/loadingPages/home.skeleton";
-import { HomePageTabs } from "../interface/home.interface";
+import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
@@ -30,11 +32,13 @@ type HomeProps = {
 const HomePage = (props: HomeProps) => {
   const { posts } = props;
   const { data, loading } = useQuery(homePage);
-  const { subtitle = "" } = useGetPageData(data);
+  const { title, subtitle = "", pageData } = useGetPageData(data);
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
     isNowPlayingVisible: false,
   });
+
+  const { avatar }: IHomePageResponse = pageData || {};
 
   const spotifyNowPlayingData = useNowPlaying();
   const { theme } = useTheme();
@@ -50,6 +54,7 @@ const HomePage = (props: HomeProps) => {
 
   const { tabs, handleTabChange } = useTabs();
   // const { pageRedirects }: IHomePageResponse = pageData || {};
+  const [title1, title2] = title.split(/(?<=I'm)/).map((s: string) => s.trim());
 
   if (loading) {
     return <HomepageSkeleton />;
@@ -59,16 +64,23 @@ const HomePage = (props: HomeProps) => {
     <PageAnimationContainer className="flex flex-col">
       <h1 className="mb-2 mt-6 text-xl font-bold flex justify-between items-center">
         <p>
-          Hey, I&apos;m <ScrambleText text="Prathamesh" className="p-0 m-0" />
+          {title1} <ScrambleText text={title2} className="p-0 m-0" />
         </p>
         <ThemToggler />
       </h1>
-      <h1
-        className="mt-2 text-md dark:text-slate-300 text-black
-      "
-      >
-        {subtitle}
-      </h1>
+
+      <Image
+        src={avatar?.asset?.url || ""}
+        alt="profile"
+        width={110}
+        height={110}
+        className="relative rounded-2xl grayscale mt-2"
+      />
+
+      <h2
+        dangerouslySetInnerHTML={{ __html: subtitle }}
+        className="mt-2 text-md dark:text-slate-300 text-black"
+      />
 
       <div className="my-4">
         <SocialLinks align="left" />

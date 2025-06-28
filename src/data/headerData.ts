@@ -21,25 +21,43 @@ export const tabsData = [
   { label: "About", id: "about" },
 ];
 
+export enum SocialLinkType {
+  GITHUB = "GITHUB",
+  LINKEDIN = "LINKEDIN",
+  TWITTER = "TWITTER",
+  INSTA = "INSTA",
+  MAIL = "MAIL",
+  RESUME = "RESUME",
+}
+
+export type SocialLinksType = {
+  id: SocialLinkType | string;
+  link: string;
+};
+
 export const socialLinks = [
   {
-    id: "GITHUB",
+    id: SocialLinkType.GITHUB,
     link: "https://github.com/pratham82",
   },
   {
-    id: "LINKEDIN",
+    id: SocialLinkType.LINKEDIN,
     link: "https://www.linkedin.com/in/prathameshmali/",
   },
   {
-    id: "TWITTER",
+    id: SocialLinkType.TWITTER,
     link: "https://www.twitter.com/pratham_82 ",
   },
   {
-    id: "INSTA",
+    id: SocialLinkType.INSTA,
     link: "https://www.instagram.com/pratham82.sh/",
   },
   {
-    id: "MAIL",
+    id: SocialLinkType.MAIL,
     link: "mailto:mali.prathamesh82@gmail.com",
+  },
+  {
+    id: SocialLinkType.RESUME,
+    link: "https://drive.google.com/file/d/1b2c3d4",
   },
 ];

@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import { DownloadSimpleIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 
 // import EducationCard from "../components/EducationCard";
@@ -26,7 +25,6 @@ const About = () => {
   );
 
   const {
-    resume,
     // education = [],
     workExperience = [],
   }: IAllAboutPageResponse = pageData;
@@ -52,12 +50,12 @@ const About = () => {
             </Link>
           ))}
         </div>
-        <Link
+        {/* <Link
           className="text-md mt-2 flex items-center hover:text-gray-500"
           href={resume?.resumeLink}
         >
           <DownloadSimpleIcon className="mr-2" size={24} /> {resume?.resumeText}
-        </Link>
+        </Link> */}
       </div>
       {/* <h4 className="text-lg mt-14">Education</h4> */}
       {/* <div className="flex flex-col">

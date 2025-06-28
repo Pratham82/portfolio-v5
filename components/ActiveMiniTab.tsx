@@ -1,3 +1,4 @@
+import { Minus, Plus } from "phosphor-react";
 import { Dispatch, SetStateAction } from "react";
 
 type ActiveMiniTabProps = {
@@ -25,11 +26,21 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
           }));
         }}
         type="button"
-        className={`text-sm text-black dark:text-white hover:underline ${
+        className={`text-sm text-black dark:text-white hover:underline flex items-center gap-2 ${
           visibleData.isContributionsVisible ? "font-bold underline" : ""
         }`}
       >
-        Show Contributions
+        {visibleData.isContributionsVisible ? (
+          <>
+            Hide Contributions
+            <Minus size={12} />
+          </>
+        ) : (
+          <>
+            Show Contributions
+            <Plus size={12} />
+          </>
+        )}
       </button>
       <button
         onClick={() => {
@@ -40,11 +51,21 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
           }));
         }}
         type="button"
-        className={`text-sm text-black dark:text-white hover:underline ${
+        className={`text-sm text-black dark:text-white hover:underline flex items-center gap-2 ${
           visibleData.isNowPlayingVisible ? "font-bold underline" : ""
         }`}
       >
-        Show Now playing
+        {visibleData.isNowPlayingVisible ? (
+          <>
+            Hide Now Playing
+            <Minus size={12} />
+          </>
+        ) : (
+          <>
+            Show Now Playing
+            <Plus size={12} />
+          </>
+        )}
       </button>
     </div>
   );
