@@ -24,7 +24,6 @@ const HomeTabs = (props: HomePageTabsProps) => {
               : "dark:text-slate-400 text-gray-700"
           }`}
           onClick={() => {
-            console.log(tab);
             onTabChange(tab);
           }}
         >

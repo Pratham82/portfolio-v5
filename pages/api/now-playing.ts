@@ -72,7 +72,6 @@ export default async function handler(
       songUrl,
     });
   } catch (error: any) {
-    console.error("Spotify Now Playing Error:", error.message);
     return res.status(500).json({ error: "Failed to fetch now playing" });
   }
 }
