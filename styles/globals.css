@@ -36,3 +36,48 @@
   font-family: "Satoshi", sans-serif;
   /* font-weight: 400; */
 }
+
+.prose pre,
+.prose pre code,
+.prose code,
+.hljs,
+.hljs * {
+  font-family: var(--font-jetbrains), monospace !important;
+}
+
+.prose pre {
+  @apply overflow-x-auto rounded-lg bg-[#011627] p-4 text-white;
+  font-family: theme("fontFamily.code");
+  font-size: 0.9rem;
+  line-height: 1.6;
+  border: none;
+  box-shadow: none;
+}
+
+/* Inline code (like `console.log`) */
+.prose code {
+  @apply rounded bg-[#1d2935] px-1 py-0.5 text-white;
+  font-family: theme("fontFamily.code");
+  font-size: 0.875rem;
+}
+
+/* Prevent highlight.js themes from messing it up */
+.hljs {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Remove double padding if highlight.js wraps <code> inside <pre> */
+.prose pre code {
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: block;
+}
+
+.copy-btn {
+  font-family: inherit;
+  backdrop-filter: blur(2px);
+  cursor: pointer;
+}

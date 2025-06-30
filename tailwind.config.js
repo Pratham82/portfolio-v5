@@ -9,6 +9,7 @@ module.exports = {
       fontFamily: {
         satoshi: ["Satoshi", "sans-serif"],
         geist: ["Geist", "sans-serif"],
+        code: ["var(--font-jetbrains)", "monospace"],
       },
     },
   },

@@ -8,19 +8,29 @@ import path from "path";
 const POSTS_PATH = path.join(process.cwd(), "content/blogs");
 
 export const getSlugs = (): string[] => {
-  const paths = sync(`${POSTS_PATH}/*.md`);
+  const paths = sync(`${POSTS_PATH}/*.{md,mdx}`); // Support both
 
-  return paths.map((pathData) => {
-    const parts = pathData.split("/");
+  return paths.map((filePath) => {
+    const parts = filePath.split("/");
     const fileName = parts[parts.length - 1];
-    const [slug] = fileName.split(".");
+    const slug = fileName.replace(/\.mdx?$/, ""); // Removes .md or .mdx
     return slug;
   });
 };
 
 export const getPostFromSlug = (slug: string): Post => {
-  const postPath = path.join(POSTS_PATH, `${slug}.md`);
-  const source = fs.readFileSync(postPath, "utf-8");
+  const mdxPath = path.join(POSTS_PATH, `${slug}.mdx`);
+  const mdPath = path.join(POSTS_PATH, `${slug}.md`);
+
+  let source: string;
+  if (fs.existsSync(mdxPath)) {
+    source = fs.readFileSync(mdxPath, "utf-8");
+  } else if (fs.existsSync(mdPath)) {
+    source = fs.readFileSync(mdPath, "utf-8");
+  } else {
+    throw new Error(`Post file for slug "${slug}" not found`);
+  }
+
   const { content, data } = matter(source);
 
   return {
@@ -41,15 +51,14 @@ export const getPostFromSlug = (slug: string): Post => {
 };
 
 export const getAllPosts = (): Post[] => {
-  const posts: Post[] = getSlugs()
+  return getSlugs()
     .map((slug) => getPostFromSlug(slug))
     .sort(
       (a, b) =>
         new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime(),
     );
-
-  return posts;
 };
+
 interface Post {
   content: string;
   meta: PostMeta;
