@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import { ApolloProvider } from "@apollo/client";
+import { Analytics } from "@vercel/analytics/next";
 import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
@@ -23,6 +24,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           <ApolloProvider client={apolloClient}>
             <Layout>
               <Component {...pageProps} />
+              <Analytics />
             </Layout>
           </ApolloProvider>
         </AnimatePresence>
