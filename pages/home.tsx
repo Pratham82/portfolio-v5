@@ -2,7 +2,8 @@ import { useQuery } from "@apollo/client";
 // import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import GitHubCalendar from "react-github-calendar";
 
 import ActiveMiniTabs from "../components/ActiveMiniTab";
@@ -53,7 +54,24 @@ const HomePage = (props: HomeProps) => {
   };
 
   const { tabs, handleTabChange } = useTabs();
-  // const { pageRedirects }: IHomePageResponse = pageData || {};
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.from === "blog") {
+      handleTabChange(HomePageTabs.BLOGS);
+
+      const { from, ...rest } = router.query;
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: rest,
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  }, [router.query]);
+
   const [title1, title2] = title.split(/(?<=I'm)/).map((s: string) => s.trim());
 
   if (loading) {
