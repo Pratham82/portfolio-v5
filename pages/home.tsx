@@ -81,7 +81,7 @@ const HomePage = (props: HomeProps) => {
   return (
     <PageAnimationContainer className="flex flex-col">
       <div className="mb-2 mt-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold flex items-center gap-2">
+        <h1 className="text-2xl font-bold flex items-center gap-2">
           {title1}
           <span className="flex items-center gap-1">
             <ScrambleText text={title2} className="p-0 m-0" />
@@ -90,7 +90,7 @@ const HomePage = (props: HomeProps) => {
         <ThemToggler />
       </div>
 
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-2">
         <Image
           src={avatar?.asset?.url || ""}
           alt="profile"
