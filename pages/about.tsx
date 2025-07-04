@@ -1,35 +1,26 @@
 import { useQuery } from "@apollo/client";
-import Link from "next/link";
 
 // import EducationCard from "../components/EducationCard";
 import PageAnimationContainer from "../components/PageAnimationContainer";
 import WorkExCard from "../components/WorkExCard";
 import AboutPageSkeleton from "../components/loadingPages/about.skeleton";
 import { IAllAboutPageResponse } from "../interface/about.interface";
-import { IAllContactsPageResponse } from "../interface/contacts.interface";
-import { aboutPage, contactsPage } from "../src/graphql/queries";
+import { aboutPage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 
 const About = () => {
   const { data, loading } = useQuery(aboutPage);
-  const { data: contactsData, loading: contactsLoading } =
-    useQuery(contactsPage);
+  // const { loading: contactsLoading } = useQuery(contactsPage);
   const { pageData } = useGetPageData(data);
 
-  const { pageData: contactsPageData } = useGetPageData(contactsData);
-
-  const { contactsLinks }: IAllContactsPageResponse = contactsPageData || {};
-
-  const linkedIn = contactsLinks?.find(
-    (item) => item?.socialLink === "LinkedIn",
-  );
+  // const { pageData: contactsPageData } = useGetPageData(contactsData);
 
   const {
     // education = [],
     workExperience = [],
   }: IAllAboutPageResponse = pageData;
 
-  if (loading || contactsLoading) {
+  if (loading) {
     return <AboutPageSkeleton />;
   }
 
@@ -41,13 +32,14 @@ const About = () => {
       <div className="flex gap-4 items-start">
         <div className="flex flex-col">
           {workExperience?.map((workEx) => (
-            <Link
-              href={linkedIn?.link || ""}
-              target="_blank"
-              key={workEx?.companyName}
-            >
-              <WorkExCard {...workEx} key={workEx?.companyName} />
-            </Link>
+            // <Link
+            //   href={linkedIn?.link || ""}
+            //   target="_blank"
+            //   key={workEx?.companyName}
+            // >
+            // </Link>
+
+            <WorkExCard {...workEx} key={workEx?.companyName} />
           ))}
         </div>
         {/* <Link

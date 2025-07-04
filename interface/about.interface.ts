@@ -13,6 +13,20 @@ export interface WorkExperience {
   location: string;
   startDate: string;
   endDate: string;
+  companyLogo: CompanyLogo;
+  description: string;
+}
+
+export interface CompanyLogo {
+  asset: Asset;
+  __typename: string;
+}
+
+export interface Asset {
+  _id: string;
+  label: any;
+  url: string;
+  __typename: string;
 }
 export interface Education {
   _key: string;
