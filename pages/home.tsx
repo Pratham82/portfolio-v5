@@ -80,25 +80,29 @@ const HomePage = (props: HomeProps) => {
 
   return (
     <PageAnimationContainer className="flex flex-col">
-      <h1 className="mb-2 mt-6 text-xl font-bold flex justify-between items-center">
-        <p>
-          {title1} <ScrambleText text={title2} className="p-0 m-0" />
-        </p>
+      <div className="mb-2 mt-6 flex items-center justify-between">
+        <h1 className="text-3xl font-bold flex items-center gap-2">
+          {title1}
+          <span className="flex items-center gap-1">
+            <ScrambleText text={title2} className="p-0 m-0" />
+          </span>
+        </h1>
         <ThemToggler />
-      </h1>
+      </div>
 
-      <Image
-        src={avatar?.asset?.url || ""}
-        alt="profile"
-        width={110}
-        height={110}
-        className="relative rounded-2xl grayscale mt-2"
-      />
-
-      <h2
-        dangerouslySetInnerHTML={{ __html: subtitle }}
-        className="mt-2 text-md dark:text-slate-300 text-black"
-      />
+      <div className="flex items-center gap-5">
+        <Image
+          src={avatar?.asset?.url || ""}
+          alt="profile"
+          width={90}
+          height={90}
+          className="relative rounded-2xl grayscale mt-2"
+        />
+        <h2
+          dangerouslySetInnerHTML={{ __html: subtitle }}
+          className="mt-2 text-md dark:text-slate-300 text-black"
+        />
+      </div>
 
       <div className="my-4">
         <SocialLinks align="left" />
@@ -141,11 +145,12 @@ const HomePage = (props: HomeProps) => {
         visibleData={visibleData}
       />
 
-      <div className="my-4">
+      <div className="mt-4 mb-2">
         {visibleData.isContributionsVisible ? (
           <GitHubCalendar
             username="Pratham82"
             colorScheme={theme === "dark" ? "dark" : "light"}
+            blockSize={7}
           />
         ) : null}
         {visibleData.isNowPlayingVisible ? (
