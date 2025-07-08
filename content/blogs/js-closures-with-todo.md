@@ -7,8 +7,6 @@ author: pratham82
 subTitle: How closures make delete buttons smart in JavaScript
 ---
 
-# 🧠 How JavaScript Knows Which Element to Delete in a Dynamic Todo App
-
 When building a simple Todo app using **vanilla JavaScript**, one common question that comes up is:
 
 > **“If I have multiple todos, how does each delete button know which `<li>` to remove?”**
@@ -17,7 +15,7 @@ Let’s break it down with a real example, code walkthrough, and a clear explana
 
 ---
 
-## ✅ The Goal
+### ✅ The Goal
 
 We’re building a dynamic list where each todo item is added like this:
 
@@ -29,7 +27,7 @@ Clicking the ❌ button should remove only that specific `<li>` item — even wh
 
 ---
 
-## 🛠️ HTML Setup
+### 🛠️ HTML Setup
 
 Here’s the basic HTML:
 
@@ -59,7 +57,7 @@ Here’s the basic HTML:
 
 ---
 
-## 💡 JavaScript Code
+### 💡 JavaScript Code
 
 ```js
 console.log({
@@ -106,7 +104,7 @@ todoBtn.addEventListener("click", () => {
 
 ---
 
-## 🤯 How Does Each Delete Button Know Which `<li>` to Delete?
+### 🤯 How Does Each Delete Button Know Which `<li>` to Delete?
 
 Even though all delete buttons are created inside the same event listener, **each delete button gets a unique reference to the `<li>` it was created with**.
 
@@ -126,7 +124,7 @@ Each ❌ button **closes over** the `todoItem` that was in memory at the time of
 
 ---
 
-## 🔁 Multiple Items? Still Works!
+### 🔁 Multiple Items? Still Works!
 
 Let's say you add these todos:
 
@@ -138,7 +136,7 @@ Each of their delete buttons was created **inside a separate click event**, each
 
 ---
 
-## 🧠 What You’ve Learned
+### 🧠 What You’ve Learned
 
 ✅ How to create a dynamic list using vanilla JS  
 ✅ How to attach delete buttons to each item  
@@ -158,7 +156,7 @@ Let me know in the comments or reach out on [Twitter](https://twitter.com/Pratha
 
 ---
 
-## 🔗 Final Thoughts
+### 🔗 Final Thoughts
 
 This is a perfect example of how **understanding JavaScript fundamentals like closures** can help you write cleaner and more powerful code — even without a framework.
 

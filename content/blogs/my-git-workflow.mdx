@@ -1,0 +1,47 @@
+---
+title: ⚡ My GitHub Workflow (Terminal-Only & Super Efficient)
+cover: ./image.jpg
+date: 2025-07-06
+description: All the usual blog post.
+tags: ["post"]
+author: pratham82
+subTitle: basics of fetch with js
+---
+
+Here's how I manage my Git workflow—fast, clean, and without switching between tabs:
+
+## 🔹 Create Branch
+
+Using oh-my-zsh shortcut:
+
+```bash
+gcb feat/add-company-logo
+```
+
+(No more typing long `git checkout -b` commands.)
+
+## 🔹 Make Commits
+
+Using **git-cz** (Commitizen) for consistent, structured commits — picking the right type (`feat`, `fix`, etc.) and writing clear messages.
+
+```bash
+git cz
+```
+
+## 🔹 Create Pull Request
+
+This is where it gets powerful:
+
+```bash
+gh pr create --base main
+```
+
+With GitHub CLI, I can open a PR from the terminal, get the link instantly, and skip the GitHub UI altogether.
+
+## ✅ Why I love this:
+
+- No context switching
+- Clean commit history
+- PR in seconds, ready to share or merge
+
+**P.S.** I use `gh` CLI only for PRs — everything else is regular git + terminal + zsh.

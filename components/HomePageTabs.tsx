@@ -1,4 +1,4 @@
-import { HomePageTabs, TabOptions, TabType } from "../interface/home.interface";
+import { TabOptions, TabType } from "../interface/home.interface";
 
 type HomePageTabsProps = {
   tabOptions: TabOptions;
@@ -6,11 +6,11 @@ type HomePageTabsProps = {
 };
 const HomeTabs = (props: HomePageTabsProps) => {
   const { tabOptions, onTabChange = () => {} } = props;
-  const tabKeyMap = {
-    [HomePageTabs.EXPERIENCE]: "[ e ]",
-    [HomePageTabs.PROJECTS]: "[ p ]",
-    [HomePageTabs.BLOGS]: "[ b ]",
-  };
+  // const tabKeyMap = {
+  //   [HomePageTabs.EXPERIENCE]: "[ e ]",
+  //   [HomePageTabs.PROJECTS]: "[ p ]",
+  //   [HomePageTabs.BLOGS]: "[ b ]",
+  // };
 
   return (
     <div className="flex gap-4">
@@ -28,7 +28,8 @@ const HomeTabs = (props: HomePageTabsProps) => {
           }}
         >
           {/* {tab === tabOptions.selected ? <sBlogspan>* </sBlogspan> : null} */}
-          {tabKeyMap[tab]} {tab}
+          {/* {tabKeyMap[tab]} */}
+          {tab}
         </button>
       ))}
     </div>
