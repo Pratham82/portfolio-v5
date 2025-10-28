@@ -9,6 +9,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { FileArrowDown } from "phosphor-react";
 import React from "react";
+import { RiBlueskyLine } from "react-icons/ri";
 
 import { SocialLinkType, socialLinks } from "../src/data/headerData";
 import useGetInfo from "../src/hooks/useGetInfo";
@@ -25,6 +26,9 @@ const iconSwitch = (id: SocialLinkType): JSX.Element => {
       return <MailboxIcon size={24} />;
     case SocialLinkType.INSTA:
       return <InstagramLogoIcon size={24} />;
+    case SocialLinkType.BLUESKY: {
+      return <RiBlueskyLine size={24} />;
+    }
     case SocialLinkType.RESUME:
       return (
         <div className="flex gap-2 items-center">

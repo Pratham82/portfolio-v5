@@ -27,6 +27,7 @@ export enum SocialLinkType {
   TWITTER = "TWITTER",
   INSTA = "INSTA",
   MAIL = "MAIL",
+  BLUESKY = "BLUESKY",
   RESUME = "RESUME",
 }
 
@@ -51,6 +52,10 @@ export const socialLinks = [
   {
     id: SocialLinkType.INSTA,
     link: "https://www.instagram.com/pratham82.sh/",
+  },
+  {
+    id: SocialLinkType.BLUESKY,
+    link: "https://bsky.app/profile/pratham82.bsky.social",
   },
   {
     id: SocialLinkType.MAIL,
