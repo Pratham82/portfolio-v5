@@ -7,10 +7,13 @@
   "printWidth": 80,
   "endOfLine": "auto",
   "importOrder": [
+    "^[./].*\\.(css|scss|less)$",
+    "^(fs|path|querystring|url|http|https|os|util|crypto|stream|buffer|events|child_process|cluster|dns|net|tls|dgram|readline|repl|string_decoder|tty|vm|zlib)$",
+    "^next/",
     "<THIRD_PARTY_MODULES>",
-    "^@internal/(.*)$",
-    "^[./].*(?<!\\.(c|le|sc)ss)$",
-    "^[.]/[-a-zA-Z0-9_]+[.](module)[.](css|scss|less)$"
+    "^@/(.*)$",
+    "^\\.\\./",
+    "^\\./"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
