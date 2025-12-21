@@ -19,13 +19,13 @@ import {
 } from "@/components";
 
 import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
+import { PostMeta, getAllPosts } from "../lib/blogPosts";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
 import useTabs from "../src/hooks/useTabs";
 
 import About from "./about";
-import { PostMeta, getAllPosts } from "./api/blogPosts";
 import Blogs from "./blogs";
 import Projects from "./projects";
 

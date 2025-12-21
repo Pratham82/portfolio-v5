@@ -6,8 +6,8 @@ import BlogsPage from "@/components/loadingPages/blogspage.skeleton";
 
 import BlogCard from "../../components/BlogCard";
 import PageAnimationContainer from "../../components/PageAnimationContainer";
+import { PostMeta, getAllPosts } from "../../lib/blogPosts";
 import { allBlogsPage } from "../../src/graphql/queries";
-import { PostMeta, getAllPosts } from "../api/blogPosts";
 
 interface IBlogsProps {
   posts: {

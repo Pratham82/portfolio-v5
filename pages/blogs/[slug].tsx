@@ -16,11 +16,11 @@ import { BlogSinglePageSkeleton, PageAnimationContainer } from "@/components";
 
 import { HomePageTabs } from "../../interface/home.interface";
 import { AllAuthorResponse } from "../../interface/post.interface";
+import { PostMeta, getPostFromSlug, getSlugs } from "../../lib/blogPosts";
 import { fetchAuthorByUserName } from "../../src/graphql/queries";
 import useTabs from "../../src/hooks/useTabs";
 import getFormattedDate from "../../src/utils/getFormattedDate";
 import getReadTime from "../../src/utils/getReadTime";
-import { PostMeta, getPostFromSlug, getSlugs } from "../api/blogPosts";
 
 interface IMDXPost {
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
