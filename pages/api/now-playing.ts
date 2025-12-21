@@ -71,7 +71,7 @@ export default async function handler(
       albumImageUrl,
       songUrl,
     });
-  } catch (error: any) {
+  } catch {
     return res.status(500).json({ error: "Failed to fetch now playing" });
   }
 }

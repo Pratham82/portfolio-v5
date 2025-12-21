@@ -54,7 +54,6 @@ const AnimatedBackground = () => {
     ) => {
       const counter = counterArg || { value: 0 };
       const length = random() * len;
-      // eslint-disable-next-line no-plusplus
       counter.value++;
 
       const [nx, ny] = polarToCartesian(x, y, length, rad);
@@ -126,7 +125,6 @@ const AnimatedBackground = () => {
 
     animate();
 
-    // eslint-disable-next-line consistent-return
     return () => {
       window.removeEventListener("resize", resize);
       stopped = true;

@@ -2,10 +2,11 @@ import { TabOptions, TabType } from "../interface/home.interface";
 
 type HomePageTabsProps = {
   tabOptions: TabOptions;
-  onTabChange?: (tab: TabType) => void;
+  onTabChange?: (_tab: TabType) => void;
 };
 const HomeTabs = (props: HomePageTabsProps) => {
   const { tabOptions, onTabChange = () => {} } = props;
+  console.log("🚀 ~ HomeTabs ~ tabOptions:", tabOptions);
   // const tabKeyMap = {
   //   [HomePageTabs.EXPERIENCE]: "[ e ]",
   //   [HomePageTabs.PROJECTS]: "[ p ]",

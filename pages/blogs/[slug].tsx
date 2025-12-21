@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 
 import { useQuery } from "@apollo/client";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import "highlight.js/styles/night-owl.css";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
