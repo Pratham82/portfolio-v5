@@ -124,7 +124,6 @@ const HomePage = (props: HomeProps) => {
       </div> */}
 
       {/* <h2 className="mb-2 mt-4 text-xl">{contributions?.contributionsTitle}</h2> */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       {/* <Link href={socialLinks[0].link} target="_blank">
         <img
           src={contributions?.contributionsLink || ""}
