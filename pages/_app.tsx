@@ -5,6 +5,7 @@ import { JetBrains_Mono } from "next/font/google";
 import Head from "next/head";
 
 import { ApolloProvider } from "@apollo/client";
+import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
 import { Analytics } from "@vercel/analytics/next";
 import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
@@ -12,6 +13,12 @@ import { ThemeProvider } from "next-themes";
 import { AnimatedBackground, Layout } from "@/components";
 
 import apolloClient from "../lib/apollo";
+
+// Load Apollo Client error messages in development
+if (process.env.NODE_ENV !== "production") {
+  loadDevMessages();
+  loadErrorMessages();
+}
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
