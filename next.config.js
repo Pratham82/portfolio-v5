@@ -1,12 +1,19 @@
+const path = require("path");
+
 /** @type {import('next').NextConfig} */
 module.exports = {
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(graphql|gql)$/,
-      exclude: /node_modules/,
-      loader: "graphql-tag/loader",
-    });
-    return config;
+  turbopack: {
+    root: path.join(__dirname),
+    rules: {
+      "*.graphql": {
+        loaders: ["graphql-tag/loader"],
+        as: "*.js",
+      },
+      "*.gql": {
+        loaders: ["graphql-tag/loader"],
+        as: "*.js",
+      },
+    },
   },
   images: {
     remotePatterns: [
