@@ -1,3 +1,7 @@
+import Head from "next/head";
+import Image from "next/image";
+import { useRouter } from "next/router";
+
 import { useQuery } from "@apollo/client";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -5,15 +9,12 @@ import "highlight.js/styles/night-owl.css";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
-import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
 
-import PageAnimationContainer from "../../components/PageAnimationContainer";
-import BlogSinglePageSkeleton from "../../components/loadingPages/blog.skeleton";
+import { BlogSinglePageSkeleton, PageAnimationContainer } from "@/components";
+
 import { HomePageTabs } from "../../interface/home.interface";
 import { AllAuthorResponse } from "../../interface/post.interface";
 import { fetchAuthorByUserName } from "../../src/graphql/queries";

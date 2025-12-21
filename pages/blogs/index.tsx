@@ -1,12 +1,12 @@
-import { useQuery } from "@apollo/client";
 import Link from "next/link";
+
+import { useQuery } from "@apollo/client";
+
+import BlogsPage from "@/components/loadingPages/blogspage.skeleton";
 
 import BlogCard from "../../components/BlogCard";
 import PageAnimationContainer from "../../components/PageAnimationContainer";
-import BlogsPage from "../../components/loadingPages/blogspage.skeleton";
-// import { IBlogsPageResponse } from "../../interface/blogs.interface";
 import { allBlogsPage } from "../../src/graphql/queries";
-// import useGetPageData from "../../src/hooks/useGetPageData";
 import { PostMeta, getAllPosts } from "../api/blogPosts";
 
 interface IBlogsProps {

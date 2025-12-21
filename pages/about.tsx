@@ -1,9 +1,9 @@
 import { useQuery } from "@apollo/client";
 
-// import EducationCard from "../components/EducationCard";
+import { AboutPageSkeleton } from "@/components";
+
 import PageAnimationContainer from "../components/PageAnimationContainer";
 import WorkExCard from "../components/WorkExCard";
-import AboutPageSkeleton from "../components/loadingPages/about.skeleton";
 import { IAllAboutPageResponse } from "../interface/about.interface";
 import { aboutPage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";

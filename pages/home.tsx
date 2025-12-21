@@ -1,24 +1,29 @@
+import Image from "next/image";
+import { useRouter } from "next/router";
+
 import { useQuery } from "@apollo/client";
 // import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
-import Image from "next/image";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import GitHubCalendar from "react-github-calendar";
 
-import ActiveMiniTabs from "../components/ActiveMiniTab";
-import HomeTabs from "../components/HomePageTabs";
-import PageAnimationContainer from "../components/PageAnimationContainer";
-import ScrambleText from "../components/ScrambleText";
-import SocialLinks from "../components/SocialLinks";
-import SpotifyNowPlayingMonoChrome from "../components/SpotifyNowPlayingMonoChrome";
-import ThemToggler from "../components/ThemeSwitcher";
-import HomepageSkeleton from "../components/loadingPages/home.skeleton";
+import {
+  ActiveMiniTabs,
+  HomeTabs,
+  HomepageSkeleton,
+  PageAnimationContainer,
+  ScrambleText,
+  SocialLinks,
+  SpotifyNowPlayingMonoChrome,
+  ThemeSwitcher as ThemToggler,
+} from "@/components";
+
 import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
 import useTabs from "../src/hooks/useTabs";
+
 import About from "./about";
 import { PostMeta, getAllPosts } from "./api/blogPosts";
 import Blogs from "./blogs";

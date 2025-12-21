@@ -3,9 +3,12 @@ import classNames from "classnames";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-import PageAnimationContainer from "../components/PageAnimationContainer";
-import ProjectCard from "../components/ProjectCard";
-import ProjectsSkeleton from "../components/loadingPages/projects.skeleton";
+import {
+  PageAnimationContainer,
+  ProjectCard,
+  ProjectsPageSkeleton as ProjectsSkeleton,
+} from "@/components";
+
 import { IProjectsPage } from "../interface/projects.interface";
 import { allProjects } from "../src/graphql/queries";
 import getProjectsByCategories from "../src/utils/getProjectsByCategories";
