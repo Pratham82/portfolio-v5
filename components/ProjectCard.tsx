@@ -1,6 +1,7 @@
+import Link from "next/link";
+
 import { GithubLogoIcon, LinkSimpleIcon } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 import { IProject } from "../interface/projects.interface";
 

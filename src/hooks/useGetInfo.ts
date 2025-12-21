@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 
 import { IAllAboutPageResponse } from "../../interface/about.interface";
 import { aboutPage, contactsPage } from "../graphql/queries";
+
 import useGetPageData from "./useGetPageData";
 
 const useGetInfo = () => {

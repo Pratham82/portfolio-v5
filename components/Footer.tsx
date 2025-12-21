@@ -1,5 +1,6 @@
-import { HeartIcon } from "@phosphor-icons/react";
 import Link from "next/link";
+
+import { HeartIcon } from "@phosphor-icons/react";
 
 // import SocialLinks from "./SocialLinks";
 

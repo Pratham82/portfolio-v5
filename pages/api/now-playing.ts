@@ -1,7 +1,7 @@
+import querystring from "querystring";
+
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
-// eslint-disable-next-line import/order
-import querystring from "querystring";
 
 const SPOTIFY_CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import {
   GithubLogoIcon,
   InstagramLogoIcon,
@@ -6,7 +8,6 @@ import {
   XLogoIcon,
 } from "@phosphor-icons/react";
 import classNames from "classnames";
-import Link from "next/link";
 import { FileArrowDown } from "phosphor-react";
 import React from "react";
 import { RiBlueskyLine } from "react-icons/ri";

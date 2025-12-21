@@ -1,5 +1,6 @@
-import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+
+import { AnimatePresence, motion } from "framer-motion";
 import { CaretRight } from "phosphor-react";
 import { useState } from "react";
 

@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import fs from "fs";
+import path from "path";
+
 import { sync } from "glob";
 import matter from "gray-matter";
-// eslint-disable-next-line import/order
-import path from "path";
 
 const POSTS_PATH = path.join(process.cwd(), "content/blogs");
 
