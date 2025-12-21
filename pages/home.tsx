@@ -104,7 +104,6 @@ const HomePage = (props: HomeProps) => {
           className="relative rounded-2xl grayscale mt-2"
         />
         <h2
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: subtitle }}
           className="mt-2 text-md dark:text-slate-300 text-black"
         />
