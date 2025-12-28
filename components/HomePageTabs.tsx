@@ -6,7 +6,7 @@ type HomePageTabsProps = {
 };
 const HomeTabs = (props: HomePageTabsProps) => {
   const { tabOptions, onTabChange = () => {} } = props;
-  console.log("🚀 ~ HomeTabs ~ tabOptions:", tabOptions);
+  // console.log("🚀 ~ HomeTabs ~ tabOptions:", tabOptions);
   // const tabKeyMap = {
   //   [HomePageTabs.EXPERIENCE]: "[ e ]",
   //   [HomePageTabs.PROJECTS]: "[ p ]",

@@ -37,6 +37,7 @@ export enum HomePageTabs {
   EXPERIENCE = "Experience",
   PROJECTS = "Projects",
   BLOGS = "Blogs",
+  LINKS = "Links",
 }
 export interface IHomePage {
   rootObject?: IHomePage[] | null;

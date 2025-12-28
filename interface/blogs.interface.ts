@@ -10,6 +10,7 @@ export interface Blog {
   date?: string;
   slug: string;
   readTime: string;
+  tags: string[];
 }
 export interface Author {
   __typename: string;

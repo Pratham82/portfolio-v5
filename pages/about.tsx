@@ -5,11 +5,11 @@ import { AboutPageSkeleton } from "@/components";
 import PageAnimationContainer from "../components/PageAnimationContainer";
 import WorkExCard from "../components/WorkExCard";
 import { IAllAboutPageResponse } from "../interface/about.interface";
-import { aboutPage } from "../src/graphql/queries";
+import { allExperience } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 
 const About = () => {
-  const { data, loading } = useQuery(aboutPage);
+  const { data, loading } = useQuery(allExperience);
   // const { loading: contactsLoading } = useQuery(contactsPage);
   const { pageData } = useGetPageData(data);
 

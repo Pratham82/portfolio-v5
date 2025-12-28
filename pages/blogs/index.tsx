@@ -29,9 +29,13 @@ const Blogs = (props: IBlogsProps) => {
   return (
     <PageAnimationContainer className="sm:w-[575px]">
       {/* <h1 className="text-2xl font-bold">{pageName}</h1> */}
-      <div className="flex flex-col py-3 gap-2">
+      <div className="flex flex-col py-3 gap-4">
         {posts?.map(({ meta: blogData }) => (
-          <Link href={`/blogs/${blogData.slug}`} key={blogData.title}>
+          <Link
+            href={`/blogs/${blogData.slug}`}
+            key={blogData.slug}
+            className="block"
+          >
             <BlogCard {...blogData} />
           </Link>
         ))}

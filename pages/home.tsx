@@ -16,17 +16,19 @@ import {
   SocialLinks,
   SpotifyNowPlayingMonoChrome,
   ThemeSwitcher as ThemToggler,
+  Links,
 } from "@/components";
 
 import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
 import { PostMeta, getAllPosts } from "../lib/blogPosts";
+import { getAllLinks } from "../lib/links";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
 import useTabs from "../src/hooks/useTabs";
 
-import About from "./about";
 import Blogs from "./blogs";
+import Experience from "./experience";
 import Projects from "./projects";
 
 type HomeProps = {
@@ -34,9 +36,10 @@ type HomeProps = {
     content: string;
     meta: PostMeta;
   }[];
+  links: ReturnType<typeof getAllLinks>;
 };
 const HomePage = (props: HomeProps) => {
-  const { posts } = props;
+  const { posts, links } = props;
   const { data, loading } = useQuery(homePage);
   const { title, subtitle = "", pageData } = useGetPageData(data);
   const [visibleData, setVisibleData] = useState({
@@ -62,20 +65,30 @@ const HomePage = (props: HomeProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.from === "blog") {
-      handleTabChange(HomePageTabs.BLOGS);
+    const { from, ...restQuery } = router.query;
 
-      const { from, ...rest } = router.query;
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: rest,
-        },
-        undefined,
-        { shallow: true },
-      );
+    if (from && typeof from === "string") {
+      const tabMap: Record<string, HomePageTabs> = {
+        blog: HomePageTabs.BLOGS,
+        links: HomePageTabs.LINKS,
+      };
+
+      const targetTab = tabMap[from];
+      if (targetTab) {
+        handleTabChange(targetTab);
+
+        // Clean up the query parameter
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: restQuery,
+          },
+          undefined,
+          { shallow: true },
+        );
+      }
     }
-  }, [router.query]);
+  }, []);
 
   const [title1, title2] = title.split(/(?<=I'm)/).map((s: string) => s.trim());
 
@@ -164,9 +177,10 @@ const HomePage = (props: HomeProps) => {
 
       <HomeTabs tabOptions={tabs} onTabChange={handleTabChange} />
       <section className="mt-4">
-        {tabs.selected === HomePageTabs.EXPERIENCE && <About />}
+        {tabs.selected === HomePageTabs.EXPERIENCE && <Experience />}
         {tabs.selected === HomePageTabs.PROJECTS && <Projects />}
         {tabs.selected === HomePageTabs.BLOGS && <Blogs posts={posts} />}
+        {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
       </section>
     </PageAnimationContainer>
   );
@@ -176,10 +190,12 @@ export default HomePage;
 
 export async function getStaticProps() {
   const posts = getAllPosts();
+  const links = getAllLinks();
 
   return {
     props: {
       posts,
+      links,
     },
   };
 }

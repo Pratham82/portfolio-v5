@@ -44,6 +44,8 @@ const Post = ({ post }: { post: IMDXPost }) => {
   const date = post?.meta?.date;
   const newPdDate = date ? getFormattedDate(date, "MMM dd, yyyy") : "";
   const readTime = getReadTime(post.content);
+  const tags = post.meta?.tags;
+  console.log("🚀 ~ Post ~ subTitle:", tags);
 
   const mdxRef = useRef<HTMLDivElement>(null);
 
@@ -117,7 +119,25 @@ const Post = ({ post }: { post: IMDXPost }) => {
       </div>
 
       <div ref={mdxRef} className="mt-8 prose dark:prose-invert max-w-none">
-        <MDXRemote {...post.source} />
+        <MDXRemote
+          {...post.source}
+          components={{
+            img: (props: any) => (
+              <Image
+                src={
+                  props.src?.startsWith("/")
+                    ? props.src
+                    : `/content/${props.src}`
+                }
+                alt={props.alt || ""}
+                width={800}
+                height={600}
+                className="rounded-lg my-4"
+                style={{ width: "auto", height: "auto" }}
+              />
+            ),
+          }}
+        />
       </div>
     </PageAnimationContainer>
   );
