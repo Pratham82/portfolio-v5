@@ -2,7 +2,7 @@
 title: Functional Programming with JS
 date: 2021-06-28
 description: All the usual blog post.
-tags: ["post"]
+tags: ["javascript"]
 author: pratham82
 subTitle: working of map reduce and filter in JS
 ---

@@ -3,7 +3,7 @@ title: Learn Python Basics
 cover: ./image.jpg
 date: 2020-07-18
 description: All the usual blog post.
-tags: ["post"]
+tags: ["python"]
 author: pratham82
 subTitle: beginners guide to python
 ---
