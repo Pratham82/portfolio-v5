@@ -1,0 +1,37 @@
+{
+  allWorkExperiencePage {
+    pageName
+    title
+    subtitle
+    workExperience {
+      _key
+      position
+      companyName
+      location
+      startDate
+      endDate
+      description
+      companyLogo {
+        asset {
+          _id
+          label
+          url
+        }
+      }
+    }
+    education {
+      _key
+      degree
+      institution {
+        institution
+        startYear
+        endYear
+      }
+    }
+    resume {
+      _key
+      resumeText
+      resumeLink
+    }
+  }
+}

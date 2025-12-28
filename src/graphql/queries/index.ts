@@ -1,6 +1,7 @@
 import aboutPage from "./aboutPage.graphql";
 import allBlogsPage from "./allBlogsPage.graphql";
 import allCategories from "./allCategories.graphql";
+import allExperience from "./allExperience.graphql";
 import allProjects from "./allProject.graphql";
 import contactsPage from "./contactsPage.graphql";
 import fetchAuthorByUserName from "./fetchAuthorByUserName.graphql";
@@ -18,4 +19,5 @@ export {
   fetchPostBySlug,
   allBlogsPage,
   fetchAuthorByUserName,
+  allExperience,
 };
