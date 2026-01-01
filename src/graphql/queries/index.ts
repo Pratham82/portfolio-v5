@@ -1,5 +1,5 @@
 import aboutPage from "./aboutPage.graphql";
-import allBlogs2 from "./allBlogs2.graphql";
+// import allBlogs2 from "./allBlogs2.graphql";
 import allBlogsPage from "./allBlogsPage.graphql";
 import allCategories from "./allCategories.graphql";
 import allExperience from "./allExperience.graphql";
@@ -21,5 +21,5 @@ export {
   allBlogsPage,
   fetchAuthorByUserName,
   allExperience,
-  allBlogs2,
+  // allBlogs2,
 };
