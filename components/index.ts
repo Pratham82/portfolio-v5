@@ -4,6 +4,7 @@ export { default as PageAnimationContainer } from "./PageAnimationContainer";
 export { default as ScrambleText } from "./ScrambleText";
 export { default as SocialLinks } from "./SocialLinks";
 export { default as Links } from "./Links";
+export { default as AboutMe } from "./AboutMe";
 export { default as SpotifyNowPlayingCard } from "./SpotifyNowPlayingCard";
 export { default as SpotifyNowPlayingMonoChrome } from "./SpotifyNowPlayingMonoChrome";
 export { default as ThemeSwitcher } from "./ThemeSwitcher";
