@@ -17,6 +17,7 @@ import {
   SpotifyNowPlayingMonoChrome,
   ThemeSwitcher as ThemToggler,
   Links,
+  AboutMe,
 } from "@/components";
 
 import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
@@ -181,6 +182,7 @@ const HomePage = (props: HomeProps) => {
         {tabs.selected === HomePageTabs.PROJECTS && <Projects />}
         {tabs.selected === HomePageTabs.BLOGS && <Blogs posts={posts} />}
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
+        {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
       </section>
     </PageAnimationContainer>
   );
