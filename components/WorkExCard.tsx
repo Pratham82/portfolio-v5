@@ -66,10 +66,12 @@ const WorkExCard = (props: WorkExperience) => {
                 )}
               </AnimatePresence>
             </div>
-
             <p className="text-sm">
-              <span>{companyName}</span>
-              <span className="ml-2">{location}</span>
+              <span>{companyName}</span>{" "}
+              <span className="text-gray-500">•</span>
+              <span className="ml-2 text-xs font-light dark:text-gray-400 text-gray-500">
+                {location}
+              </span>
             </p>
             <time
               className="block text-sm font-light dark:text-slate-400 text-gray-700"
