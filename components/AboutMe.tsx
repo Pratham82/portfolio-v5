@@ -39,7 +39,8 @@ const AboutMe = () => {
     },
     {
       id: "instagram",
-      title: "@pratham82.sh",
+      title: "Insta",
+      subtitle: "@pratham82.sh",
       url: "https://www.instagram.com/pratham82.sh/",
       icon: <InstagramLogoIcon size={32} weight="fill" />,
       button: {
@@ -47,31 +48,7 @@ const AboutMe = () => {
         color: "bg-blue-500",
       },
     },
-    {
-      id: "github",
-      title: "Prathamesh Mali",
-      url: "https://github.com/Pratham82",
-      icon: <GithubLogoIcon size={32} weight="fill" />,
-      button: {
-        text: "Follow",
-        color: "bg-gray-200 dark:bg-gray-700",
-      },
-      customContent: (
-        <div className="mt-4">
-          <div className="overflow-x-auto">
-            <GitHubCalendar
-              username="Pratham82"
-              colorScheme={theme === "dark" ? "dark" : "light"}
-              blockSize={6}
-              fontSize={10}
-            />
-          </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            1115 contributions in the last year
-          </p>
-        </div>
-      ),
-    },
+
     {
       id: "twitter",
       title: "Twitter",
@@ -108,11 +85,35 @@ const AboutMe = () => {
       url: "https://letterboxd.com/pratham82/",
       icon: <SiLetterboxd size={32} />,
     },
+    {
+      id: "github",
+      title: "Prathamesh Mali",
+      url: "https://github.com/Pratham82",
+      icon: <GithubLogoIcon size={32} weight="fill" />,
+      button: {
+        text: "Follow",
+        color: "bg-gray-200 dark:bg-gray-700",
+      },
+      customContent: (
+        <div className="mt-4">
+          <div className="overflow-x-auto">
+            <GitHubCalendar
+              username="Pratham82"
+              colorScheme={theme === "dark" ? "dark" : "light"}
+              blockSize={6}
+              fontSize={10}
+            />
+          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            1115 contributions in the last year
+          </p>
+        </div>
+      ),
+    },
   ];
 
   return (
     <PageAnimationContainer className="sm:w-[575px]">
-      <h1 className="text-2xl font-bold mb-4">About Me</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {socialCards.map((card) => (
           <Link

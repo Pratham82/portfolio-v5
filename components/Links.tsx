@@ -16,7 +16,7 @@ const Links = (props: ILinksProps) => {
 
   return (
     <PageAnimationContainer className="sm:w-[575px]">
-      <h1 className="text-2xl font-bold mb-4">Links</h1>
+      {/*<h1 className="text-2xl font-bold mb-4">Links</h1>*/}
       <div className="flex flex-col py-3 gap-4">
         {links?.map(({ meta: linkData }) => (
           <Link
