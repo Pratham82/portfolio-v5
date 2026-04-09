@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LinkMeta } from "../lib/links";
 
 import PageAnimationContainer from "./PageAnimationContainer";
+import PageTitle from "./PageTitle";
 
 interface ILinksProps {
   links: {
@@ -16,7 +17,7 @@ const Links = (props: ILinksProps) => {
 
   return (
     <PageAnimationContainer className="sm:w-[575px]">
-      {/*<h1 className="text-2xl font-bold mb-4">Links</h1>*/}
+      <PageTitle className="mb-2">Links</PageTitle>
       <div className="flex flex-col py-3 gap-4">
         {links?.map(({ meta: linkData }) => (
           <Link

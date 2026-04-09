@@ -32,13 +32,15 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
       >
         {visibleData.isContributionsVisible ? (
           <>
-            Hide Contributions
-            <Minus size={12} />
+            <span className="hidden sm:inline">Hide </span>
+            <span className="sm:text-sm text-xs">Contributions</span>
+            <Minus size={12} className="ml-1" />
           </>
         ) : (
           <>
-            Show Contributions
-            <Plus size={12} />
+            <span className="hidden sm:inline">Show </span>
+            <span className="sm:text-sm text-xs">Contributions</span>
+            <Plus size={12} className="ml-1" />
           </>
         )}
       </button>
@@ -57,13 +59,15 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
       >
         {visibleData.isNowPlayingVisible ? (
           <>
-            Hide Now Playing
-            <Minus size={12} />
+            <span className="hidden sm:inline">Hide </span>
+            <span className="sm:text-sm text-xs">Now Playing</span>
+            <Minus size={12} className="ml-1" />
           </>
         ) : (
           <>
-            Show Now Playing
-            <Plus size={12} />
+            <span className="hidden sm:inline">Show </span>
+            <span className="sm:text-sm text-xs">Now Playing</span>
+            <Plus size={12} className="ml-1" />
           </>
         )}
       </button>

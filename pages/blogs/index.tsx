@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { useQuery } from "@apollo/client";
 
+import { PageTitle } from "@/components";
 import BlogsPage from "@/components/loadingPages/blogspage.skeleton";
 
 import BlogCard from "../../components/BlogCard";
@@ -19,7 +20,6 @@ interface IBlogsProps {
 const Blogs = (props: IBlogsProps) => {
   const { posts } = props;
   const { loading } = useQuery(allBlogsPage);
-  // const { pageData } = useGetPageData(data);
   // const { pageName = "" }: IBlogsPageResponse = pageData || {};
 
   if (loading) {
@@ -29,6 +29,8 @@ const Blogs = (props: IBlogsProps) => {
   return (
     <PageAnimationContainer className="sm:w-[575px]">
       {/* <h1 className="text-2xl font-bold">{pageName}</h1> */}
+
+      <PageTitle>Blogs</PageTitle>
       <div className="flex flex-col py-3 gap-4">
         {posts?.map(({ meta: blogData }) => (
           <Link
