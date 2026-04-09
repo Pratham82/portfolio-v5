@@ -1,6 +1,7 @@
 export { default as AnimatedBackground } from "./AnimatedBg";
 export { default as Layout } from "./Layout";
 export { default as PageAnimationContainer } from "./PageAnimationContainer";
+export { default as PageTitle } from "./PageTitle";
 export { default as ScrambleText } from "./ScrambleText";
 export { default as SocialLinks } from "./SocialLinks";
 export { default as Links } from "./Links";
@@ -9,8 +10,8 @@ export { default as SpotifyNowPlayingCard } from "./SpotifyNowPlayingCard";
 export { default as SpotifyNowPlayingMonoChrome } from "./SpotifyNowPlayingMonoChrome";
 export { default as ThemeSwitcher } from "./ThemeSwitcher";
 export { default as HomeTabs } from "./HomePageTabs";
+export { default as FloatingNav } from "./FloatingNav";
 export { default as MobileMenu } from "./MobileMenu";
-export { default as MobileMenuButton } from "./MobileMenuButton";
 export { default as ActiveMiniTabs } from "./ActiveMiniTab";
 export { default as WorkExCard } from "./WorkExCard";
 export { default as EducationCard } from "./EducationCard";

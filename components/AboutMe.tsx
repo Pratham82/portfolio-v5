@@ -11,6 +11,7 @@ import GitHubCalendar from "react-github-calendar";
 import { SiLetterboxd, SiSpotify } from "react-icons/si";
 
 import PageAnimationContainer from "./PageAnimationContainer";
+import PageTitle from "./PageTitle";
 
 interface SocialCard {
   id: string;
@@ -114,6 +115,7 @@ const AboutMe = () => {
 
   return (
     <PageAnimationContainer className="sm:w-[575px]">
+      <PageTitle className="mb-4">About Me</PageTitle>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {socialCards.map((card) => (
           <Link
