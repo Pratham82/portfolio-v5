@@ -3,12 +3,13 @@ import { TabOptions, TabType } from "../interface/home.interface";
 type HomePageTabsProps = {
   tabOptions: TabOptions;
   onTabChange?: (_tab: TabType) => void;
+  className?: string;
 };
 const HomeTabs = (props: HomePageTabsProps) => {
-  const { tabOptions, onTabChange = () => {} } = props;
+  const { tabOptions, onTabChange = () => {}, className = "" } = props;
 
   return (
-    <div className="flex gap-4">
+    <div className={`flex gap-4 ${className}`}>
       {tabOptions.options.map((tab) => (
         <button
           type="button"
