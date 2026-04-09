@@ -5,9 +5,11 @@ import { useState } from "react";
 
 import {
   PageAnimationContainer,
+  PageTitle,
   ProjectCard,
   ProjectsPageSkeleton as ProjectsSkeleton,
 } from "@/components";
+import useGetPageData from "@/src/hooks/useGetPageData";
 
 import { IProjectsPage } from "../interface/projects.interface";
 import { allProjects } from "../src/graphql/queries";
@@ -19,6 +21,10 @@ const Projects = () => {
   const { allProject }: IProjectsPage = data || {};
 
   const allProjectsData = allProject?.map(({ project }) => project);
+
+  const { title } = useGetPageData(data);
+
+  console.log({ title, data });
 
   const filteredProjects = getProjectsByCategories(allProjectsData);
   const filteredProjectCategories = Object.keys(filteredProjects);
@@ -37,6 +43,7 @@ const Projects = () => {
 
   return (
     <PageAnimationContainer>
+      <PageTitle>Projects</PageTitle>
       <div className="py-3">
         {updateCategoriesOrder.map((val) => (
           <button

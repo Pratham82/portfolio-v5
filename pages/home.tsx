@@ -18,8 +18,8 @@ import {
   ThemeSwitcher as ThemToggler,
   Links,
   AboutMe,
+  FloatingNav,
   MobileMenu,
-  MobileMenuButton,
 } from "@/components";
 
 import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
@@ -122,7 +122,7 @@ const HomePage = (props: HomeProps) => {
         />
         <h2
           dangerouslySetInnerHTML={{ __html: subtitle }}
-          className="mt-2 text-md dark:text-slate-300 text-black"
+          className="mt-2 text-sm sm:text-md dark:text-slate-300 text-black"
         />
       </div>
 
@@ -179,7 +179,11 @@ const HomePage = (props: HomeProps) => {
         ) : null}
       </div>
 
-      <HomeTabs tabOptions={tabs} onTabChange={handleTabChange} />
+      <HomeTabs
+        tabOptions={tabs}
+        onTabChange={handleTabChange}
+        className="hidden md:flex"
+      />
       <section className="mt-4">
         {tabs.selected === HomePageTabs.EXPERIENCE && <Experience />}
         {tabs.selected === HomePageTabs.PROJECTS && <Projects />}
@@ -187,9 +191,9 @@ const HomePage = (props: HomeProps) => {
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
       </section>
-      <MobileMenuButton
-        isOpen={isMobileMenuOpen}
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      <FloatingNav
+        isMenuOpen={isMobileMenuOpen}
+        onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
       <MobileMenu
         isOpen={isMobileMenuOpen}

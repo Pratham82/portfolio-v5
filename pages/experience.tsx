@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 
-import { AboutPageSkeleton } from "@/components";
+import { AboutPageSkeleton, PageTitle } from "@/components";
 
 import PageAnimationContainer from "../components/PageAnimationContainer";
 import WorkExCard from "../components/WorkExCard";
@@ -10,10 +10,7 @@ import useGetPageData from "../src/hooks/useGetPageData";
 
 const Experience = () => {
   const { data, loading } = useQuery(allExperience);
-  // const { loading: contactsLoading } = useQuery(contactsPage);
-  const { pageData } = useGetPageData(data);
-
-  // const { pageData: contactsPageData } = useGetPageData(contactsData);
+  const { pageData, title } = useGetPageData(data);
 
   const {
     // education = [],
@@ -26,8 +23,7 @@ const Experience = () => {
 
   return (
     <PageAnimationContainer className="w-100%">
-      {/* <h1 className="text-2xl font-bold">{title}</h1>
-      <h2 className="py-2">{subtitle}</h2> */}
+      <PageTitle>{title}</PageTitle>
 
       <div className="flex gap-4 items-start">
         <div className="flex flex-col">
