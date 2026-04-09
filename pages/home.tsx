@@ -18,6 +18,8 @@ import {
   ThemeSwitcher as ThemToggler,
   Links,
   AboutMe,
+  MobileMenu,
+  MobileMenuButton,
 } from "@/components";
 
 import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
@@ -47,6 +49,7 @@ const HomePage = (props: HomeProps) => {
     isContributionsVisible: false,
     isNowPlayingVisible: false,
   });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { avatar }: IHomePageResponse = pageData || {};
 
@@ -184,6 +187,16 @@ const HomePage = (props: HomeProps) => {
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
       </section>
+      <MobileMenuButton
+        isOpen={isMobileMenuOpen}
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      />
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        tabOptions={tabs}
+        onTabChange={handleTabChange}
+      />
     </PageAnimationContainer>
   );
 };

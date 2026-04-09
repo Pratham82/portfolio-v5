@@ -6,12 +6,6 @@ type HomePageTabsProps = {
 };
 const HomeTabs = (props: HomePageTabsProps) => {
   const { tabOptions, onTabChange = () => {} } = props;
-  // console.log("🚀 ~ HomeTabs ~ tabOptions:", tabOptions);
-  // const tabKeyMap = {
-  //   [HomePageTabs.EXPERIENCE]: "[ e ]",
-  //   [HomePageTabs.PROJECTS]: "[ p ]",
-  //   [HomePageTabs.BLOGS]: "[ b ]",
-  // };
 
   return (
     <div className="flex gap-4">

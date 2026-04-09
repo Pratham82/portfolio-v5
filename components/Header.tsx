@@ -23,7 +23,7 @@ const Header = () => {
         <meta property="og:title" content="Prathamesh Mali" />
         <meta
           property="og:description"
-          content="Welcome to my portfolio! I’m a frontend developer with over 4 years of experience in building web applications and apps"
+          content="Welcome to my portfolio! I'm a frontend developer with over 4 years of experience in building web applications and apps"
         />
         <meta
           property="og:image"

@@ -9,6 +9,8 @@ export { default as SpotifyNowPlayingCard } from "./SpotifyNowPlayingCard";
 export { default as SpotifyNowPlayingMonoChrome } from "./SpotifyNowPlayingMonoChrome";
 export { default as ThemeSwitcher } from "./ThemeSwitcher";
 export { default as HomeTabs } from "./HomePageTabs";
+export { default as MobileMenu } from "./MobileMenu";
+export { default as MobileMenuButton } from "./MobileMenuButton";
 export { default as ActiveMiniTabs } from "./ActiveMiniTab";
 export { default as WorkExCard } from "./WorkExCard";
 export { default as EducationCard } from "./EducationCard";
