@@ -57,8 +57,6 @@ const HardwareSection = () => (
             <li>SIMGOT EW300</li>
             <li>Moondrop Chu 2</li>
           </ul>
-
-
         </li>
         <li>
           DACs / DAPs
@@ -69,8 +67,6 @@ const HardwareSection = () => (
         </li>
       </ul>
     </section>
-
-
   </div>
 );
 
@@ -202,20 +198,22 @@ const UsesPage = () => {
         <button
           type="button"
           onClick={() => setSelectedTab(UsesTab.HARDWARE)}
-          className={`pb-2 text-sm font-medium transition ${selectedTab === UsesTab.HARDWARE
-            ? "border-b-2 border-slate-900 dark:border-slate-100 dark:text-white text-black"
-            : "dark:text-slate-400 text-gray-700"
-            }`}
+          className={`pb-2 text-sm font-medium transition ${
+            selectedTab === UsesTab.HARDWARE
+              ? "border-b-2 border-slate-900 dark:border-slate-100 dark:text-white text-black"
+              : "dark:text-slate-400 text-gray-700"
+          }`}
         >
           Hardware
         </button>
         <button
           type="button"
           onClick={() => setSelectedTab(UsesTab.SOFTWARE)}
-          className={`pb-2 text-sm font-medium transition ${selectedTab === UsesTab.SOFTWARE
-            ? "border-b-2 border-slate-900 dark:border-slate-100 dark:text-white text-black"
-            : "dark:text-slate-400 text-gray-700"
-            }`}
+          className={`pb-2 text-sm font-medium transition ${
+            selectedTab === UsesTab.SOFTWARE
+              ? "border-b-2 border-slate-900 dark:border-slate-100 dark:text-white text-black"
+              : "dark:text-slate-400 text-gray-700"
+          }`}
         >
           Software
         </button>
