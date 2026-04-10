@@ -14,6 +14,7 @@ const useTabs = () => {
       HomePageTabs.BLOGS,
       HomePageTabs.LINKS,
       HomePageTabs.ABOUTME,
+      HomePageTabs.USES,
     ],
     selected: HomePageTabs.EXPERIENCE,
   });

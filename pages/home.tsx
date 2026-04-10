@@ -33,6 +33,7 @@ import useTabs from "../src/hooks/useTabs";
 import Blogs from "./blogs";
 import Experience from "./experience";
 import Projects from "./projects";
+import UsesPage from "./uses";
 
 type HomeProps = {
   posts: {
@@ -190,6 +191,7 @@ const HomePage = (props: HomeProps) => {
         {tabs.selected === HomePageTabs.BLOGS && <Blogs posts={posts} />}
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
+        {tabs.selected === HomePageTabs.USES && <UsesPage />}
       </section>
       <FloatingNav
         isMenuOpen={isMobileMenuOpen}
