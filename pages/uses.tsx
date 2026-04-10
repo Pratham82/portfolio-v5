@@ -16,38 +16,8 @@ const HardwareSection = () => (
       </h2>
       <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-300">
         <li>Mac Mini M4</li>
-        <li>MacBook Air M4 (512 GB)</li>
-        <li>MacBook Air M2 (Base Model)</li>
+        <li>MacBook Air M4 </li>
         <li>MacBook M4 Pro (Work Laptop)</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        📱 Mobile & Tablets
-      </h2>
-      <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-300">
-        <li>iPhone 15 Pro</li>
-        <li>Nothing Phone (2a)</li>
-        <li>Nothing phone 3</li>
-        <li>iPad Mini 6</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        🎧 Audio Gear
-      </h2>
-      <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-300">
-        <li>Apple AirPods Pro (1st Gen)</li>
-        <li>Nothing Ear (a)</li>
-        <li>Sony WH-1000XM4</li>
-        <li>Sony WF-1000XM4</li>
-        <li>Sony ULT Field Speaker</li>
-        <li>SIMGOT EW300 IEMs</li>
-        <li>Moondrop Chu 2 IEMs</li>
-        <li>FiiO KA13 DAC</li>
-        <li>HiBy R1 DAP</li>
       </ul>
     </section>
 
@@ -63,54 +33,44 @@ const HardwareSection = () => (
 
     <section>
       <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        ⌨️ Accessories
+        ⌨️ Keyboards
       </h2>
       <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-300">
         <li>Keychron K3 Pro (RGB, Hot-swappable)</li>
+        <li>Royal Kludge 61</li>
         <li>Apple Magic Keyboard</li>
-        <li>Apple Magic Trackpad</li>
-        <li>Logitech MX Master 2 Mouse</li>
       </ul>
     </section>
 
     <section>
       <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        🎮 Gaming
+        🎧 Audio Gear
       </h2>
       <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-300">
-        <li>PlayStation 5</li>
-        <li>Nintendo Switch OLED</li>
+        <li>Apple AirPods Pro (2nd Gen)</li>
+        <li>Nothing Ear (a)</li>
+        <li>Sony WH-1000XM4</li>
+        <li>Sony WF-1000XM4</li>
+        <li>
+          IEMs
+          <ul className="ml-10 mt-2 list-disc space-y-1">
+            <li>SIMGOT EW300</li>
+            <li>Moondrop Chu 2</li>
+          </ul>
+
+
+        </li>
+        <li>
+          DACs / DAPs
+          <ul className="ml-10 mt-2 list-disc space-y-1">
+            <li>FiiO KA13 DAC</li>
+            <li>HiBy R1 DAP</li>
+          </ul>
+        </li>
       </ul>
     </section>
 
-    <section>
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        📚 E-Readers
-      </h2>
-      <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-300">
-        <li>Amazon Kindle</li>
-        <li>Kobo Libra Colour</li>
-      </ul>
-    </section>
 
-    <section>
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        💾 Storage
-      </h2>
-      <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-300">
-        <li>SanDisk 2TB External SSD</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        🔌 Charging & Cables
-      </h2>
-      <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-300">
-        <li>Belkin 40W Dual-Port USB Charger</li>
-        <li>Belkin USB-C Fast Charging Cable</li>
-      </ul>
-    </section>
   </div>
 );
 
@@ -242,22 +202,20 @@ const UsesPage = () => {
         <button
           type="button"
           onClick={() => setSelectedTab(UsesTab.HARDWARE)}
-          className={`pb-2 text-sm font-medium transition ${
-            selectedTab === UsesTab.HARDWARE
-              ? "border-b-2 border-slate-900 dark:border-slate-100 dark:text-white text-black"
-              : "dark:text-slate-400 text-gray-700"
-          }`}
+          className={`pb-2 text-sm font-medium transition ${selectedTab === UsesTab.HARDWARE
+            ? "border-b-2 border-slate-900 dark:border-slate-100 dark:text-white text-black"
+            : "dark:text-slate-400 text-gray-700"
+            }`}
         >
           Hardware
         </button>
         <button
           type="button"
           onClick={() => setSelectedTab(UsesTab.SOFTWARE)}
-          className={`pb-2 text-sm font-medium transition ${
-            selectedTab === UsesTab.SOFTWARE
-              ? "border-b-2 border-slate-900 dark:border-slate-100 dark:text-white text-black"
-              : "dark:text-slate-400 text-gray-700"
-          }`}
+          className={`pb-2 text-sm font-medium transition ${selectedTab === UsesTab.SOFTWARE
+            ? "border-b-2 border-slate-900 dark:border-slate-100 dark:text-white text-black"
+            : "dark:text-slate-400 text-gray-700"
+            }`}
         >
           Software
         </button>
