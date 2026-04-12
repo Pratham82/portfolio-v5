@@ -38,7 +38,7 @@ export enum HomePageTabs {
   PROJECTS = "Projects",
   BLOGS = "Blogs",
   LINKS = "Links",
-  ABOUTME = "About Me",
+  ABOUTME = "About",
   USES = "Uses",
 }
 export interface IHomePage {

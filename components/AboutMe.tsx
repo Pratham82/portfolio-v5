@@ -70,8 +70,8 @@ const AboutMe = () => {
     },
     {
       id: "spotify",
-      title: "Chill HipHop Dhh",
-      subtitle: "40 songs",
+      title: "Pratham82",
+      subtitle: "Prathamesh's Spotify",
       url: "https://open.spotify.com/playlist/your-playlist-id",
       icon: <SiSpotify size={32} className="text-green-500" />,
       button: {
