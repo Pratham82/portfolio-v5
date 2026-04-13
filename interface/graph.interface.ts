@@ -1,9 +1,9 @@
-interface Node {
+export interface Node {
   id: string;
   val?: number;
 }
 
-interface Link {
+export interface Link {
   source: string;
   target: string;
 }

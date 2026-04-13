@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 
-import { GraphData } from "@/interface/graph.interface";
+import { GraphData, Node } from "@/interface/graph.interface";
 
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
@@ -62,11 +62,16 @@ const MinimalGraph = (props: MinimalGraphType) => {
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const { theme: activeTheme } = useTheme();
 
-  const t = themes[activeTheme];
+  const t = themes[(activeTheme as keyof typeof themes) ?? "dark"];
 
-  const handleNodeClick = (node: any) => {
-    setSelectedNode((prev) => (prev?.id === node.id ? null : node));
-    console.log("Clicked node:", node.id);
+  const handleNodeClick = (node: {
+    id?: string | number;
+    [key: string]: any;
+  }) => {
+    setSelectedNode((prev: Node | null) => {
+      const nodeId = typeof node.id === "number" ? String(node.id) : node.id;
+      return prev?.id === nodeId ? null : (node as Node);
+    });
   };
 
   useEffect(() => {
@@ -107,11 +112,19 @@ const MinimalGraph = (props: MinimalGraphType) => {
           nodeLabel="id"
           nodeAutoColorBy={undefined}
           nodeVal={8}
-          nodeCanvasObject={(node: any, ctx: CanvasRenderingContext2D) => {
+          nodeCanvasObject={(
+            node: {
+              id?: string | number;
+              x?: number;
+              y?: number;
+              [key: string]: any;
+            },
+            ctx: CanvasRenderingContext2D,
+          ) => {
             if (node.x == null || node.y == null) return;
-            const label = node.id as string;
+            const label = String(node.id);
             const isIndex = label === "Index";
-            const isSelected = selectedNode?.id === node.id;
+            const isSelected = selectedNode?.id === node?.id;
             const radius = isIndex ? 4 : 3;
             const nodeColor = isIndex ? t.nodeIndex : t.nodeLeaf;
 
@@ -144,10 +157,11 @@ const MinimalGraph = (props: MinimalGraphType) => {
             ctx.fillText(label, node.x, textY);
           }}
           nodePointerAreaPaint={(
-            node: any,
+            node: { x?: number; y?: number; [key: string]: any },
             color: string,
             ctx: CanvasRenderingContext2D,
           ) => {
+            if (node.x == null || node.y == null) return;
             ctx.beginPath();
             ctx.arc(node.x, node.y, 14, 0, 2 * Math.PI);
             ctx.fillStyle = color;
