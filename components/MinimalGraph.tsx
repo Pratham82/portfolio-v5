@@ -1,9 +1,12 @@
 import dynamic from "next/dynamic";
 
+import { CornersOut } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 
 import { GraphData, Node } from "@/interface/graph.interface";
+
+import Modal from "./Modal";
 
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
@@ -58,8 +61,14 @@ const MinimalGraph = (props: MinimalGraphType) => {
   const { data: graphData } = props;
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const modalContainerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
+  const [modalDimensions, setModalDimensions] = useState({
+    width: 800,
+    height: 500,
+  });
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   const { theme: activeTheme } = useTheme();
 
   const t = themes[(activeTheme as keyof typeof themes) ?? "dark"];
@@ -82,104 +91,207 @@ const MinimalGraph = (props: MinimalGraphType) => {
           height: containerRef.current.offsetHeight,
         });
       }
+      if (modalContainerRef.current) {
+        setModalDimensions({
+          width: modalContainerRef.current.offsetWidth,
+          height: modalContainerRef.current.offsetHeight,
+        });
+      }
     };
     updateSize();
     const observer = new ResizeObserver(updateSize);
     if (containerRef.current) observer.observe(containerRef.current);
+    if (modalContainerRef.current) observer.observe(modalContainerRef.current);
     return () => observer.disconnect();
-  }, []);
+  }, [isExpanded]);
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Graph */}
-      <div
-        ref={containerRef}
-        className={`relative h-[250px] mb-4 w-full overflow-hidden rounded-xl border ${t.containerBg} ${t.containerBorder}`}
-      >
-        {selectedNode && (
-          <div
-            className={`pointer-events-none absolute bottom-4 left-4 z-[2] rounded-lg border px-3 py-1.5 font-mono text-xs ${t.badgeBorder} ${t.badgeBg} ${t.badgeText}`}
+    <>
+      <div className="flex flex-col gap-3">
+        {/* Graph */}
+        <div
+          ref={containerRef}
+          className={`relative h-[500px] mb-4 w-full overflow-hidden rounded-xl border ${t.containerBg} ${t.containerBorder}`}
+        >
+          <button
+            onClick={() => setIsExpanded(true)}
+            className={`absolute right-3 top-3 z-10 rounded-lg p-2 transition-colors hover:bg-white/10 ${t.btnBg}`}
           >
-            {selectedNode.id}
-          </div>
-        )}
+            <CornersOut size={20} className={t.btnText} weight="bold" />
+          </button>
 
-        <ForceGraph2D
-          graphData={graphData}
-          width={dimensions.width}
-          height={dimensions.height}
-          backgroundColor={t.bg}
-          nodeLabel="id"
-          nodeAutoColorBy={undefined}
-          nodeVal={8}
-          nodeCanvasObject={(
-            node: {
-              id?: string | number;
-              x?: number;
-              y?: number;
-              [key: string]: any;
-            },
-            ctx: CanvasRenderingContext2D,
-          ) => {
-            if (node.x == null || node.y == null) return;
-            const label = String(node.id);
-            const isIndex = label === "Index";
-            const isSelected = selectedNode?.id === node?.id;
-            const radius = isIndex ? 4 : 3;
-            const nodeColor = isIndex ? t.nodeIndex : t.nodeLeaf;
+          {selectedNode && (
+            <div
+              className={`pointer-events-none absolute bottom-4 left-4 z-[2] rounded-lg border px-3 py-1.5 font-mono text-xs ${t.badgeBorder} ${t.badgeBg} ${t.badgeText}`}
+            >
+              {selectedNode.id}
+            </div>
+          )}
 
-            // Node circle
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = nodeColor;
-            ctx.shadowColor = nodeColor;
-            ctx.shadowBlur = isSelected ? 16 : 0;
-            ctx.fill();
-            ctx.shadowBlur = 0;
+          <ForceGraph2D
+            graphData={graphData}
+            width={dimensions.width}
+            height={dimensions.height}
+            backgroundColor={t.bg}
+            nodeLabel="id"
+            nodeAutoColorBy={undefined}
+            nodeVal={8}
+            nodeCanvasObject={(
+              node: {
+                id?: string | number;
+                x?: number;
+                y?: number;
+                [key: string]: any;
+              },
+              ctx: CanvasRenderingContext2D,
+            ) => {
+              if (node.x == null || node.y == null) return;
+              const label = String(node.id);
+              const isIndex = label === "Index";
+              const isSelected = selectedNode?.id === node?.id;
+              const radius = isIndex ? 4 : 3;
+              const nodeColor = isIndex ? t.nodeIndex : t.nodeLeaf;
 
-            // Selected ring
-            if (isSelected) {
+              // Node circle
               ctx.beginPath();
-              ctx.arc(node.x, node.y, radius + 3, 0, 2 * Math.PI);
-              ctx.strokeStyle = t.selectedRing;
-              ctx.lineWidth = 1.5;
-              ctx.stroke();
-            }
+              ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
+              ctx.fillStyle = nodeColor;
+              ctx.shadowColor = nodeColor;
+              ctx.shadowBlur = isSelected ? 16 : 0;
+              ctx.fill();
+              ctx.shadowBlur = 0;
 
-            // Label
-            const fontSize = isIndex ? 7 : 5;
-            ctx.font = `${isIndex ? "600" : "400"} ${fontSize}px 'DM Mono', 'Fira Code', monospace`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
+              // Selected ring
+              if (isSelected) {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, radius + 3, 0, 2 * Math.PI);
+                ctx.strokeStyle = t.selectedRing;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+              }
 
-            const textY = node.y + radius + 10;
-            ctx.fillStyle = isIndex ? t.labelText : t.labelTextMuted;
-            ctx.fillText(label, node.x, textY);
-          }}
-          nodePointerAreaPaint={(
-            node: { x?: number; y?: number; [key: string]: any },
-            color: string,
-            ctx: CanvasRenderingContext2D,
-          ) => {
-            if (node.x == null || node.y == null) return;
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, 14, 0, 2 * Math.PI);
-            ctx.fillStyle = color;
-            ctx.fill();
-          }}
-          linkColor={() => t.linkColor}
-          linkWidth={1}
-          linkDirectionalParticles={2}
-          linkDirectionalParticleSpeed={0.005}
-          linkDirectionalParticleWidth={1.5}
-          linkDirectionalParticleColor={() => t.particleColor}
-          onNodeClick={handleNodeClick}
-          cooldownTicks={100}
-          d3AlphaDecay={0.02}
-          d3VelocityDecay={0.3}
-        />
+              // Label
+              const fontSize = isIndex ? 7 : 5;
+              ctx.font = `${isIndex ? "600" : "400"} ${fontSize}px 'DM Mono', 'Fira Code', monospace`;
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+
+              const textY = node.y + radius + 10;
+              ctx.fillStyle = isIndex ? t.labelText : t.labelTextMuted;
+              ctx.fillText(label, node.x, textY);
+            }}
+            nodePointerAreaPaint={(
+              node: { x?: number; y?: number; [key: string]: any },
+              color: string,
+              ctx: CanvasRenderingContext2D,
+            ) => {
+              if (node.x == null || node.y == null) return;
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, 14, 0, 2 * Math.PI);
+              ctx.fillStyle = color;
+              ctx.fill();
+            }}
+            linkColor={() => t.linkColor}
+            linkWidth={1}
+            linkDirectionalParticles={2}
+            linkDirectionalParticleSpeed={0.005}
+            linkDirectionalParticleWidth={1.5}
+            linkDirectionalParticleColor={() => t.particleColor}
+            onNodeClick={handleNodeClick}
+            cooldownTicks={100}
+            d3AlphaDecay={0.02}
+            d3VelocityDecay={0.3}
+          />
+        </div>
       </div>
-    </div>
+
+      <Modal isOpen={isExpanded} onClose={() => setIsExpanded(false)}>
+        <div
+          ref={modalContainerRef}
+          className="relative h-[70vh] w-full overflow-hidden"
+        >
+          {selectedNode && (
+            <div
+              className={`pointer-events-none absolute bottom-4 left-4 z-[2] rounded-lg border px-3 py-1.5 font-mono text-xs ${t.badgeBorder} ${t.badgeBg} ${t.badgeText}`}
+            >
+              {selectedNode.id}
+            </div>
+          )}
+
+          <ForceGraph2D
+            graphData={graphData}
+            width={modalDimensions.width}
+            height={modalDimensions.height}
+            backgroundColor={t.bg}
+            nodeLabel="id"
+            nodeAutoColorBy={undefined}
+            nodeVal={8}
+            nodeCanvasObject={(
+              node: {
+                id?: string | number;
+                x?: number;
+                y?: number;
+                [key: string]: any;
+              },
+              ctx: CanvasRenderingContext2D,
+            ) => {
+              if (node.x == null || node.y == null) return;
+              const label = String(node.id);
+              const isIndex = label === "Index";
+              const isSelected = selectedNode?.id === node?.id;
+              const radius = isIndex ? 6 : 4;
+              const nodeColor = isIndex ? t.nodeIndex : t.nodeLeaf;
+
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
+              ctx.fillStyle = nodeColor;
+              ctx.shadowColor = nodeColor;
+              ctx.shadowBlur = isSelected ? 20 : 0;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+
+              if (isSelected) {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, radius + 4, 0, 2 * Math.PI);
+                ctx.strokeStyle = t.selectedRing;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+              }
+
+              const fontSize = isIndex ? 10 : 7;
+              ctx.font = `${isIndex ? "600" : "400"} ${fontSize}px 'DM Mono', 'Fira Code', monospace`;
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+
+              const textY = node.y + radius + 14;
+              ctx.fillStyle = isIndex ? t.labelText : t.labelTextMuted;
+              ctx.fillText(label, node.x, textY);
+            }}
+            nodePointerAreaPaint={(
+              node: { x?: number; y?: number; [key: string]: any },
+              color: string,
+              ctx: CanvasRenderingContext2D,
+            ) => {
+              if (node.x == null || node.y == null) return;
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, 18, 0, 2 * Math.PI);
+              ctx.fillStyle = color;
+              ctx.fill();
+            }}
+            linkColor={() => t.linkColor}
+            linkWidth={1.5}
+            linkDirectionalParticles={3}
+            linkDirectionalParticleSpeed={0.005}
+            linkDirectionalParticleWidth={2}
+            linkDirectionalParticleColor={() => t.particleColor}
+            onNodeClick={handleNodeClick}
+            cooldownTicks={100}
+            d3AlphaDecay={0.02}
+            d3VelocityDecay={0.3}
+          />
+        </div>
+      </Modal>
+    </>
   );
 };
 

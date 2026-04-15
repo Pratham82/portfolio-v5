@@ -21,6 +21,7 @@ export { default as Footer } from "./Footer";
 export { default as Header } from "./Header";
 export { default as MiniFooter } from "./MiniFooter";
 export { default as MinimalGraph } from "./MinimalGraph";
+export { default as Modal } from "./Modal";
 
 export { default as HomepageSkeleton } from "./loadingPages/home.skeleton";
 export { default as AboutPageSkeleton } from "./loadingPages/about.skeleton";
