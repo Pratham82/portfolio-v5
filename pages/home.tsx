@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { useQuery } from "@apollo/client";
-// import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import GitHubCalendar from "react-github-calendar";
@@ -22,7 +21,7 @@ import {
   MobileMenu,
   MinimalGraph,
 } from "@/components";
-import { GraphData } from "@/interface/graph.interface";
+import { skillsGraphData } from "@/src/data/skils-data";
 
 import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
 import { PostMeta, getAllPosts } from "../lib/blogPosts";
@@ -36,26 +35,6 @@ import Blogs from "./blogs";
 import Experience from "./experience";
 import Projects from "./projects";
 import UsesPage from "./uses";
-
-const graphData: GraphData = {
-  nodes: [
-    { id: "Index" },
-    { id: "Experience" },
-    { id: "Projects" },
-    { id: "Blogs" },
-    { id: "Links" },
-    { id: "About" },
-    { id: "Uses" },
-  ],
-  links: [
-    { source: "Index", target: "Experience" },
-    { source: "Index", target: "Projects" },
-    { source: "Index", target: "Blogs" },
-    { source: "Index", target: "Links" },
-    { source: "Index", target: "About" },
-    { source: "Index", target: "Uses" },
-  ],
-};
 
 type HomeProps = {
   posts: {
@@ -152,7 +131,8 @@ const HomePage = (props: HomeProps) => {
       <div className="my-4">
         <SocialLinks align="left" />
       </div>
-      <MinimalGraph data={graphData} />
+      <MinimalGraph data={skillsGraphData} />
+      {/* <MindMap data={skillsMindMapData} /> */}
       {/* <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2> */}
       {/* <div className="flex flex-wrap justify-center">
         {techStack?.techStacks?.map((tech) => (
