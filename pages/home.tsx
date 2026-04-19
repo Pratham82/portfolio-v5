@@ -19,9 +19,8 @@ import {
   AboutMe,
   FloatingNav,
   MobileMenu,
-  MinimalGraph,
+  Skills,
 } from "@/components";
-import { skillsGraphData } from "@/src/data/skils-data";
 
 import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
 import { PostMeta, getAllPosts } from "../lib/blogPosts";
@@ -50,6 +49,7 @@ const HomePage = (props: HomeProps) => {
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
     isNowPlayingVisible: false,
+    isSkillsVisible: false,
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -131,7 +131,6 @@ const HomePage = (props: HomeProps) => {
       <div className="my-4">
         <SocialLinks align="left" />
       </div>
-      <MinimalGraph data={skillsGraphData} />
       {/* <MindMap data={skillsMindMapData} /> */}
       {/* <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2> */}
       {/* <div className="flex flex-wrap justify-center">
@@ -180,6 +179,7 @@ const HomePage = (props: HomeProps) => {
         {visibleData.isNowPlayingVisible ? (
           <SpotifyNowPlayingMonoChrome {...spotifyNowPlayingProps} />
         ) : null}
+        {visibleData.isSkillsVisible ? <Skills /> : null}
       </div>
 
       <HomeTabs
