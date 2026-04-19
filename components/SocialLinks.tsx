@@ -10,7 +10,8 @@ import {
 import classNames from "classnames";
 import { FileArrowDown } from "phosphor-react";
 import React from "react";
-import { RiBlueskyLine } from "react-icons/ri";
+import { RiBlueskyLine, RiMediumFill } from "react-icons/ri";
+import { SiSubstack } from "react-icons/si";
 
 import { SocialLinkType, socialLinks } from "../src/data/headerData";
 import useGetInfo from "../src/hooks/useGetInfo";
@@ -29,6 +30,12 @@ const iconSwitch = (id: SocialLinkType): JSX.Element => {
       return <InstagramLogoIcon size={24} />;
     case SocialLinkType.BLUESKY: {
       return <RiBlueskyLine size={24} />;
+    }
+    case SocialLinkType.MEDIUM: {
+      return <RiMediumFill size={24} />;
+    }
+    case SocialLinkType.SUBSTACK: {
+      return <SiSubstack size={18} />;
     }
     case SocialLinkType.RESUME:
       return (
