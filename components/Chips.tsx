@@ -25,15 +25,22 @@ const themes = {
 
 const Chip = ({ label, onClick, isSelected }: ChipProps) => {
   const { theme: activeTheme } = useTheme();
-  const t = themes[(activeTheme as keyof typeof themes) ?? "dark"];
+  const t = themes[
+    (activeTheme as keyof typeof themes) ?? "dark"
+  ] as (typeof themes)[keyof typeof themes];
+  const chipClasses = [
+    "rounded-lg border px-2 py-1.5 font-mono text-xs transition-colors",
+    t?.chipBg,
+    t?.chipBorder,
+    t?.chipText,
+    t?.chipHoverBg,
+    isSelected ? t.chipSelectedBg : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <button
-      onClick={onClick}
-      className={`rounded-lg border px-2 py-1.5 font-mono text-xs transition-colors ${t.chipBg} ${t.chipBorder} ${t.chipText} ${t.chipHoverBg} ${
-        isSelected ? t.chipSelectedBg : ""
-      }`}
-    >
+    <button onClick={onClick} className={chipClasses}>
       {label}
     </button>
   );
@@ -54,7 +61,7 @@ const Chips = ({ skills, selectedSkill, onSkillClick }: ChipsProps) => {
       {skills.map((category) => (
         <div key={category.id} className="flex flex-col gap-1.5">
           <span
-            className={`text-xs my-1 font-semibold uppercase tracking-wider ${t.chipText}`}
+            className={`text-xs my-1 font-semibold uppercase tracking-wider ${t?.chipText}`}
           >
             {category.id}
           </span>
