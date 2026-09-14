@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { useQuery } from "@apollo/client";
 import { useTheme } from "next-themes";
+import { Mascot } from "page-mascot";
 import { useEffect, useState } from "react";
 import GitHubCalendar from "react-github-calendar";
 
@@ -22,7 +22,7 @@ import {
   Skills,
 } from "@/components";
 
-import { HomePageTabs, IHomePageResponse } from "../interface/home.interface";
+import { HomePageTabs } from "../interface/home.interface";
 import { PostMeta, getAllPosts } from "../lib/blogPosts";
 import { getAllLinks } from "../lib/links";
 import { homePage } from "../src/graphql/queries";
@@ -45,7 +45,7 @@ type HomeProps = {
 const HomePage = (props: HomeProps) => {
   const { posts, links } = props;
   const { data, loading } = useQuery(homePage);
-  const { title, subtitle = "", pageData } = useGetPageData(data);
+  const { title, subtitle = "" } = useGetPageData(data);
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
     isNowPlayingVisible: false,
@@ -53,7 +53,7 @@ const HomePage = (props: HomeProps) => {
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const { avatar }: IHomePageResponse = pageData || {};
+  // const { avatar }: IHomePageResponse = pageData || {};
 
   const spotifyNowPlayingData = useNowPlaying();
   const { theme } = useTheme();
@@ -115,12 +115,19 @@ const HomePage = (props: HomeProps) => {
       </div>
 
       <div className="flex items-center gap-2">
-        <Image
+        {/* <Image
           src={avatar?.asset?.url || ""}
           alt="profile"
           width={90}
           height={90}
           className="relative rounded-2xl grayscale mt-2"
+        /> */}
+        <Mascot
+          directions="/mascots/kamran-directions.webp"
+          reactions="/mascots/kamran-reactions.webp"
+          size={160}
+          label="mascot"
+          className="hidden sm:block"
         />
         <h2
           dangerouslySetInnerHTML={{ __html: subtitle }}
