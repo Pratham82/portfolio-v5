@@ -28,9 +28,10 @@ const proxySanity = async (page: Page) => {
 };
 
 export const test = base.extend({
-  page: async ({ page }, use) => {
+  // Named `provide` (not `use`) so react-hooks doesn't mistake it for a hook.
+  page: async ({ page }, provide) => {
     await proxySanity(page);
-    await use(page);
+    await provide(page);
     await page.unrouteAll({ behavior: "ignoreErrors" });
   },
 });
