@@ -9,7 +9,7 @@ const Footer = () => {
     <footer className="bottom-0 z-0 w-full pt-2 backdrop-blur-lg">
       {/* <SocialLinks align="center" /> */}
       <div className="relative w-full mb-8">
-        <div className="absolute inset-0 w-full h-[1px] bg-white/30" />
+        <div className="absolute inset-0 w-full h-px bg-white/30" />
       </div>
       <div className="flex h-12 w-full items-center justify-center ">
         Created with

@@ -45,7 +45,9 @@ export const getAllLinks = (): Link[] => {
     .map((slug) => getLinkFromSlug(slug))
     .sort(
       (a, b) =>
-        new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime(),
+        new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime() ||
+        // Same date: newest-slug-first keeps the order stable across filesystems.
+        b.meta.slug.localeCompare(a.meta.slug),
     );
 };
 

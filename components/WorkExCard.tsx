@@ -27,7 +27,7 @@ const WorkExCard = (props: WorkExperience) => {
     : "Present";
   return (
     <motion.article
-      className="rounded-xl p-2 my-2 shadow-sm bg-white dark:bg-slate-950"
+      className="rounded-xl p-2 my-2 shadow-xs bg-white dark:bg-slate-950"
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
@@ -35,7 +35,7 @@ const WorkExCard = (props: WorkExperience) => {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
-        className="w-full text-left focus:outline-none"
+        className="w-full text-left focus:outline-hidden"
       >
         <motion.header
           whileHover={{ scale: 1.01 }}

@@ -57,7 +57,7 @@ const Post = ({ post }: { post: IMDXPost }) => {
       const button = document.createElement("button");
       button.textContent = "Copy";
       button.className =
-        "copy-btn absolute top-2 right-2 bg-gray-700 text-white text-xs px-2 py-1 rounded hover:bg-gray-600 transition";
+        "copy-btn absolute top-2 right-2 bg-gray-700 text-white text-xs px-2 py-1 rounded-sm hover:bg-gray-600 transition";
 
       button.addEventListener("click", () => {
         const code = block.querySelector("code");

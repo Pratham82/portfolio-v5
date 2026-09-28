@@ -78,7 +78,7 @@ const Callout = ({
     <div
       className={`flex gap-3 p-4 rounded-lg border-l-4 my-5 text-sm leading-relaxed ${borderColor} ${bgColor}`}
     >
-      <span className="text-base flex-shrink-0 mt-0.5">{icon}</span>
+      <span className="text-base shrink-0 mt-0.5">{icon}</span>
       <div className="text-zinc-300">{children}</div>
     </div>
   );
@@ -139,7 +139,7 @@ const FlowStep = ({
     <div className="flex gap-4 items-start">
       <div className="flex flex-col items-center gap-0 min-w-[24px]">
         <div className={`w-2.5 h-2.5 rounded-full ${dotColor} mt-1`} />
-        {!last && <div className="w-0.5 h-9 bg-[#2a2a38] flex-shrink-0" />}
+        {!last && <div className="w-0.5 h-9 bg-[#2a2a38] shrink-0" />}
       </div>
       <div className={`flex-1 ${last ? "" : "pb-6"}`}>
         <h4 className="text-white font-semibold text-sm mb-1">{title}</h4>
@@ -162,12 +162,12 @@ const CodeBlock = ({ lang, code }: { lang: string; code: string }) => {
   return (
     <div className="bg-[#0a0a0f] border border-[#2a2a38] rounded-xl overflow-hidden my-4">
       <div className="flex justify-between items-center px-4 py-2 border-b border-[#2a2a38] bg-[#111118]">
-        <span className="font-mono text-[10px] text-[#5a5875] tracking-[0.1em]">
+        <span className="font-mono text-[10px] text-[#5a5875] tracking-widest">
           {lang}
         </span>
         <button
           onClick={handleCopy}
-          className="text-[11px] text-[#5a5875] cursor-pointer px-2 py-0.5 rounded border border-[#2a2a38] bg-transparent hover:text-zinc-300 hover:border-[#35354a] transition-all"
+          className="text-[11px] text-[#5a5875] cursor-pointer px-2 py-0.5 rounded-sm border border-[#2a2a38] bg-transparent hover:text-zinc-300 hover:border-[#35354a] transition-all"
         >
           {copied ? "copied" : "copy"}
         </button>
@@ -194,7 +194,7 @@ const CompareTable = ({
             {headers.map((h, i) => (
               <th
                 key={i}
-                className="px-4 py-2.5 text-left font-mono text-[10px] tracking-[0.1em] uppercase text-zinc-400 font-normal border-b border-[#2a2a38]"
+                className="px-4 py-2.5 text-left font-mono text-[10px] tracking-widest uppercase text-zinc-400 font-normal border-b border-[#2a2a38]"
               >
                 {h}
               </th>
@@ -477,7 +477,7 @@ const PrimitivesSection = ({
         How They Compose
       </h3>
       <div className="bg-[#111118] border border-[#2a2a38] rounded-2xl p-6 mb-7">
-        <p className="font-mono text-[10px] text-[#5a5875] text-center mb-4 tracking-[0.1em]">
+        <p className="font-mono text-[10px] text-[#5a5875] text-center mb-4 tracking-widest">
           ORCHESTRATION LAYER
         </p>
         <div className="flex gap-2.5 justify-center flex-wrap mb-2">
@@ -491,7 +491,7 @@ const PrimitivesSection = ({
         <div className="text-center text-[#5a5875] text-lg my-1">
           ↓ routes to
         </div>
-        <p className="font-mono text-[10px] text-[#5a5875] text-center mb-4 tracking-[0.1em]">
+        <p className="font-mono text-[10px] text-[#5a5875] text-center mb-4 tracking-widest">
           AGENT LAYER
         </p>
         <div className="flex gap-2.5 justify-center flex-wrap mb-2">
@@ -508,7 +508,7 @@ const PrimitivesSection = ({
         <div className="text-center text-[#5a5875] text-lg my-1">
           ↓ each uses
         </div>
-        <p className="font-mono text-[10px] text-[#5a5875] text-center mb-4 tracking-[0.1em]">
+        <p className="font-mono text-[10px] text-[#5a5875] text-center mb-4 tracking-widest">
           CAPABILITY LAYER
         </p>
         <div className="flex gap-2.5 justify-center flex-wrap mb-2">
@@ -547,7 +547,7 @@ const PrimitivesSection = ({
         <div className="text-center text-[#5a5875] text-lg my-1">
           ↓ reads/writes
         </div>
-        <p className="font-mono text-[10px] text-[#5a5875] text-center mb-4 tracking-[0.1em]">
+        <p className="font-mono text-[10px] text-[#5a5875] text-center mb-4 tracking-widest">
           PERSISTENCE LAYER
         </p>
         <div className="flex gap-2.5 justify-center flex-wrap">
@@ -1494,12 +1494,12 @@ const ContextEngineeringGuide = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-[#e8e6f0]">
       {/* Hero */}
-      <div className="border-b border-[#2a2a38] bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,_#1a0f3a_0%,_transparent_70%)]">
+      <div className="border-b border-[#2a2a38] bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,#1a0f3a_0%,transparent_70%)]">
         <div className="max-w-4xl mx-auto px-6 sm:px-10 py-12 text-center">
           <p className="font-mono text-[11px] text-violet-400 tracking-[0.2em] uppercase mb-3">
             The Universal Reference
           </p>
-          <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-3 bg-gradient-to-br from-white via-violet-300 to-teal-300 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-5xl font-bold leading-tight sm:leading-none mb-3 bg-linear-to-br from-white via-violet-300 to-teal-300 bg-clip-text text-transparent">
             Context Engineering
             <br />& AI-Native Coding
           </h1>
@@ -1512,13 +1512,13 @@ const ContextEngineeringGuide = () => {
       </div>
 
       {/* Nav */}
-      <nav className="sticky top-0 z-50 bg-[#111118]/95 backdrop-blur border-b border-[#2a2a38]">
+      <nav className="sticky top-0 z-50 bg-[#111118]/95 backdrop-blur-sm border-b border-[#2a2a38]">
         <div className="max-w-4xl mx-auto px-4 py-3 flex gap-2 flex-wrap">
           {NAV_ITEMS.map((item) => (
             <button
               key={item.id}
               onClick={() => setSection(item.id)}
-              className={`font-mono text-[11px] tracking-[0.05em] px-3 py-1.5 rounded-full border transition-all ${
+              className={`font-mono text-[11px] tracking-wider px-3 py-1.5 rounded-full border transition-all ${
                 section === item.id
                   ? "bg-[#1e1340] border-violet-500 text-violet-300"
                   : "border-[#2a2a38] text-zinc-400 hover:border-[#35354a] hover:text-zinc-200 hover:bg-[#18181f]"

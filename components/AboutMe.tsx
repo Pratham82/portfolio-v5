@@ -127,7 +127,7 @@ const AboutMe = () => {
           >
             <div className="flex items-start justify-between mb-2 flex-wrap gap-2">
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="flex-shrink-0">{card.icon}</div>
+                <div className="shrink-0">{card.icon}</div>
                 <div className="min-w-0 flex-1">
                   <h3 className="text-base font-semibold truncate">
                     {card.title}
@@ -141,7 +141,7 @@ const AboutMe = () => {
               </div>
               {card.button && (
                 <button
-                  className={`${card.button.color || "bg-blue-500"} text-white text-xs px-3 py-1.5 rounded-full font-medium flex-shrink-0 hover:opacity-90 transition`}
+                  className={`${card.button.color || "bg-blue-500"} text-white text-xs px-3 py-1.5 rounded-full font-medium shrink-0 hover:opacity-90 transition`}
                   onClick={(e) => {
                     e.preventDefault();
                     window.open(card.url, "_blank");
