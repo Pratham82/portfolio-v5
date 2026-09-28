@@ -122,7 +122,7 @@ const HomeClient = (props: HomeClientProps) => {
         />
         <h2
           dangerouslySetInnerHTML={{ __html: subtitle }}
-          className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base"
+          className="mt-2 text-sm leading-relaxed text-foreground/85 sm:text-base"
         />
       </div>
 

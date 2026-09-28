@@ -64,7 +64,7 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
               "flex items-center gap-1.5 font-mono text-xs transition-colors",
               isActive
                 ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground",
+                : "text-foreground/70 hover:text-foreground",
             )}
           >
             {isActive ? (

@@ -78,7 +78,7 @@ const SocialLinks = (props: SocialLinksProps) => {
               target="_blank"
               aria-label={`Visit my ${id} profile`}
               className={cn(
-                "rounded-md text-muted-foreground transition-colors hover:text-foreground",
+                "rounded-md text-foreground/75 transition-colors hover:text-foreground",
                 id === SocialLinkType.RESUME ? "ml-2" : "p-1.5",
               )}
             >

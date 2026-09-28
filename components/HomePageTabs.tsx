@@ -28,7 +28,7 @@ const HomeTabs = (props: HomePageTabsProps) => {
               "relative px-3 py-2 text-sm transition-colors",
               isSelected
                 ? "font-medium text-foreground"
-                : "text-muted-foreground hover:text-foreground",
+                : "text-foreground/70 hover:text-foreground",
             )}
             onClick={() => {
               onTabChange(tab);

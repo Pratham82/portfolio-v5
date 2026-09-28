@@ -11,8 +11,8 @@ const Chip = ({ label, onClick, isSelected }: ChipProps) => (
     type="button"
     onClick={onClick}
     className={cn(
-      "rounded-md border bg-secondary/40 px-2 py-1 font-mono text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground",
-      isSelected && "bg-accent text-foreground",
+      "rounded-md border border-foreground/15 bg-secondary px-2 py-1 font-mono text-xs text-foreground/90 transition-colors hover:border-foreground/30 hover:bg-accent hover:text-foreground",
+      isSelected && "border-foreground/30 bg-accent text-foreground",
     )}
   >
     {label}
@@ -29,7 +29,7 @@ const Chips = ({ skills, selectedSkill, onSkillClick }: ChipsProps) => (
   <div className="flex flex-col gap-4">
     {skills.map((category) => (
       <div key={category.id} className="flex flex-col gap-2">
-        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground/80">
+        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
           {category.id}
         </span>
         <div className="flex flex-wrap gap-1.5">
