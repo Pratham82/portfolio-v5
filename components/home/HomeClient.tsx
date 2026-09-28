@@ -20,6 +20,7 @@ import Uses from "@/components/sections/Uses";
 import Skills from "@/components/Skills";
 import SocialLinks from "@/components/SocialLinks";
 import SpotifyNowPlayingMonoChrome from "@/components/SpotifyNowPlayingMonoChrome";
+import GlowField from "@/components/ui/glow-field";
 import { Separator } from "@/components/ui/separator";
 import Spotlight from "@/components/ui/spotlight";
 import { HomePageTabs } from "@/interface/home.interface";
@@ -94,7 +95,8 @@ const HomeClient = (props: HomeClientProps) => {
 
   return (
     <PageAnimationContainer className="relative flex flex-col">
-      <Spotlight className="-left-40 -top-40 md:-left-60" />
+      <GlowField />
+      <Spotlight className="-left-32 -top-56 w-[560px] md:-left-48 md:w-[720px]" />
       <div className="mb-2 mt-6 flex items-center justify-between">
         <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight md:text-3xl">
           {title1}

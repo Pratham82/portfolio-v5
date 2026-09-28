@@ -41,8 +41,9 @@ export const settle = async (page: Page) => {
 /** Screenshot options that hide pixels which change on every run. */
 export const stableScreenshot = (page: Page) => ({
   fullPage: true,
-  // The animated background is a full-viewport fixed canvas; hide rather than mask it.
-  style: "canvas { visibility: hidden !important; }",
+  // The animated background canvas and the randomly placed glows change on
+  // every load; hide rather than mask them.
+  style: "canvas, [data-glow] { visibility: hidden !important; }",
   // Scrambling title text.
   mask: [page.locator("h1 span")],
 });
