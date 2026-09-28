@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 
-import { useQuery } from "@apollo/client";
 import { useTheme } from "next-themes";
 import { Mascot } from "page-mascot";
 import { useEffect, useState } from "react";
@@ -9,7 +8,6 @@ import { GitHubCalendar } from "react-github-calendar";
 import {
   ActiveMiniTabs,
   HomeTabs,
-  HomepageSkeleton,
   PageAnimationContainer,
   ScrambleText,
   SocialLinks,
@@ -32,12 +30,13 @@ import { PostMeta, getAllPosts } from "../lib/blogPosts";
 import { getAllLinks } from "../lib/links";
 import {
   ExperiencePageData,
+  HomePageData,
   SANITY_REVALIDATE,
   getExperiencePage,
+  getHomePage,
   getProjects,
+  getResumeLink,
 } from "../lib/sanity/queries";
-import { homePage } from "../src/graphql/queries";
-import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
 import useTabs from "../src/hooks/useTabs";
 
@@ -49,19 +48,18 @@ type HomeProps = {
   links: ReturnType<typeof getAllLinks>;
   experience: ExperiencePageData;
   projects: IProject[];
+  home: HomePageData;
+  resumeLink: string;
 };
 const HomePage = (props: HomeProps) => {
-  const { posts, links, experience, projects } = props;
-  const { data, loading } = useQuery(homePage);
-  const { title, subtitle = "" } = useGetPageData(data);
+  const { posts, links, experience, projects, home, resumeLink } = props;
+  const { title, subtitle } = home;
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
     isNowPlayingVisible: false,
     isSkillsVisible: false,
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // const { avatar }: IHomePageResponse = pageData || {};
 
   const spotifyNowPlayingData = useNowPlaying();
   const { theme } = useTheme();
@@ -106,10 +104,6 @@ const HomePage = (props: HomeProps) => {
 
   const [title1, title2] = title.split(/(?<=I'm)/).map((s: string) => s.trim());
 
-  if (loading) {
-    return <HomepageSkeleton />;
-  }
-
   return (
     <PageAnimationContainer className="flex flex-col">
       <div className="mb-2 mt-6 flex items-center justify-between">
@@ -144,7 +138,7 @@ const HomePage = (props: HomeProps) => {
       </div>
 
       <div className="my-4">
-        <SocialLinks align="left" />
+        <SocialLinks align="left" resumeLink={resumeLink} />
       </div>
       {/* <MindMap data={skillsMindMapData} /> */}
       {/* <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2> */}
@@ -233,9 +227,11 @@ export default HomePage;
 export async function getStaticProps() {
   const posts = getAllPosts();
   const links = getAllLinks();
-  const [experience, projects] = await Promise.all([
+  const [experience, projects, home, resumeLink] = await Promise.all([
     getExperiencePage(),
     getProjects(),
+    getHomePage(),
+    getResumeLink(),
   ]);
 
   return {
@@ -244,6 +240,8 @@ export async function getStaticProps() {
       links,
       experience,
       projects,
+      home,
+      resumeLink,
     },
     revalidate: SANITY_REVALIDATE,
   };

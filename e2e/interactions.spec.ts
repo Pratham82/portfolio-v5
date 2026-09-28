@@ -121,3 +121,9 @@ test("home mini tabs render their widgets without errors", async ({ page }) => {
 
   expect(errors).toEqual([]);
 });
+
+test("resume link comes from Sanity", async ({ page }) => {
+  await page.goto("/home");
+  const resume = page.getByRole("link", { name: /resume/i });
+  await expect(resume).toHaveAttribute("href", /^https?:\/\//);
+});

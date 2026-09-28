@@ -14,7 +14,6 @@ import { RiBlueskyLine, RiMediumFill } from "react-icons/ri";
 import { SiSubstack } from "react-icons/si";
 
 import { SocialLinkType, socialLinks } from "../src/data/headerData";
-import useGetInfo from "../src/hooks/useGetInfo";
 
 const iconSwitch = (id: SocialLinkType): React.JSX.Element => {
   switch (id) {
@@ -51,12 +50,11 @@ const iconSwitch = (id: SocialLinkType): React.JSX.Element => {
 
 type SocialLinksProps = {
   align: "left" | "center" | "right";
+  resumeLink: string;
 };
 
 const SocialLinks = (props: SocialLinksProps) => {
-  const { align = "" } = props;
-  const { resume } = useGetInfo();
-  const resumeLink = resume?.resumeLink || "";
+  const { align = "", resumeLink } = props;
 
   return (
     <div
