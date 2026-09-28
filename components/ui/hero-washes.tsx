@@ -52,16 +52,26 @@ const gradient = ({ color, peak, mid, midStop }: Wash) =>
 /**
  * Soft, static color washes behind the home hero. They're part of the page
  * flow, so they scroll away with it. Colors come from the --wash-* tokens.
+ *
+ * The wrapper spans the full viewport width and clips horizontally. Otherwise
+ * the washes widen the page, and mobile Chrome zooms out to fit them, even
+ * with `overflow-x: clip` on the body.
  */
 const HeroWashes = () => (
-  <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-    {WASHES.map((wash) => (
-      <div
-        key={wash.color}
-        className={`absolute ${wash.className}`}
-        style={{ background: gradient(wash) }}
-      />
-    ))}
+  <div
+    aria-hidden
+    className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 overflow-x-clip px-4"
+  >
+    {/* Matches the page column, so the washes sit where they did before. */}
+    <div className="relative mx-auto h-full max-w-2xl">
+      {WASHES.map((wash) => (
+        <div
+          key={wash.color}
+          className={`absolute ${wash.className}`}
+          style={{ background: gradient(wash) }}
+        />
+      ))}
+    </div>
   </div>
 );
 
