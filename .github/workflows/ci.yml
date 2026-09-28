@@ -1,4 +1,4 @@
-name: react-ci
+name: ci
 
 on:
   push:
@@ -14,34 +14,42 @@ on:
 
 jobs:
   ci:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [14]
+    env:
+      NEXT_PUBLIC_PORTFOLIO_GRAPHQL_ENDPOINT: ${{ secrets.NEXT_PUBLIC_PORTFOLIO_GRAPHQL_ENDPOINT }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Setup node env
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version-file: .nvmrc
+          cache: npm
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
-      - name: Run code style check
+      - name: Lint
         run: npm run lint
 
-      - name: Run tests
-        run: npm run test
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      # Screenshot baselines are generated on macOS, so CI runs the functional
+      # checks only; visual diffs are part of the local verification gate.
+      - name: E2E tests (builds and starts the app)
+        run: npx playwright test --ignore-snapshots
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

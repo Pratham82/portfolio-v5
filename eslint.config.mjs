@@ -15,6 +15,8 @@ export default [
       "out/**",
       "build/**",
       "dist/**",
+      "playwright-report/**",
+      "test-results/**",
       "*.config.js",
       "*.config.mjs",
       "package.json",
