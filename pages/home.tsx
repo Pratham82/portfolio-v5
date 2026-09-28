@@ -29,6 +29,11 @@ import Uses from "@/components/sections/Uses";
 import { HomePageTabs } from "../interface/home.interface";
 import { PostMeta, getAllPosts } from "../lib/blogPosts";
 import { getAllLinks } from "../lib/links";
+import {
+  ExperiencePageData,
+  SANITY_REVALIDATE,
+  getExperiencePage,
+} from "../lib/sanity/queries";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
@@ -40,9 +45,10 @@ type HomeProps = {
     meta: PostMeta;
   }[];
   links: ReturnType<typeof getAllLinks>;
+  experience: ExperiencePageData;
 };
 const HomePage = (props: HomeProps) => {
-  const { posts, links } = props;
+  const { posts, links, experience } = props;
   const { data, loading } = useQuery(homePage);
   const { title, subtitle = "" } = useGetPageData(data);
   const [visibleData, setVisibleData] = useState({
@@ -194,7 +200,9 @@ const HomePage = (props: HomeProps) => {
         className="hidden md:flex"
       />
       <section className="mt-4">
-        {tabs.selected === HomePageTabs.EXPERIENCE && <Experience />}
+        {tabs.selected === HomePageTabs.EXPERIENCE && (
+          <Experience {...experience} />
+        )}
         {tabs.selected === HomePageTabs.PROJECTS && <Projects />}
         {tabs.selected === HomePageTabs.BLOGS && <BlogList posts={posts} />}
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
@@ -220,11 +228,14 @@ export default HomePage;
 export async function getStaticProps() {
   const posts = getAllPosts();
   const links = getAllLinks();
+  const experience = await getExperiencePage();
 
   return {
     props: {
       posts,
       links,
+      experience,
     },
+    revalidate: SANITY_REVALIDATE,
   };
 }

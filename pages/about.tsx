@@ -1,34 +1,17 @@
-import { useQuery } from "@apollo/client";
+import PageAnimationContainer from "@/components/PageAnimationContainer";
+import WorkExCard from "@/components/WorkExCard";
+import {
+  ExperiencePageData,
+  SANITY_REVALIDATE,
+  getExperiencePage,
+} from "@/lib/sanity/queries";
 
-import { AboutPageSkeleton } from "@/components";
-
-import PageAnimationContainer from "../components/PageAnimationContainer";
-import WorkExCard from "../components/WorkExCard";
-import { IAllAboutPageResponse } from "../interface/about.interface";
-import { allExperience } from "../src/graphql/queries";
-import useGetPageData from "../src/hooks/useGetPageData";
-
-const About = () => {
-  const { data, loading } = useQuery(allExperience);
-  // const { loading: contactsLoading } = useQuery(contactsPage);
-  const { pageData } = useGetPageData(data);
-
-  // const { pageData: contactsPageData } = useGetPageData(contactsData);
-
-  const {
-    // education = [],
-    workExperience = [],
-  }: IAllAboutPageResponse = pageData;
-
-  if (loading) {
-    return <AboutPageSkeleton />;
-  }
-
+const About = ({ workExperience }: ExperiencePageData) => {
   return (
     <PageAnimationContainer className="w-100%">
       <div className="flex gap-4 items-start">
         <div className="flex flex-col">
-          {workExperience?.map((workEx) => (
+          {workExperience.map((workEx) => (
             <WorkExCard {...workEx} key={workEx?.companyName} />
           ))}
         </div>
@@ -38,3 +21,10 @@ const About = () => {
 };
 
 export default About;
+
+export async function getStaticProps() {
+  return {
+    props: await getExperiencePage(),
+    revalidate: SANITY_REVALIDATE,
+  };
+}
