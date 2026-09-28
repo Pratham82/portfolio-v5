@@ -27,12 +27,14 @@ import Projects from "@/components/sections/Projects";
 import Uses from "@/components/sections/Uses";
 
 import { HomePageTabs } from "../interface/home.interface";
+import { IProject } from "../interface/projects.interface";
 import { PostMeta, getAllPosts } from "../lib/blogPosts";
 import { getAllLinks } from "../lib/links";
 import {
   ExperiencePageData,
   SANITY_REVALIDATE,
   getExperiencePage,
+  getProjects,
 } from "../lib/sanity/queries";
 import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
@@ -46,9 +48,10 @@ type HomeProps = {
   }[];
   links: ReturnType<typeof getAllLinks>;
   experience: ExperiencePageData;
+  projects: IProject[];
 };
 const HomePage = (props: HomeProps) => {
-  const { posts, links, experience } = props;
+  const { posts, links, experience, projects } = props;
   const { data, loading } = useQuery(homePage);
   const { title, subtitle = "" } = useGetPageData(data);
   const [visibleData, setVisibleData] = useState({
@@ -203,7 +206,9 @@ const HomePage = (props: HomeProps) => {
         {tabs.selected === HomePageTabs.EXPERIENCE && (
           <Experience {...experience} />
         )}
-        {tabs.selected === HomePageTabs.PROJECTS && <Projects />}
+        {tabs.selected === HomePageTabs.PROJECTS && (
+          <Projects projects={projects} />
+        )}
         {tabs.selected === HomePageTabs.BLOGS && <BlogList posts={posts} />}
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
@@ -228,13 +233,17 @@ export default HomePage;
 export async function getStaticProps() {
   const posts = getAllPosts();
   const links = getAllLinks();
-  const experience = await getExperiencePage();
+  const [experience, projects] = await Promise.all([
+    getExperiencePage(),
+    getProjects(),
+  ]);
 
   return {
     props: {
       posts,
       links,
       experience,
+      projects,
     },
     revalidate: SANITY_REVALIDATE,
   };

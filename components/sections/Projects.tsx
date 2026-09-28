@@ -1,24 +1,15 @@
-import { useQuery } from "@apollo/client";
 import classNames from "classnames";
 import { motion } from "motion/react";
 import { useState } from "react";
 
-import ProjectsSkeleton from "@/components/loadingPages/projects.skeleton";
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import PageTitle from "@/components/PageTitle";
 import ProjectCard from "@/components/ProjectCard";
-import { IProjectsPage } from "@/interface/projects.interface";
-import { allProjects } from "@/src/graphql/queries";
+import { IProject } from "@/interface/projects.interface";
 import getProjectsByCategories from "@/src/utils/getProjectsByCategories";
 
-const Projects = () => {
-  const { data, loading } = useQuery(allProjects);
-
-  const { allProject }: IProjectsPage = data || {};
-
-  const allProjectsData = allProject?.map(({ project }) => project);
-
-  const filteredProjects = getProjectsByCategories(allProjectsData);
+const Projects = ({ projects }: { projects: IProject[] }) => {
+  const filteredProjects = getProjectsByCategories(projects);
   const filteredProjectCategories = Object.keys(filteredProjects);
 
   const updateCategoriesOrder = [
@@ -28,10 +19,6 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(
     updateCategoriesOrder?.[0] || "NeoG Camp",
   );
-
-  if (loading) {
-    return <ProjectsSkeleton />;
-  }
 
   return (
     <PageAnimationContainer>
