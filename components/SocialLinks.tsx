@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import {
+  FileArrowDownIcon,
   GithubLogoIcon,
   InstagramLogoIcon,
   LinkedinLogoIcon,
@@ -8,7 +9,6 @@ import {
   XLogoIcon,
 } from "@phosphor-icons/react";
 import classNames from "classnames";
-import { FileArrowDown } from "phosphor-react";
 import React from "react";
 import { RiBlueskyLine, RiMediumFill } from "react-icons/ri";
 import { SiSubstack } from "react-icons/si";
@@ -40,7 +40,8 @@ const iconSwitch = (id: SocialLinkType): JSX.Element => {
     case SocialLinkType.RESUME:
       return (
         <div className="flex gap-2 items-center">
-          <FileArrowDown size={20} /> <span className="text-md">Resume</span>
+          <FileArrowDownIcon size={20} />{" "}
+          <span className="text-md">Resume</span>
         </div>
       );
     default:

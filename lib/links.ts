@@ -1,20 +1,15 @@
 import fs from "fs";
 import path from "path";
 
-import { sync } from "glob";
 import matter from "gray-matter";
 
 const LINKS_PATH = path.join(process.cwd(), "content/links");
 
 export const getLinkSlugs = (): string[] => {
-  const paths = sync(`${LINKS_PATH}/*.{md,mdx}`); // Support both
-
-  return paths.map((filePath) => {
-    const parts = filePath.split("/");
-    const fileName = parts[parts.length - 1];
-    const slug = fileName.replace(/\.mdx?$/, ""); // Removes .md or .mdx
-    return slug;
-  });
+  return fs
+    .readdirSync(LINKS_PATH)
+    .filter((fileName) => /\.mdx?$/.test(fileName)) // Support both .md and .mdx
+    .map((fileName) => fileName.replace(/\.mdx?$/, ""));
 };
 
 export const getLinkFromSlug = (slug: string): Link => {

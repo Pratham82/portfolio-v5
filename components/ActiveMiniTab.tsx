@@ -1,4 +1,4 @@
-import { Minus, Plus } from "phosphor-react";
+import { MinusIcon, PlusIcon } from "@phosphor-icons/react";
 import { Dispatch, SetStateAction } from "react";
 
 type MiniTab = {
@@ -65,13 +65,13 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
               <>
                 <span className="hidden sm:inline">Hide </span>
                 <span className="sm:text-sm text-xs">{tab.shortLabel}</span>
-                <Minus size={12} className="ml-1" />
+                <MinusIcon size={12} className="ml-1" />
               </>
             ) : (
               <>
                 <span className="hidden sm:inline">Show </span>
                 <span className="sm:text-sm text-xs">{tab.shortLabel}</span>
-                <Plus size={12} className="ml-1" />
+                <PlusIcon size={12} className="ml-1" />
               </>
             )}
           </button>

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
+import { CaretRightIcon } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CaretRight } from "phosphor-react";
 import { useState } from "react";
 
 import { WorkExperience } from "../interface/about.interface";
@@ -61,7 +61,7 @@ const WorkExCard = (props: WorkExperience) => {
                     transition={{ duration: 0.2 }}
                     className="text-xl"
                   >
-                    <CaretRight size={16} />
+                    <CaretRightIcon size={16} />
                   </motion.span>
                 )}
               </AnimatePresence>

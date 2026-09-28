@@ -44,8 +44,6 @@ const Post = ({ post }: { post: IMDXPost }) => {
   const date = post?.meta?.date;
   const newPdDate = date ? getFormattedDate(date, "MMM dd, yyyy") : "";
   const readTime = getReadTime(post.content);
-  const tags = post.meta?.tags;
-  console.log("🚀 ~ Post ~ subTitle:", tags);
 
   const mdxRef = useRef<HTMLDivElement>(null);
 

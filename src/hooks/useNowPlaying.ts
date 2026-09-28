@@ -1,7 +1,7 @@
 // hooks/useNowPlaying.ts
 import { useEffect, useState } from "react";
 
-import { NowPlayingSuccessResponse } from "../../pages/api/now-playing";
+import { NowPlayingSuccessResponse } from "@/interface/spotify.interface";
 
 const useNowPlaying = () => {
   const [data, setData] = useState<NowPlayingSuccessResponse | null>(null);

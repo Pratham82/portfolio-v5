@@ -21,6 +21,10 @@ import {
   MobileMenu,
   Skills,
 } from "@/components";
+import BlogList from "@/components/sections/BlogList";
+import Experience from "@/components/sections/Experience";
+import Projects from "@/components/sections/Projects";
+import Uses from "@/components/sections/Uses";
 
 import { HomePageTabs } from "../interface/home.interface";
 import { PostMeta, getAllPosts } from "../lib/blogPosts";
@@ -29,11 +33,6 @@ import { homePage } from "../src/graphql/queries";
 import useGetPageData from "../src/hooks/useGetPageData";
 import useNowPlaying from "../src/hooks/useNowPlaying";
 import useTabs from "../src/hooks/useTabs";
-
-import Blogs from "./blogs";
-import Experience from "./experience";
-import Projects from "./projects";
-import UsesPage from "./uses";
 
 type HomeProps = {
   posts: {
@@ -197,10 +196,10 @@ const HomePage = (props: HomeProps) => {
       <section className="mt-4">
         {tabs.selected === HomePageTabs.EXPERIENCE && <Experience />}
         {tabs.selected === HomePageTabs.PROJECTS && <Projects />}
-        {tabs.selected === HomePageTabs.BLOGS && <Blogs posts={posts} />}
+        {tabs.selected === HomePageTabs.BLOGS && <BlogList posts={posts} />}
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
-        {tabs.selected === HomePageTabs.USES && <UsesPage />}
+        {tabs.selected === HomePageTabs.USES && <Uses />}
       </section>
       <FloatingNav
         isMenuOpen={isMobileMenuOpen}
