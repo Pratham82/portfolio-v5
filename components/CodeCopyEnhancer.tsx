@@ -20,7 +20,7 @@ const CodeCopyEnhancer = ({ children, className }: CodeCopyEnhancerProps) => {
       const button = document.createElement("button");
       button.textContent = "Copy";
       button.className =
-        "copy-btn absolute top-2 right-2 bg-gray-700 text-white text-xs px-2 py-1 rounded-sm hover:bg-gray-600 transition";
+        "copy-btn absolute top-2 right-2 rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-xs text-white/70 transition hover:bg-white/10 hover:text-white";
 
       button.addEventListener("click", () => {
         const code = block.querySelector("code");

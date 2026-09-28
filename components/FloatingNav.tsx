@@ -1,4 +1,6 @@
-import { List, X } from "@phosphor-icons/react";
+import { ListIcon, XIcon } from "@phosphor-icons/react";
+
+import { Button } from "@/components/ui/button";
 
 type FloatingNavProps = {
   isMenuOpen: boolean;
@@ -9,14 +11,15 @@ const FloatingNav = (props: FloatingNavProps) => {
   const { isMenuOpen, onMenuToggle } = props;
 
   return (
-    <button
-      type="button"
+    <Button
+      size="icon-lg"
       aria-label="Toggle Menu"
+      aria-expanded={isMenuOpen}
       onClick={onMenuToggle}
-      className="md:hidden fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-black shadow-lg duration-200 hover:scale-110 active:scale-100"
+      className="fixed bottom-6 right-6 z-50 size-12 rounded-full shadow-lg md:hidden"
     >
-      {isMenuOpen ? <X size={24} /> : <List size={24} />}
-    </button>
+      {isMenuOpen ? <XIcon size={20} /> : <ListIcon size={20} />}
+    </Button>
   );
 };
 

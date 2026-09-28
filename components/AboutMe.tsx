@@ -10,6 +10,9 @@ import { useTheme } from "next-themes";
 import { GitHubCalendar } from "react-github-calendar";
 import { SiLetterboxd, SiSpotify } from "react-icons/si";
 
+import { Button } from "@/components/ui/button";
+import { CALENDAR_THEME } from "@/src/data/calendarTheme";
+
 import PageAnimationContainer from "./PageAnimationContainer";
 import PageTitle from "./PageTitle";
 
@@ -21,13 +24,12 @@ interface SocialCard {
   icon: React.ReactNode;
   button?: {
     text: string;
-    color?: string;
   };
   customContent?: React.ReactNode;
 }
 
 const AboutMe = () => {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
 
   const socialCards: SocialCard[] = [
     {
@@ -46,7 +48,6 @@ const AboutMe = () => {
       icon: <InstagramLogoIcon size={32} weight="fill" />,
       button: {
         text: "Follow 190",
-        color: "bg-blue-500",
       },
     },
 
@@ -58,7 +59,6 @@ const AboutMe = () => {
       icon: <XLogoIcon size={32} weight="fill" />,
       button: {
         text: "Follow",
-        color: "bg-blue-500",
       },
     },
     {
@@ -73,10 +73,9 @@ const AboutMe = () => {
       title: "Pratham82",
       subtitle: "Prathamesh's Spotify",
       url: "https://open.spotify.com/playlist/your-playlist-id",
-      icon: <SiSpotify size={32} className="text-green-500" />,
+      icon: <SiSpotify size={32} />,
       button: {
         text: "Play",
-        color: "bg-green-500",
       },
     },
     {
@@ -93,19 +92,19 @@ const AboutMe = () => {
       icon: <GithubLogoIcon size={32} weight="fill" />,
       button: {
         text: "Follow",
-        color: "bg-gray-200 dark:bg-gray-700",
       },
       customContent: (
         <div className="mt-4">
           <div className="overflow-x-auto">
             <GitHubCalendar
               username="Pratham82"
-              colorScheme={theme === "dark" ? "dark" : "light"}
+              colorScheme={resolvedTheme === "light" ? "light" : "dark"}
+              theme={CALENDAR_THEME}
               blockSize={6}
               fontSize={10}
             />
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+          <p className="mt-2 font-mono text-xs text-muted-foreground">
             1115 contributions in the last year
           </p>
         </div>
@@ -114,41 +113,45 @@ const AboutMe = () => {
   ];
 
   return (
-    <PageAnimationContainer className="sm:w-[575px]">
+    <PageAnimationContainer>
       <PageTitle className="mb-4">About Me</PageTitle>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {socialCards.map((card) => (
           <Link
             key={card.id}
             href={card.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition relative w-full"
+            className="relative block w-full rounded-xl border bg-card/40 p-4 transition-colors hover:bg-accent/50"
           >
             <div className="flex items-start justify-between mb-2 flex-wrap gap-2">
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="shrink-0">{card.icon}</div>
+                <div className="shrink-0 text-muted-foreground">
+                  {card.icon}
+                </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-base font-semibold truncate">
+                  <h3 className="truncate text-sm font-medium text-foreground">
                     {card.title}
                   </h3>
                   {card.subtitle && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                    <p className="truncate text-sm text-muted-foreground">
                       {card.subtitle}
                     </p>
                   )}
                 </div>
               </div>
               {card.button && (
-                <button
-                  className={`${card.button.color || "bg-blue-500"} text-white text-xs px-3 py-1.5 rounded-full font-medium shrink-0 hover:opacity-90 transition`}
+                <Button
+                  size="xs"
+                  variant="secondary"
+                  className="shrink-0 rounded-full px-3"
                   onClick={(e) => {
                     e.preventDefault();
                     window.open(card.url, "_blank");
                   }}
                 >
                   {card.button.text}
-                </button>
+                </Button>
               )}
             </div>
             {card.customContent && (

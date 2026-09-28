@@ -1,12 +1,15 @@
 "use client";
 
-// AnimatedBackground.tsx
+import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 
 const r180 = Math.PI;
 const r90 = Math.PI / 2;
 const r15 = Math.PI / 12;
-const color = "#88888825";
+const STROKE = {
+  dark: "rgba(255, 255, 255, 0.07)",
+  light: "rgba(0, 0, 0, 0.08)",
+};
 
 function polarToCartesian(x = 0, y = 0, r = 0, theta = 0): [number, number] {
   const dx = r * Math.cos(theta);
@@ -16,6 +19,8 @@ function polarToCartesian(x = 0, y = 0, r = 0, theta = 0): [number, number] {
 
 const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { resolvedTheme } = useTheme();
+  const color = resolvedTheme === "light" ? STROKE.light : STROKE.dark;
   const [size, setSize] = useState<{ width: number; height: number }>(() => {
     if (typeof window !== "undefined") {
       return { width: window.innerWidth, height: window.innerHeight };
@@ -131,7 +136,7 @@ const AnimatedBackground = () => {
       window.removeEventListener("resize", resize);
       stopped = true;
     };
-  }, [size.width, size.height]);
+  }, [size.width, size.height, color]);
 
   const mask = "radial-gradient(circle, transparent, black)";
 

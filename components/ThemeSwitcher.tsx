@@ -1,28 +1,34 @@
-import { MoonStarsIcon, Sun } from "@phosphor-icons/react";
+import { MoonStarsIcon, SunIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) {
-    return null;
+    // Same footprint as the button so the header doesn't shift on hydration.
+    return <div className="size-8" />;
   }
 
+  const isDark = resolvedTheme === "dark";
+
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size="icon-sm"
       aria-label="Toggle Theme"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="duration-200 hover:scale-110 active:scale-100"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="-mr-2 text-muted-foreground hover:text-foreground"
     >
-      {theme === "light" ? <MoonStarsIcon size={24} /> : <Sun size={24} />}
-    </button>
+      {isDark ? <SunIcon size={18} /> : <MoonStarsIcon size={18} />}
+    </Button>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 type ChipProps = {
   label: string;
@@ -6,45 +6,18 @@ type ChipProps = {
   isSelected?: boolean;
 };
 
-const themes = {
-  dark: {
-    chipBg: "bg-white/[0.07]",
-    chipBorder: "border-white/15",
-    chipText: "text-white/80",
-    chipHoverBg: "hover:bg-white/12",
-    chipSelectedBg: "bg-white/20",
-  },
-  light: {
-    chipBg: "bg-black/5",
-    chipBorder: "border-black/15",
-    chipText: "text-black/70",
-    chipHoverBg: "hover:bg-black/10",
-    chipSelectedBg: "bg-black/15",
-  },
-} as const;
-
-const Chip = ({ label, onClick, isSelected }: ChipProps) => {
-  const { theme: activeTheme } = useTheme();
-  const t = themes[
-    (activeTheme as keyof typeof themes) ?? "dark"
-  ] as (typeof themes)[keyof typeof themes];
-  const chipClasses = [
-    "rounded-lg border px-2 py-1.5 font-mono text-xs transition-colors",
-    t?.chipBg,
-    t?.chipBorder,
-    t?.chipText,
-    t?.chipHoverBg,
-    isSelected ? t.chipSelectedBg : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  return (
-    <button onClick={onClick} className={chipClasses}>
-      {label}
-    </button>
-  );
-};
+const Chip = ({ label, onClick, isSelected }: ChipProps) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={cn(
+      "rounded-md border bg-secondary/40 px-2 py-1 font-mono text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground",
+      isSelected && "bg-accent text-foreground",
+    )}
+  >
+    {label}
+  </button>
+);
 
 type ChipsProps = {
   skills: { id: string; children?: { id: string }[] }[];
@@ -52,33 +25,26 @@ type ChipsProps = {
   onSkillClick?: (skill: string) => void;
 };
 
-const Chips = ({ skills, selectedSkill, onSkillClick }: ChipsProps) => {
-  const { theme: activeTheme } = useTheme();
-  const t = themes[(activeTheme as keyof typeof themes) ?? "dark"];
-
-  return (
-    <div className="flex flex-wrap gap-2">
-      {skills.map((category) => (
-        <div key={category.id} className="flex flex-col gap-1.5">
-          <span
-            className={`text-xs my-1 font-semibold uppercase tracking-wider ${t?.chipText}`}
-          >
-            {category.id}
-          </span>
-          <div className="flex flex-wrap gap-1.5">
-            {category.children?.map((skill) => (
-              <Chip
-                key={skill.id}
-                label={skill.id}
-                onClick={() => onSkillClick?.(skill.id)}
-                isSelected={selectedSkill === skill.id}
-              />
-            ))}
-          </div>
+const Chips = ({ skills, selectedSkill, onSkillClick }: ChipsProps) => (
+  <div className="flex flex-col gap-4">
+    {skills.map((category) => (
+      <div key={category.id} className="flex flex-col gap-2">
+        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground/80">
+          {category.id}
+        </span>
+        <div className="flex flex-wrap gap-1.5">
+          {category.children?.map((skill) => (
+            <Chip
+              key={skill.id}
+              label={skill.id}
+              onClick={() => onSkillClick?.(skill.id)}
+              isSelected={selectedSkill === skill.id}
+            />
+          ))}
         </div>
-      ))}
-    </div>
-  );
-};
+      </div>
+    ))}
+  </div>
+);
 
 export default Chips;

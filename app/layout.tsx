@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 
-import { JetBrains_Mono } from "next/font/google";
-
 import { Analytics } from "@vercel/analytics/next";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 
@@ -11,25 +11,22 @@ import Layout from "@/components/Layout";
 
 import Providers from "./providers";
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
-});
-
 export const metadata: Metadata = {
   title: "Prathamesh's Website",
   description: "Prathamesh's portfolio website",
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
-  <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-    <body className="dark:bg-gray-950">
-      <AnimatedBackground />
+  <html
+    lang="en"
+    className={`${GeistSans.variable} ${GeistMono.variable} scroll-smooth`}
+    suppressHydrationWarning
+  >
+    <body>
       <Providers>
+        <AnimatedBackground />
         <Layout>
-          <main className={`${jetbrainsMono.variable} font-sans`}>
-            {children}
-          </main>
+          <main>{children}</main>
           <Analytics />
         </Layout>
       </Providers>

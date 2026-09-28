@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 
 import { ReactNode } from "react";
 
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
 type BackButtonProps = {
   href: string;
   className?: string;
@@ -14,13 +17,17 @@ const BackButton = ({ href, className = "", children }: BackButtonProps) => {
   const router = useRouter();
 
   return (
-    <button
-      type="button"
-      className={`flex items-center py-2 hover:scale-105 transition ease-in ${className}`}
+    <Button
+      variant="ghost"
+      size="sm"
+      className={cn(
+        "-ml-3 text-muted-foreground hover:text-foreground",
+        className,
+      )}
       onClick={() => router.push(href)}
     >
       {children}
-    </button>
+    </Button>
   );
 };
 

@@ -4,8 +4,7 @@ import { usePathname } from "next/navigation";
 
 import { ReactNode } from "react";
 
-// import Footer from "./Footer";
-// import Header from "./Header";
+import SiteHeader from "./SiteHeader";
 
 interface LayoutProps {
   children: ReactNode;
@@ -17,20 +16,24 @@ const getContainerClass = (pathname: string): string => {
   for (const [pattern, className] of ROUTE_PATTERNS) {
     if (pattern.test(pathname)) return className;
   }
-  return "max-w-xs sm:max-w-lg lg:max-w-lg";
+  return "max-w-2xl";
 };
 
 const Container: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
-  // Works under both the Pages and App Router.
   const pathname = usePathname() ?? "";
+  // The AI guide ships its own full-bleed nav and dark theme.
+  const showHeader = !pathname.startsWith("/guides");
 
   return (
     <>
-      {/* <Header /> */}
-      <div className="flex min-h-[85vh] justify-center pb-8 pt-8 px-4">
-        <div className={getContainerClass(pathname)}>{children}</div>
+      {showHeader && <SiteHeader />}
+      <div className="flex min-h-[85vh] justify-center px-4 pb-16 pt-8">
+        <div
+          className={`${showHeader ? "w-full" : ""} ${getContainerClass(pathname)}`}
+        >
+          {children}
+        </div>
       </div>
-      {/* <Footer /> */}
     </>
   );
 };

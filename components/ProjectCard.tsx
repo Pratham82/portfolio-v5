@@ -1,54 +1,52 @@
 import Link from "next/link";
 
-import { GithubLogoIcon, LinkSimpleIcon } from "@phosphor-icons/react";
-import { motion } from "motion/react";
+import { ArrowUpRightIcon, GithubLogoIcon } from "@phosphor-icons/react";
+
+import { Badge } from "@/components/ui/badge";
 
 import { IProject } from "../interface/projects.interface";
 
 const ProjectCard = (props: IProject) => {
   const { title, subTitle, githubURL, liveURL } = props;
   return (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      className="border border-slate-300 p-3 rounded-xl"
-    >
-      <h3 className="text-md font-semibold">{title}</h3>
-      <h4 className="text-sm font-thin">{subTitle}</h4>
-      <div className="flex my-2">
+    <div className="flex h-full flex-col p-3">
+      <h3 className="font-medium text-foreground">{title}</h3>
+      <p className="mt-1 flex-1 text-sm text-muted-foreground">{subTitle}</p>
+      <div className="mt-3 flex gap-2">
         {liveURL?.link && (
-          <Link
-            href={liveURL?.link}
-            rel="noopener noreferrer"
-            target="_blank"
-            className="flex border p-1 mr-2 cursor-pointer rounded-xl px-2 text-xs border-slate-300 items-center"
+          <Badge
+            variant="outline"
+            className="text-muted-foreground hover:text-foreground"
+            asChild
           >
-            <LinkSimpleIcon size={16} />
-            <span className="pl-1">Live</span>
-          </Link>
+            <Link
+              href={liveURL?.link}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <ArrowUpRightIcon />
+              Live
+            </Link>
+          </Badge>
         )}
         {githubURL?.link && (
-          <Link
-            href={githubURL?.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex border p-1 mr-2 cursor-pointer rounded-xl px-2 text-xs items-center"
+          <Badge
+            variant="outline"
+            className="text-muted-foreground hover:text-foreground"
+            asChild
           >
-            <GithubLogoIcon size={16} />
-            <span className="pl-1">Github</span>
-          </Link>
+            <Link
+              href={githubURL?.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GithubLogoIcon />
+              Github
+            </Link>
+          </Badge>
         )}
       </div>
-      {/* <div className="flex gap-1 flex-wrap mt-2"> */}
-      {/*   {techStackUsed?.map((techStack) => ( */}
-      {/*     <h5 */}
-      {/*       className="text-sm dark:bg-slate-100 bg-slate-900 text-slate-100  dark:text-slate-900 font-normal py-1 px-1.5 rounded-md" */}
-      {/*       key={techStack} */}
-      {/*     > */}
-      {/*       {techStack} */}
-      {/*     </h5> */}
-      {/*   ))} */}
-      {/* </div> */}
-    </motion.div>
+    </div>
   );
 };
 

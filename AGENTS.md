@@ -10,11 +10,13 @@
 ## Project Structure
 
 - **`app/`**: Routes. `layout.tsx` is the only shell (fonts, theme, animated background, analytics). Root `/` redirects to `/home` (`next.config.js`).
-- **`components/`**: React components; barrel export in `components/index.ts`.
+- **`components/`**: React components. Import each file directly; there is no barrel, because `@/components` resolves to `components.json` before the directory index.
+  - `components/ui/`: shadcn/ui primitives (`button`, `badge`, `card`, `separator`, `tabs`, `tooltip`) plus Aceternity-style accents (`hover-list`, `spotlight`).
+  - `components/SiteHeader.tsx`: the header on every page except `/guides`. It holds the theme toggle.
   - `components/sections/`: the Experience / Projects / Blogs / Uses views, shared by their own routes and the `/home` tabs.
   - `components/home/HomeClient.tsx`: the interactive home page (tabs, keyboard shortcuts, widgets).
 - **`src/`**: Hooks, GraphQL queries (`src/graphql/queries/*.graphql`), utilities, static data.
-- **`lib/`**: Server-side data access.
+- **`lib/`**: Server-side data access, plus `lib/utils.ts` (`cn()`). `cn()` is pure, so client components can import it.
   - `lib/sanity/client.ts`: `sanityQuery()` runs a `.graphql` document against Sanity with `fetch`.
   - `lib/sanity/queries.ts`: typed loaders (`getHomePage`, `getExperiencePage`, `getProjects`, `getResumeLink`, `getAuthorByUsername`).
   - `lib/mdx.ts`: `renderMdx()` compiles local MDX with the site's rehype plugins.
@@ -22,6 +24,15 @@
 - **`content/blogs/`**, **`content/links/`**: local `.md` / `.mdx` parsed with `gray-matter`.
 - **`interface/`**: TypeScript interfaces.
 - **`e2e/`**: Playwright tests and screenshot baselines.
+
+## Design System
+
+- **Colors:** use the semantic tokens defined in `styles/globals.css` (`bg-background`, `bg-card`, `text-muted-foreground`, `border-border`, `bg-accent`, and so on), not raw palette classes like `gray-*` or `slate-*`. The `/guides/ai-guide` page is the one exception; it keeps its own hardcoded dark theme.
+- **Theme:** dark is the default (`defaultTheme="dark"` in `app/providers.tsx`). It is a neutral gray-dark, not pure black. Read `resolvedTheme` from `useTheme()`, never `theme`, because `theme` can be `"system"`.
+- **Fonts:** Geist Sans for text (`font-sans`) and Geist Mono for accents like dates, tags and labels (`font-mono`). Both load through the `geist` package in `app/layout.tsx`.
+- **Code blocks** stay dark in both themes (the `--code` token), because night-owl assumes a dark background.
+- **Adding shadcn components:** run `npx shadcn@latest add <name>`, then `npx eslint --fix components/ui`, which converts the output to arrow functions and double quotes. Check that the CLI imported `cn` from `@/lib/utils`: it has rewritten the import to a `cn` npm package before.
+- **Test hooks:** the selected home tab and the selected project filter are marked with `aria-pressed`, and the e2e tests assert on it.
 
 ## Server vs Client Components
 

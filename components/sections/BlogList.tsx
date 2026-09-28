@@ -3,6 +3,7 @@ import Link from "next/link";
 import BlogCard from "@/components/BlogCard";
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import PageTitle from "@/components/PageTitle";
+import { HoverItem, HoverList } from "@/components/ui/hover-list";
 import type { PostMeta } from "@/lib/blogPosts";
 
 export interface IBlogsProps {
@@ -16,19 +17,17 @@ const BlogList = (props: IBlogsProps) => {
   const { posts } = props;
 
   return (
-    <PageAnimationContainer className="sm:w-[575px]">
+    <PageAnimationContainer>
       <PageTitle>Blogs</PageTitle>
-      <div className="flex flex-col py-3 gap-4">
+      <HoverList className="mt-3 flex flex-col">
         {posts?.map(({ meta: blogData }) => (
-          <Link
-            href={`/blogs/${blogData.slug}`}
-            key={blogData.slug}
-            className="block"
-          >
-            <BlogCard {...blogData} />
-          </Link>
+          <HoverItem id={blogData.slug} key={blogData.slug}>
+            <Link href={`/blogs/${blogData.slug}`} className="block">
+              <BlogCard {...blogData} />
+            </Link>
+          </HoverItem>
         ))}
-      </div>
+      </HoverList>
     </PageAnimationContainer>
   );
 };

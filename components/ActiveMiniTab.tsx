@@ -1,6 +1,8 @@
 import { MinusIcon, PlusIcon } from "@phosphor-icons/react";
 import { Dispatch, SetStateAction } from "react";
 
+import { cn } from "@/lib/utils";
+
 type MiniTab = {
   id: keyof {
     isContributionsVisible: boolean;
@@ -49,7 +51,7 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
   };
 
   return (
-    <div className="flex w-full gap-4">
+    <div className="flex w-full flex-wrap gap-4">
       {miniTabs.map((tab) => {
         const isActive = visibleData[tab.id];
         return (
@@ -57,21 +59,25 @@ const ActiveMiniTabs = (props: ActiveMiniTabProps) => {
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
             type="button"
-            className={`text-sm text-black dark:text-white hover:underline flex items-center gap-2 ${
-              isActive ? "font-bold underline" : ""
-            }`}
+            aria-expanded={isActive}
+            className={cn(
+              "flex items-center gap-1.5 font-mono text-xs transition-colors",
+              isActive
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
             {isActive ? (
               <>
                 <span className="hidden sm:inline">Hide </span>
-                <span className="sm:text-sm text-xs">{tab.shortLabel}</span>
-                <MinusIcon size={12} className="ml-1" />
+                <span>{tab.shortLabel}</span>
+                <MinusIcon size={12} />
               </>
             ) : (
               <>
                 <span className="hidden sm:inline">Show </span>
-                <span className="sm:text-sm text-xs">{tab.shortLabel}</span>
-                <PlusIcon size={12} className="ml-1" />
+                <span>{tab.shortLabel}</span>
+                <PlusIcon size={12} />
               </>
             )}
           </button>
