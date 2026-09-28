@@ -3,7 +3,7 @@ import Link from "next/link";
 import BlogCard from "@/components/BlogCard";
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import PageTitle from "@/components/PageTitle";
-import { PostMeta } from "@/lib/blogPosts";
+import type { PostMeta } from "@/lib/blogPosts";
 
 export interface IBlogsProps {
   posts: {

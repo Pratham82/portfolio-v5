@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+"use client";
 
 import { useTheme } from "next-themes";
 import { Mascot } from "page-mascot";
@@ -23,35 +23,29 @@ import BlogList from "@/components/sections/BlogList";
 import Experience from "@/components/sections/Experience";
 import Projects from "@/components/sections/Projects";
 import Uses from "@/components/sections/Uses";
+import { HomePageTabs } from "@/interface/home.interface";
+import { IProject } from "@/interface/projects.interface";
+import type { PostMeta } from "@/lib/blogPosts";
+import type { LinkMeta } from "@/lib/links";
+import type { ExperiencePageData, HomePageData } from "@/lib/sanity/queries";
+import useNowPlaying from "@/src/hooks/useNowPlaying";
+import useTabs from "@/src/hooks/useTabs";
 
-import { HomePageTabs } from "../interface/home.interface";
-import { IProject } from "../interface/projects.interface";
-import { PostMeta, getAllPosts } from "../lib/blogPosts";
-import { getAllLinks } from "../lib/links";
-import {
-  ExperiencePageData,
-  HomePageData,
-  SANITY_REVALIDATE,
-  getExperiencePage,
-  getHomePage,
-  getProjects,
-  getResumeLink,
-} from "../lib/sanity/queries";
-import useNowPlaying from "../src/hooks/useNowPlaying";
-import useTabs from "../src/hooks/useTabs";
-
-type HomeProps = {
+export type HomeClientProps = {
   posts: {
     content: string;
     meta: PostMeta;
   }[];
-  links: ReturnType<typeof getAllLinks>;
+  links: {
+    content: string;
+    meta: LinkMeta;
+  }[];
   experience: ExperiencePageData;
   projects: IProject[];
   home: HomePageData;
   resumeLink: string;
 };
-const HomePage = (props: HomeProps) => {
+const HomeClient = (props: HomeClientProps) => {
   const { posts, links, experience, projects, home, resumeLink } = props;
   const { title, subtitle } = home;
   const [visibleData, setVisibleData] = useState({
@@ -74,36 +68,27 @@ const HomePage = (props: HomeProps) => {
   };
 
   const { tabs, handleTabChange } = useTabs();
-  const router = useRouter();
-
+  // Read ?from= from window.location rather than useSearchParams: on a static
+  // page useSearchParams needs a Suspense boundary, which would drop the home
+  // content from the server-rendered HTML.
   useEffect(() => {
-    // On a direct load of this static page, router.query is empty until ready.
-    if (!router.isReady) return;
-    const { from, ...restQuery } = router.query;
+    const url = new URL(window.location.href);
+    const from = url.searchParams.get("from");
+    const tabMap: Record<string, HomePageTabs> = {
+      blog: HomePageTabs.BLOGS,
+      links: HomePageTabs.LINKS,
+    };
 
-    if (from && typeof from === "string") {
-      const tabMap: Record<string, HomePageTabs> = {
-        blog: HomePageTabs.BLOGS,
-        links: HomePageTabs.LINKS,
-      };
+    const targetTab = from ? tabMap[from] : undefined;
+    if (targetTab) {
+      handleTabChange(targetTab);
 
-      const targetTab = tabMap[from];
-      if (targetTab) {
-        handleTabChange(targetTab);
-
-        // Clean up the query parameter
-        router.replace(
-          {
-            pathname: router.pathname,
-            query: restQuery,
-          },
-          undefined,
-          { shallow: true },
-        );
-      }
+      // Clean up the query parameter without a navigation.
+      url.searchParams.delete("from");
+      window.history.replaceState(null, "", url.pathname + url.search);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once the query is ready
-  }, [router.isReady]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
+  }, []);
 
   const [title1, title2] = title.split(/(?<=I'm)/).map((s: string) => s.trim());
 
@@ -225,27 +210,4 @@ const HomePage = (props: HomeProps) => {
   );
 };
 
-export default HomePage;
-
-export async function getStaticProps() {
-  const posts = getAllPosts();
-  const links = getAllLinks();
-  const [experience, projects, home, resumeLink] = await Promise.all([
-    getExperiencePage(),
-    getProjects(),
-    getHomePage(),
-    getResumeLink(),
-  ]);
-
-  return {
-    props: {
-      posts,
-      links,
-      experience,
-      projects,
-      home,
-      resumeLink,
-    },
-    revalidate: SANITY_REVALIDATE,
-  };
-}
+export default HomeClient;

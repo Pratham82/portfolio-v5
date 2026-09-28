@@ -1,7 +1,7 @@
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import PageTitle from "@/components/PageTitle";
 import WorkExCard from "@/components/WorkExCard";
-import { ExperiencePageData } from "@/lib/sanity/queries";
+import type { ExperiencePageData } from "@/lib/sanity/queries";
 
 const Experience = ({ title, workExperience }: ExperiencePageData) => {
   return (

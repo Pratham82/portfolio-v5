@@ -156,3 +156,19 @@ test("projects category filter switches categories", async ({ page }) => {
   await expect(second).toHaveClass(/bg-slate-900/);
   await expect(categories.first()).not.toHaveClass(/bg-slate-900/);
 });
+
+test.describe("mobile", () => {
+  test.use({ viewport: { width: 390, height: 844 }, hasTouch: true });
+
+  test("floating menu switches home tabs", async ({ page }) => {
+    await page.goto("/home");
+    await settle(page);
+
+    await page.getByRole("button", { name: "Toggle Menu" }).click();
+    await page.getByRole("button", { name: "Projects", exact: true }).click();
+
+    await expect(
+      page.getByRole("heading", { name: "Projects", exact: true }),
+    ).toBeVisible();
+  });
+});
