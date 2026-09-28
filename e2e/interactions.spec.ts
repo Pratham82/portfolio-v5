@@ -1,6 +1,5 @@
-import { Page } from "@playwright/test";
+import { Page, expect, test } from "@playwright/test";
 
-import { expect, test } from "./fixtures";
 import { BLOG_SLUG, settle, trackErrors } from "./helpers";
 
 const tab = (page: Page, name: string) =>
