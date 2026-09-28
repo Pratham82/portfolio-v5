@@ -9,9 +9,9 @@ const AboutPage = async () => {
   const { workExperience } = await getExperiencePage();
 
   return (
-    <PageAnimationContainer className="w-100%">
-      <div className="flex gap-4 items-start">
-        <div className="flex flex-col">
+    <PageAnimationContainer>
+      <div className="flex items-start gap-4">
+        <div className="flex w-full flex-col">
           {workExperience.map((workEx) => (
             <WorkExCard {...workEx} key={workEx?.companyName} />
           ))}

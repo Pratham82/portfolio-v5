@@ -1492,7 +1492,7 @@ const ContextEngineeringGuide = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-[#e8e6f0]">
+    <div className="min-h-screen bg-[#0a0a0f] font-mono text-[#e8e6f0]">
       {/* Hero */}
       <div className="border-b border-[#2a2a38] bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,#1a0f3a_0%,transparent_70%)]">
         <div className="max-w-4xl mx-auto px-6 sm:px-10 py-12 text-center">

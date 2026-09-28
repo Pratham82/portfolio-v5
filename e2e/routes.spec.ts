@@ -29,6 +29,10 @@ for (const route of ROUTES) {
     for (const colorScheme of ["light", "dark"] as const) {
       test(`matches ${colorScheme} screenshot`, async ({ page }) => {
         await page.emulateMedia({ colorScheme });
+        // The site defaults to dark, so pick the theme explicitly.
+        await page.addInitScript((theme) => {
+          localStorage.setItem("theme", theme);
+        }, colorScheme);
         await page.goto(route);
         await settle(page);
 

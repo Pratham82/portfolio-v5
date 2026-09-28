@@ -3,12 +3,21 @@ import { useEffect, useState } from "react";
 
 import { NowPlayingSuccessResponse } from "@/interface/spotify.interface";
 
-const useNowPlaying = () => {
+/** Matches the route's 30s cache (CACHE_SECONDS in app/api/now-playing). */
+const POLL_INTERVAL_MS = 30_000;
+
+/**
+ * Polls /api/now-playing while `enabled` is true and the tab is visible.
+ * It fetches straight away when it starts or the tab becomes visible again.
+ */
+const useNowPlaying = (enabled = true) => {
   const [data, setData] = useState<NowPlayingSuccessResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!enabled) return undefined;
+
     const fetchNowPlaying = async () => {
       try {
         setLoading(true);
@@ -41,12 +50,30 @@ const useNowPlaying = () => {
       }
     };
 
-    fetchNowPlaying();
-    // every 1 minute:
-    const interval = setInterval(fetchNowPlaying, 60000);
+    let interval: ReturnType<typeof setInterval> | undefined;
 
-    return () => clearInterval(interval);
-  }, []);
+    const start = () => {
+      if (interval) return;
+      fetchNowPlaying();
+      interval = setInterval(fetchNowPlaying, POLL_INTERVAL_MS);
+    };
+    const stop = () => {
+      clearInterval(interval);
+      interval = undefined;
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") start();
+      else stop();
+    };
+
+    onVisibilityChange();
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [enabled]);
 
   return { data, loading, error };
 };

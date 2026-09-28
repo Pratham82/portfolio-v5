@@ -31,31 +31,29 @@ const LinkPage = async ({ params }: LinkPageProps) => {
   const mdx = await renderMdx(content);
 
   return (
-    <PageAnimationContainer className="sm:w-[575px]">
-      <BackButton href="/home?from=links" className="mb-4">
-        <span className="pl-2">← back to links</span>
-      </BackButton>
+    <PageAnimationContainer>
+      <BackButton href="/home?from=links">← back to links</BackButton>
 
-      <h1 className="text-4xl mb-4">{meta?.title}</h1>
+      <h1 className="mb-4 mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+        {meta?.title}
+      </h1>
 
       {meta.url && (
         <a
           href={meta.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 dark:text-blue-400 hover:underline mb-4 block"
+          className="mb-4 block break-all font-mono text-sm text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
         >
           {meta.url}
         </a>
       )}
 
       {meta.description && (
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          {meta.description}
-        </p>
+        <p className="mb-6 text-muted-foreground">{meta.description}</p>
       )}
 
-      <CodeCopyEnhancer className="mt-8 prose dark:prose-invert max-w-none">
+      <CodeCopyEnhancer className="prose prose-neutral mt-8 max-w-none dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:underline-offset-4">
         {mdx}
       </CodeCopyEnhancer>
     </PageAnimationContainer>

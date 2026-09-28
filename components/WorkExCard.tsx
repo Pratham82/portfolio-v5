@@ -18,6 +18,7 @@ const WorkExCard = (props: WorkExperience) => {
     endDate = "",
     companyLogo,
     description,
+    highlights,
   } = props || {};
 
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ const WorkExCard = (props: WorkExperience) => {
     : "Present";
   return (
     <motion.article
-      className="rounded-xl p-2 my-2 shadow-xs bg-white dark:bg-slate-950"
+      className="-mx-3 rounded-lg px-3 py-3 transition-colors hover:bg-accent/40"
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
@@ -37,22 +38,29 @@ const WorkExCard = (props: WorkExperience) => {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
-        className="w-full text-left focus:outline-hidden"
+        className="w-full rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       >
-        <motion.header
-          whileHover={{ scale: 1.01 }}
-          className="flex gap-4 items-start cursor-pointer"
-        >
-          <Image
-            src={companyLogo?.asset?.url || ""}
-            alt={companyLogo?.asset?.label || companyName || "Company logo"}
-            width={45}
-            height={45}
-            className="rounded-md mt-1"
-          />
+        <header className="flex cursor-pointer items-start gap-4">
+          {companyLogo?.asset?.url ? (
+            <Image
+              src={companyLogo.asset.url}
+              alt={companyLogo.asset.label || companyName || "Company logo"}
+              width={45}
+              height={45}
+              className="mt-0.5 rounded-md grayscale-[35%]"
+            />
+          ) : (
+            // Companies that are on the resume but have no logo in Sanity.
+            <span
+              aria-hidden
+              className="mt-0.5 flex size-[45px] shrink-0 items-center justify-center rounded-md border bg-card font-medium text-muted-foreground"
+            >
+              {companyName.charAt(0)}
+            </span>
+          )}
           <div>
             <div className="flex gap-2 items-center">
-              <h3 className="text-md font-bold">{position}</h3>
+              <h3 className="font-medium text-foreground">{position}</h3>
               <AnimatePresence>
                 {isHovered && (
                   <motion.span
@@ -61,28 +69,26 @@ const WorkExCard = (props: WorkExperience) => {
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: -5, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="text-xl"
+                    className="text-muted-foreground"
                   >
                     <CaretRightIcon size={16} />
                   </motion.span>
                 )}
               </AnimatePresence>
             </div>
-            <p className="text-sm">
+            <p className="text-sm text-muted-foreground">
               <span>{companyName}</span>{" "}
-              <span className="text-gray-500">•</span>
-              <span className="ml-2 text-xs font-light dark:text-gray-400 text-gray-500">
-                {location}
-              </span>
+              <span className="text-muted-foreground/60">·</span>
+              <span className="ml-1 text-muted-foreground/80">{location}</span>
             </p>
             <time
-              className="block text-sm font-light dark:text-slate-400 text-gray-700"
-              dateTime={startDateFormatted}
+              className="mt-0.5 block font-mono text-xs text-muted-foreground"
+              dateTime={startDate}
             >
               {startDateFormatted} – {endDateFormatted}
             </time>
           </div>
-        </motion.header>
+        </header>
       </button>
 
       <AnimatePresence>
@@ -91,9 +97,24 @@ const WorkExCard = (props: WorkExperience) => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden mt-3 text-sm text-gray-800 dark:text-slate-200"
+            className="mt-3 overflow-hidden pl-[61px] text-sm leading-relaxed text-muted-foreground"
           >
-            <p>{description && description}</p>
+            {highlights?.length ? (
+              <ul className="flex list-disc flex-col gap-1.5 pl-4 marker:text-muted-foreground/50">
+                {highlights.map(({ label, text }) => (
+                  <li key={`${label ?? ""}${text}`}>
+                    {label && (
+                      <span className="font-medium text-foreground/90">
+                        {label}:{" "}
+                      </span>
+                    )}
+                    {text}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>{description}</p>
+            )}
           </motion.section>
         )}
       </AnimatePresence>

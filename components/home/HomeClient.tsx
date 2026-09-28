@@ -5,29 +5,29 @@ import { Mascot } from "page-mascot";
 import { useEffect, useState } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 
-import {
-  ActiveMiniTabs,
-  HomeTabs,
-  PageAnimationContainer,
-  ScrambleText,
-  SocialLinks,
-  SpotifyNowPlayingMonoChrome,
-  ThemeSwitcher as ThemToggler,
-  Links,
-  AboutMe,
-  FloatingNav,
-  MobileMenu,
-  Skills,
-} from "@/components";
+import AboutMe from "@/components/AboutMe";
+import ActiveMiniTabs from "@/components/ActiveMiniTab";
+import FloatingNav from "@/components/FloatingNav";
+import HomeTabs from "@/components/HomePageTabs";
+import Links from "@/components/Links";
+import MobileMenu from "@/components/MobileMenu";
+import PageAnimationContainer from "@/components/PageAnimationContainer";
+import ScrambleText from "@/components/ScrambleText";
 import BlogList from "@/components/sections/BlogList";
 import Experience from "@/components/sections/Experience";
 import Projects from "@/components/sections/Projects";
 import Uses from "@/components/sections/Uses";
+import Skills from "@/components/Skills";
+import SocialLinks from "@/components/SocialLinks";
+import SpotifyNowPlayingMonoChrome from "@/components/SpotifyNowPlayingMonoChrome";
+import HeroWashes from "@/components/ui/hero-washes";
+import { Separator } from "@/components/ui/separator";
 import { HomePageTabs } from "@/interface/home.interface";
 import { IProject } from "@/interface/projects.interface";
 import type { PostMeta } from "@/lib/blogPosts";
 import type { LinkMeta } from "@/lib/links";
 import type { ExperiencePageData, HomePageData } from "@/lib/sanity/queries";
+import { CALENDAR_THEME } from "@/src/data/calendarTheme";
 import useNowPlaying from "@/src/hooks/useNowPlaying";
 import useTabs from "@/src/hooks/useTabs";
 
@@ -48,6 +48,7 @@ export type HomeClientProps = {
 const HomeClient = (props: HomeClientProps) => {
   const { posts, links, experience, projects, home, resumeLink } = props;
   const { title, subtitle } = home;
+
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
     isNowPlayingVisible: false,
@@ -55,8 +56,9 @@ const HomeClient = (props: HomeClientProps) => {
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const spotifyNowPlayingData = useNowPlaying();
-  const { theme } = useTheme();
+  // Only poll Spotify while the widget is open.
+  const spotifyNowPlayingData = useNowPlaying(visibleData.isNowPlayingVisible);
+  const { resolvedTheme } = useTheme();
 
   const spotifyNowPlayingProps = {
     album: spotifyNowPlayingData.data?.album || "",
@@ -93,15 +95,15 @@ const HomeClient = (props: HomeClientProps) => {
   const [title1, title2] = title.split(/(?<=I'm)/).map((s: string) => s.trim());
 
   return (
-    <PageAnimationContainer className="flex flex-col">
+    <PageAnimationContainer className="relative flex flex-col">
+      <HeroWashes />
       <div className="mb-2 mt-6 flex items-center justify-between">
-        <h1 className="text-[20px] md:text-[28px] font-bold flex items-center gap-2">
+        <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight md:text-3xl">
           {title1}
           <span className="flex items-center gap-1">
-            <ScrambleText text={title2} className="p-0 m-0" />
+            <ScrambleText text={title2} className="m-0 p-0" />
           </span>
         </h1>
-        <ThemToggler />
       </div>
 
       <div className="flex items-center gap-2">
@@ -121,7 +123,7 @@ const HomeClient = (props: HomeClientProps) => {
         />
         <h2
           dangerouslySetInnerHTML={{ __html: subtitle }}
-          className="mt-2 text-sm sm:text-md dark:text-slate-300 text-black"
+          className="mt-2 text-sm leading-relaxed text-foreground/85 sm:text-base"
         />
       </div>
 
@@ -169,7 +171,8 @@ const HomeClient = (props: HomeClientProps) => {
         {visibleData.isContributionsVisible ? (
           <GitHubCalendar
             username="Pratham82"
-            colorScheme={theme === "dark" ? "dark" : "light"}
+            colorScheme={resolvedTheme === "light" ? "light" : "dark"}
+            theme={CALENDAR_THEME}
             blockSize={7}
           />
         ) : null}
@@ -179,12 +182,13 @@ const HomeClient = (props: HomeClientProps) => {
         {visibleData.isSkillsVisible ? <Skills /> : null}
       </div>
 
+      <Separator className="mb-2 mt-2 md:hidden" />
       <HomeTabs
         tabOptions={tabs}
         onTabChange={handleTabChange}
-        className="hidden md:flex"
+        className="mt-2 hidden md:flex"
       />
-      <section className="mt-4">
+      <section className="mt-6">
         {tabs.selected === HomePageTabs.EXPERIENCE && (
           <Experience {...experience} />
         )}

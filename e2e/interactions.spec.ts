@@ -6,7 +6,7 @@ const tab = (page: Page, name: string) =>
   page.getByTestId("home-tabs").getByRole("button", { name, exact: true });
 
 const expectSelected = (page: Page, name: string) =>
-  expect(tab(page, name)).toHaveClass(/font-bold/);
+  expect(tab(page, name)).toHaveAttribute("aria-pressed", "true");
 
 test.describe("home tabs", () => {
   test.beforeEach(async ({ page }) => {
@@ -149,12 +149,12 @@ test("projects category filter switches categories", async ({ page }) => {
   await settle(page);
 
   const categories = page.locator("main button");
-  await expect(categories.first()).toHaveClass(/bg-slate-900/);
+  await expect(categories.first()).toHaveAttribute("aria-pressed", "true");
 
   const second = categories.nth(1);
   await second.click();
-  await expect(second).toHaveClass(/bg-slate-900/);
-  await expect(categories.first()).not.toHaveClass(/bg-slate-900/);
+  await expect(second).toHaveAttribute("aria-pressed", "true");
+  await expect(categories.first()).toHaveAttribute("aria-pressed", "false");
 });
 
 test.describe("mobile", () => {

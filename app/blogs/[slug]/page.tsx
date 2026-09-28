@@ -55,33 +55,35 @@ const PostPage = async ({ params }: PostPageProps) => {
   const readTime = getReadTime(content);
 
   return (
-    <PageAnimationContainer className="sm:w-[575px]">
+    <PageAnimationContainer>
       <BackButton href="/home?from=blog">
         <ArrowLeftIcon />
-        <span className="pl-2">back</span>
+        back
       </BackButton>
 
-      <h1 className="text-4xl">{meta.title}</h1>
+      <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+        {meta.title}
+      </h1>
 
-      <div className="flex items-center py-2">
+      <div className="mt-4 flex items-center gap-3">
         {authorImageUrl && (
           <Image
             src={authorImageUrl}
             alt="author"
-            width={45}
-            height={45}
+            width={36}
+            height={36}
             className="rounded-full"
           />
         )}
-        <div className="flex flex-col pl-2">
-          <span className="text-sm">{author?.name}</span>
-          <span className="text-xs font-thin">
-            {readTime} min read . {publishedDate}
+        <div className="flex flex-col">
+          <span className="text-sm font-medium">{author?.name}</span>
+          <span className="font-mono text-xs text-muted-foreground">
+            {readTime} min read · {publishedDate}
           </span>
         </div>
       </div>
 
-      <CodeCopyEnhancer className="mt-8 prose dark:prose-invert max-w-none">
+      <CodeCopyEnhancer className="prose prose-neutral mt-8 max-w-none dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:underline-offset-4">
         {mdx}
       </CodeCopyEnhancer>
     </PageAnimationContainer>
