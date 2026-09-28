@@ -1,6 +1,6 @@
 import { Page, expect, test } from "@playwright/test";
 
-import { BLOG_SLUG, settle, trackErrors } from "./helpers";
+import { BLOG_SLUG, LINK_SLUG, settle, trackErrors } from "./helpers";
 
 const tab = (page: Page, name: string) =>
   page.getByTestId("home-tabs").getByRole("button", { name, exact: true });
@@ -43,6 +43,15 @@ test.describe("home tabs", () => {
   });
 });
 
+test("links back button returns to the Links tab", async ({ page }) => {
+  await page.goto(`/links/${LINK_SLUG}`);
+  await settle(page);
+  await page.getByRole("button", { name: /back to links/ }).click();
+
+  await expect(page).toHaveURL(/\/home$/);
+  await expectSelected(page, "Links");
+});
+
 test("blog back button returns to the Blogs tab", async ({ page }) => {
   await page.goto(`/blogs/${BLOG_SLUG}`);
   await settle(page);
@@ -52,11 +61,7 @@ test("blog back button returns to the Blogs tab", async ({ page }) => {
   await expectSelected(page, "Blogs");
 });
 
-// Pages Router bug: on a direct load, router.query is empty when the
-// mount-only effect runs. Fixed by the App Router migration (useSearchParams).
-test.fixme("direct load of /home?from=blog opens the Blogs tab", async ({
-  page,
-}) => {
+test("direct load of /home?from=blog opens the Blogs tab", async ({ page }) => {
   await page.goto("/home?from=blog");
   await settle(page);
   await expectSelected(page, "Blogs");

@@ -77,6 +77,8 @@ const HomePage = (props: HomeProps) => {
   const router = useRouter();
 
   useEffect(() => {
+    // On a direct load of this static page, router.query is empty until ready.
+    if (!router.isReady) return;
     const { from, ...restQuery } = router.query;
 
     if (from && typeof from === "string") {
@@ -100,7 +102,8 @@ const HomePage = (props: HomeProps) => {
         );
       }
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once the query is ready
+  }, [router.isReady]);
 
   const [title1, title2] = title.split(/(?<=I'm)/).map((s: string) => s.trim());
 
