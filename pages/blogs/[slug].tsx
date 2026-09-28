@@ -2,7 +2,6 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { useQuery } from "@apollo/client";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import "highlight.js/styles/night-owl.css";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -12,12 +11,12 @@ import { useEffect, useRef } from "react";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
 
-import { BlogSinglePageSkeleton, PageAnimationContainer } from "@/components";
+import { PageAnimationContainer } from "@/components";
+import { SANITY_REVALIDATE, getAuthorByUsername } from "@/lib/sanity/queries";
 
 import { HomePageTabs } from "../../interface/home.interface";
-import { AllAuthorResponse } from "../../interface/post.interface";
+import { Author } from "../../interface/post.interface";
 import { PostMeta, getPostFromSlug, getSlugs } from "../../lib/blogPosts";
-import { fetchAuthorByUserName } from "../../src/graphql/queries";
 import useTabs from "../../src/hooks/useTabs";
 import getFormattedDate from "../../src/utils/getFormattedDate";
 import getReadTime from "../../src/utils/getReadTime";
@@ -28,18 +27,13 @@ interface IMDXPost {
   content: string;
 }
 
-const Post = ({ post }: { post: IMDXPost }) => {
+const Post = ({ post, author }: { post: IMDXPost; author: Author | null }) => {
   const router = useRouter();
   // const { push } = router;
 
   const { handleTabChange } = useTabs();
 
-  const { loading, data: authorsData } = useQuery(fetchAuthorByUserName, {
-    variables: { username: post.meta.author || "pratham82" },
-  });
-
-  const { allAuthor }: AllAuthorResponse = authorsData || {};
-  const authorData = allAuthor?.[0];
+  const authorImageUrl = author?.image?.asset?.url;
 
   const date = post?.meta?.date;
   const newPdDate = date ? getFormattedDate(date, "MMM dd, yyyy") : "";
@@ -76,8 +70,6 @@ const Post = ({ post }: { post: IMDXPost }) => {
     });
   });
 
-  if (loading) return <BlogSinglePageSkeleton />;
-
   return (
     <PageAnimationContainer className="sm:w-[575px]">
       <Head>
@@ -101,15 +93,17 @@ const Post = ({ post }: { post: IMDXPost }) => {
       <h1 className="text-4xl">{post.meta?.title}</h1>
 
       <div className="flex items-center py-2">
-        <Image
-          src={authorData?.image?.asset?.url}
-          alt="author"
-          width={45}
-          height={45}
-          className="rounded-full"
-        />
+        {authorImageUrl && (
+          <Image
+            src={authorImageUrl}
+            alt="author"
+            width={45}
+            height={45}
+            className="rounded-full"
+          />
+        )}
         <div className="flex flex-col pl-2">
-          <span className="text-sm">{authorData?.name}</span>
+          <span className="text-sm">{author?.name}</span>
           <span className="text-xs font-thin">
             {readTime} min read . {newPdDate}
           </span>
@@ -162,8 +156,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   });
 
+  const author = await getAuthorByUsername(meta.author || "pratham82");
+
   return {
-    props: { post: { source: mdxSource, meta, content } },
+    props: { post: { source: mdxSource, meta, content }, author },
+    revalidate: SANITY_REVALIDATE,
   };
 };
 
