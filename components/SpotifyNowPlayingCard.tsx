@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 type SpotifyNowPlayingCardProps = {
   isPlaying: boolean;
@@ -33,10 +33,10 @@ const SpotifyNowPlayingCard = (props: SpotifyNowPlayingCardProps) => {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg px-4 py-3 max-w-sm mx-auto text-white shadow-lg h-20 flex items-center my-4"
+      className="bg-linear-to-br from-green-500 to-green-600 rounded-lg px-4 py-3 max-w-sm mx-auto text-white shadow-lg h-20 flex items-center my-4"
     >
       {/* Album Art */}
-      <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0 mr-3">
+      <motion.div whileHover={{ scale: 1.05 }} className="shrink-0 mr-3">
         <Image
           src={props?.albumImageUrl}
           alt={`${props?.album} album cover`}

@@ -16,7 +16,7 @@ const themes = {
   dark: {
     bg: "#0f0f13",
     containerBg: "bg-[#0f0f13]",
-    containerBorder: "border-white/[0.08]",
+    containerBorder: "border-white/8",
     nodeIndex: "#ffffff",
     nodeLeaf: "#bbbbbb",
     selectedRing: "#ffffff",
@@ -24,7 +24,7 @@ const themes = {
     labelTextMuted: "rgba(255,255,255,0.7)",
     linkColor: "rgba(255,255,255,0.12)",
     particleColor: "rgba(255,255,255,0.5)",
-    badgeBorder: "border-white/[0.15]",
+    badgeBorder: "border-white/15",
     badgeBg: "bg-white/[0.07]",
     badgeText: "text-white/80",
     btnBg: "bg-white/10 hover:bg-white/20",
@@ -44,8 +44,8 @@ const themes = {
     labelTextMuted: "rgba(0,0,0,0.6)",
     linkColor: "rgba(0,0,0,0.15)",
     particleColor: "rgba(0,0,0,0.4)",
-    badgeBorder: "border-black/[0.15]",
-    badgeBg: "bg-black/[0.05]",
+    badgeBorder: "border-black/15",
+    badgeBg: "bg-black/5",
     badgeText: "text-black/70",
     btnBg: "bg-black/5 hover:bg-black/10",
     btnText: "text-black/70",
@@ -122,7 +122,7 @@ const MinimalGraph = (props: MinimalGraphType) => {
 
           {selectedNode && (
             <div
-              className={`pointer-events-none absolute bottom-4 left-4 z-[2] rounded-lg border px-3 py-1.5 font-mono text-xs ${t.badgeBorder} ${t.badgeBg} ${t.badgeText}`}
+              className={`pointer-events-none absolute bottom-4 left-4 z-2 rounded-lg border px-3 py-1.5 font-mono text-xs ${t.badgeBorder} ${t.badgeBg} ${t.badgeText}`}
             >
               {selectedNode.id}
             </div>
@@ -212,7 +212,7 @@ const MinimalGraph = (props: MinimalGraphType) => {
         >
           {selectedNode && (
             <div
-              className={`pointer-events-none absolute bottom-4 left-4 z-[2] rounded-lg border px-3 py-1.5 font-mono text-xs ${t.badgeBorder} ${t.badgeBg} ${t.badgeText}`}
+              className={`pointer-events-none absolute bottom-4 left-4 z-2 rounded-lg border px-3 py-1.5 font-mono text-xs ${t.badgeBorder} ${t.badgeBg} ${t.badgeText}`}
             >
               {selectedNode.id}
             </div>

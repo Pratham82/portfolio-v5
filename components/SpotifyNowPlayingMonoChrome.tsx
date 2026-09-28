@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 type SpotifyNowPlayingCardProps = {
   isPlaying: boolean;
@@ -36,13 +36,13 @@ const SpotifyNowPlayingCard = (props: SpotifyNowPlayingCardProps) => {
       className="bg-neutral-100 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 rounded-lg px-4 py-3 max-w-sm shadow-md h-20 flex items-center my-4"
     >
       {/* Album Art */}
-      <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0 mr-3">
+      <motion.div whileHover={{ scale: 1.05 }} className="shrink-0 mr-3">
         <Image
           src={props?.albumImageUrl}
           alt={`${props?.album} album cover`}
           width={52}
           height={52}
-          className="rounded-md shadow"
+          className="rounded-md shadow-sm"
         />
       </motion.div>
 
@@ -108,8 +108,8 @@ const SpotifyNowPlayingCard = (props: SpotifyNowPlayingCardProps) => {
         >
           {/* White paused button icon */}
           <div className="flex space-x-1">
-            <div className="w-4 h-4 dark:bg-white bg-slate-600 rounded-sm" />
-            {/* <div className="w-1.5 h-4 bg-white rounded-sm" /> */}
+            <div className="w-4 h-4 dark:bg-white bg-slate-600 rounded-xs" />
+            {/* <div className="w-1.5 h-4 bg-white rounded-xs" /> */}
           </div>
         </motion.div>
       )}

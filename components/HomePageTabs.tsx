@@ -9,7 +9,7 @@ const HomeTabs = (props: HomePageTabsProps) => {
   const { tabOptions, onTabChange = () => {}, className = "" } = props;
 
   return (
-    <div className={`flex gap-4 ${className}`}>
+    <div className={`flex gap-4 ${className}`} data-testid="home-tabs">
       {tabOptions.options.map((tab) => (
         <button
           type="button"

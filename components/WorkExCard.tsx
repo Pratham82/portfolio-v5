@@ -1,7 +1,9 @@
+"use client";
+
 import Image from "next/image";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { CaretRight } from "phosphor-react";
+import { CaretRightIcon } from "@phosphor-icons/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 import { WorkExperience } from "../interface/about.interface";
@@ -27,7 +29,7 @@ const WorkExCard = (props: WorkExperience) => {
     : "Present";
   return (
     <motion.article
-      className="rounded-xl p-2 my-2 shadow-sm bg-white dark:bg-slate-950"
+      className="rounded-xl p-2 my-2 shadow-xs bg-white dark:bg-slate-950"
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
@@ -35,7 +37,7 @@ const WorkExCard = (props: WorkExperience) => {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
-        className="w-full text-left focus:outline-none"
+        className="w-full text-left focus:outline-hidden"
       >
         <motion.header
           whileHover={{ scale: 1.01 }}
@@ -61,7 +63,7 @@ const WorkExCard = (props: WorkExperience) => {
                     transition={{ duration: 0.2 }}
                     className="text-xl"
                   >
-                    <CaretRight size={16} />
+                    <CaretRightIcon size={16} />
                   </motion.span>
                 )}
               </AnimatePresence>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import {
+  FileArrowDownIcon,
   GithubLogoIcon,
   InstagramLogoIcon,
   LinkedinLogoIcon,
@@ -8,15 +9,13 @@ import {
   XLogoIcon,
 } from "@phosphor-icons/react";
 import classNames from "classnames";
-import { FileArrowDown } from "phosphor-react";
 import React from "react";
 import { RiBlueskyLine, RiMediumFill } from "react-icons/ri";
 import { SiSubstack } from "react-icons/si";
 
 import { SocialLinkType, socialLinks } from "../src/data/headerData";
-import useGetInfo from "../src/hooks/useGetInfo";
 
-const iconSwitch = (id: SocialLinkType): JSX.Element => {
+const iconSwitch = (id: SocialLinkType): React.JSX.Element => {
   switch (id) {
     case SocialLinkType.TWITTER:
       return <XLogoIcon size={24} />;
@@ -40,7 +39,8 @@ const iconSwitch = (id: SocialLinkType): JSX.Element => {
     case SocialLinkType.RESUME:
       return (
         <div className="flex gap-2 items-center">
-          <FileArrowDown size={20} /> <span className="text-md">Resume</span>
+          <FileArrowDownIcon size={20} />{" "}
+          <span className="text-md">Resume</span>
         </div>
       );
     default:
@@ -50,12 +50,11 @@ const iconSwitch = (id: SocialLinkType): JSX.Element => {
 
 type SocialLinksProps = {
   align: "left" | "center" | "right";
+  resumeLink: string;
 };
 
 const SocialLinks = (props: SocialLinksProps) => {
-  const { align = "" } = props;
-  const { resume } = useGetInfo();
-  const resumeLink = resume?.resumeLink || "";
+  const { align = "", resumeLink } = props;
 
   return (
     <div

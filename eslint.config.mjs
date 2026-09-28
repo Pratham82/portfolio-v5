@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import nextPlugin from "@next/eslint-plugin-next";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import importPlugin from "eslint-plugin-import";
@@ -15,6 +16,8 @@ export default [
       "out/**",
       "build/**",
       "dist/**",
+      "playwright-report/**",
+      "test-results/**",
       "*.config.js",
       "*.config.mjs",
       "package.json",
@@ -43,12 +46,16 @@ export default [
     plugins: {
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
+      "@next/next": nextPlugin,
       "@typescript-eslint": tseslint,
       prettier: prettierPlugin,
       import: importPlugin,
     },
     rules: {
       ...js.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       // Disable base rule as it conflicts with TypeScript version
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [

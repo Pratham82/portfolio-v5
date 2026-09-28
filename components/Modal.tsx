@@ -1,5 +1,5 @@
 import { X } from "@phosphor-icons/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useEffect } from "react";
 
 interface ModalProps {
@@ -37,7 +37,7 @@ const Modal = (props: ModalProps) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-xs"
             onClick={onClose}
           />
           <motion.div

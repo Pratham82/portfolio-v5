@@ -9,16 +9,16 @@ type ChipProps = {
 const themes = {
   dark: {
     chipBg: "bg-white/[0.07]",
-    chipBorder: "border-white/[0.15]",
+    chipBorder: "border-white/15",
     chipText: "text-white/80",
-    chipHoverBg: "hover:bg-white/[0.12]",
+    chipHoverBg: "hover:bg-white/12",
     chipSelectedBg: "bg-white/20",
   },
   light: {
-    chipBg: "bg-black/[0.05]",
-    chipBorder: "border-black/[0.15]",
+    chipBg: "bg-black/5",
+    chipBorder: "border-black/15",
     chipText: "text-black/70",
-    chipHoverBg: "hover:bg-black/[0.10]",
+    chipHoverBg: "hover:bg-black/10",
     chipSelectedBg: "bg-black/15",
   },
 } as const;
