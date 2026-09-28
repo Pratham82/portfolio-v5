@@ -24,6 +24,11 @@ const json = (body: NowPlayingResponse, status = 200) =>
 export const dynamic = "force-dynamic";
 
 export const GET = async () => {
+  if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
+    console.error("now-playing: missing SPOTIFY_* env vars");
+    return json({ isPlaying: false });
+  }
+
   try {
     const tokenResponse = await fetch(
       "https://accounts.spotify.com/api/token",
@@ -35,11 +40,15 @@ export const GET = async () => {
         },
         body: new URLSearchParams({
           grant_type: "refresh_token",
-          refresh_token: SPOTIFY_REFRESH_TOKEN ?? "",
+          refresh_token: SPOTIFY_REFRESH_TOKEN,
         }),
       },
     );
-    if (!tokenResponse.ok) throw new Error("Failed to refresh token");
+    if (!tokenResponse.ok) {
+      throw new Error(
+        `Failed to refresh token (${tokenResponse.status}): ${await tokenResponse.text()}`,
+      );
+    }
 
     const { access_token: SPOTIFY_ACCESS_TOKEN } = await tokenResponse.json();
 
@@ -55,7 +64,11 @@ export const GET = async () => {
     if (nowPlayingResponse.status === 204) {
       return json({ isPlaying: false });
     }
-    if (!nowPlayingResponse.ok) throw new Error("Failed to fetch track");
+    if (!nowPlayingResponse.ok) {
+      throw new Error(
+        `Failed to fetch track (${nowPlayingResponse.status}): ${await nowPlayingResponse.text()}`,
+      );
+    }
 
     const body = await nowPlayingResponse.text();
     if (body === "") {
@@ -79,7 +92,8 @@ export const GET = async () => {
       albumImageUrl,
       songUrl,
     });
-  } catch {
+  } catch (error) {
+    console.error("now-playing:", error);
     return json({ error: "Failed to fetch now playing" }, 500);
   }
 };
