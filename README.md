@@ -73,5 +73,6 @@ The main rules:
 |-----|---------------|
 | [Architecture](docs/architecture.md) | Request lifecycle (ISR), server vs client components, routes, project structure |
 | [Getting started](docs/getting-started.md) | Local setup, environment variables, scripts |
+| [Spotify setup](docs/spotify.md) | Getting the Spotify client credentials and refresh token for the now-playing widget |
 | [Testing & CI](docs/testing.md) | Playwright tests, visual baselines, CI |
 | [Writing content](docs/writing-content.md) | Adding blog posts and links |
