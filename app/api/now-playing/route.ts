@@ -1,5 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-
 import { NowPlayingSuccessResponse } from "@/interface/spotify.interface";
 
 // TODO: drop the NEXT_PUBLIC_ fallbacks once the Vercel env vars are renamed.
@@ -19,10 +17,13 @@ const basic = Buffer.from(
 type NowPlayingResponse =
   NowPlayingSuccessResponse | { isPlaying: false } | { error: string };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<NowPlayingResponse>,
-) {
+const json = (body: NowPlayingResponse, status = 200) =>
+  Response.json(body, { status });
+
+// Always hit Spotify; never cache the currently playing track.
+export const dynamic = "force-dynamic";
+
+export const GET = async () => {
   try {
     const tokenResponse = await fetch(
       "https://accounts.spotify.com/api/token",
@@ -52,13 +53,13 @@ export default async function handler(
     );
 
     if (nowPlayingResponse.status === 204) {
-      return res.status(200).json({ isPlaying: false });
+      return json({ isPlaying: false });
     }
     if (!nowPlayingResponse.ok) throw new Error("Failed to fetch track");
 
     const body = await nowPlayingResponse.text();
     if (body === "") {
-      return res.status(200).json({ isPlaying: false });
+      return json({ isPlaying: false });
     }
 
     const track = JSON.parse(body);
@@ -70,7 +71,7 @@ export default async function handler(
     const albumImageUrl = track.item.album.images[0].url;
     const songUrl = track.item.external_urls.spotify;
 
-    return res.status(200).json({
+    return json({
       isPlaying,
       title,
       artist,
@@ -79,6 +80,6 @@ export default async function handler(
       songUrl,
     });
   } catch {
-    return res.status(500).json({ error: "Failed to fetch now playing" });
+    return json({ error: "Failed to fetch now playing" }, 500);
   }
-}
+};
