@@ -20,9 +20,8 @@ import Uses from "@/components/sections/Uses";
 import Skills from "@/components/Skills";
 import SocialLinks from "@/components/SocialLinks";
 import SpotifyNowPlayingMonoChrome from "@/components/SpotifyNowPlayingMonoChrome";
-import GlowField from "@/components/ui/glow-field";
+import HeroWashes from "@/components/ui/hero-washes";
 import { Separator } from "@/components/ui/separator";
-import Spotlight from "@/components/ui/spotlight";
 import { HomePageTabs } from "@/interface/home.interface";
 import { IProject } from "@/interface/projects.interface";
 import type { PostMeta } from "@/lib/blogPosts";
@@ -49,6 +48,7 @@ export type HomeClientProps = {
 const HomeClient = (props: HomeClientProps) => {
   const { posts, links, experience, projects, home, resumeLink } = props;
   const { title, subtitle } = home;
+
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
     isNowPlayingVisible: false,
@@ -95,8 +95,7 @@ const HomeClient = (props: HomeClientProps) => {
 
   return (
     <PageAnimationContainer className="relative flex flex-col">
-      <GlowField />
-      <Spotlight className="-left-32 -top-56 w-[560px] md:-left-48 md:w-[720px]" />
+      <HeroWashes />
       <div className="mb-2 mt-6 flex items-center justify-between">
         <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight md:text-3xl">
           {title1}
