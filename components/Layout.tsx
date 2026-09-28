@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { usePathname } from "next/navigation";
 
 import { ReactNode } from "react";
 
@@ -19,7 +21,8 @@ const getContainerClass = (pathname: string): string => {
 };
 
 const Container: React.FC<LayoutProps> = ({ children }: LayoutProps) => {
-  const { pathname } = useRouter();
+  // Works under both the Pages and App Router.
+  const pathname = usePathname() ?? "";
 
   return (
     <>

@@ -1,3 +1,5 @@
+"use client";
+
 // AnimatedBackground.tsx
 import { useEffect, useRef, useState } from "react";
 
