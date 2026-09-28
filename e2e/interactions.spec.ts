@@ -143,3 +143,16 @@ test("blog MDX images load", async ({ page }) => {
     .poll(() => image.evaluate((img: HTMLImageElement) => img.naturalWidth))
     .toBeGreaterThan(0);
 });
+
+test("projects category filter switches categories", async ({ page }) => {
+  await page.goto("/projects");
+  await settle(page);
+
+  const categories = page.locator("main button");
+  await expect(categories.first()).toHaveClass(/bg-slate-900/);
+
+  const second = categories.nth(1);
+  await second.click();
+  await expect(second).toHaveClass(/bg-slate-900/);
+  await expect(categories.first()).not.toHaveClass(/bg-slate-900/);
+});

@@ -1,3 +1,5 @@
+"use client";
+
 import classNames from "classnames";
 import { motion } from "motion/react";
 import { useState } from "react";

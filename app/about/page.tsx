@@ -1,12 +1,13 @@
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import WorkExCard from "@/components/WorkExCard";
-import {
-  ExperiencePageData,
-  SANITY_REVALIDATE,
-  getExperiencePage,
-} from "@/lib/sanity/queries";
+import { getExperiencePage } from "@/lib/sanity/queries";
 
-const About = ({ workExperience }: ExperiencePageData) => {
+// Keep in sync with SANITY_REVALIDATE (segment config must be a literal).
+export const revalidate = 3600;
+
+const AboutPage = async () => {
+  const { workExperience } = await getExperiencePage();
+
   return (
     <PageAnimationContainer className="w-100%">
       <div className="flex gap-4 items-start">
@@ -20,11 +21,4 @@ const About = ({ workExperience }: ExperiencePageData) => {
   );
 };
 
-export default About;
-
-export async function getStaticProps() {
-  return {
-    props: await getExperiencePage(),
-    revalidate: SANITY_REVALIDATE,
-  };
-}
+export default AboutPage;
