@@ -1,7 +1,7 @@
 import { Page } from "@playwright/test";
 
 import { expect, test } from "./fixtures";
-import { BLOG_SLUG, settle } from "./helpers";
+import { BLOG_SLUG, settle, trackErrors } from "./helpers";
 
 const tab = (page: Page, name: string) =>
   page.getByTestId("home-tabs").getByRole("button", { name, exact: true });
@@ -99,4 +99,25 @@ test("/api/now-playing responds with the expected shape", async ({
     expect(res.status()).toBe(500);
     expect(body).toHaveProperty("error");
   }
+});
+
+test("home mini tabs render their widgets without errors", async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto("/home");
+  await settle(page);
+
+  const miniTab = (label: string) =>
+    page.getByRole("button", { name: new RegExp(label) });
+
+  await miniTab("Contributions").click();
+  // One <rect> per day in the contributions grid.
+  await expect(page.locator("svg rect").nth(50)).toBeAttached({
+    timeout: 15_000,
+  });
+
+  await miniTab("Now Playing").click();
+  await miniTab("Skills").click();
+  await settle(page);
+
+  expect(errors).toEqual([]);
 });

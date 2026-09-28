@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import classNames from "classnames";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import { tabsData } from "../src/data/headerData";
 import { getCurrentHeadTitle } from "../src/helpers";

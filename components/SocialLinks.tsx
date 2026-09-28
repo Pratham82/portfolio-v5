@@ -16,7 +16,7 @@ import { SiSubstack } from "react-icons/si";
 import { SocialLinkType, socialLinks } from "../src/data/headerData";
 import useGetInfo from "../src/hooks/useGetInfo";
 
-const iconSwitch = (id: SocialLinkType): JSX.Element => {
+const iconSwitch = (id: SocialLinkType): React.JSX.Element => {
   switch (id) {
     case SocialLinkType.TWITTER:
       return <XLogoIcon size={24} />;

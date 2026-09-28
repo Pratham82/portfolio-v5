@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { CaretRightIcon } from "@phosphor-icons/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 import { WorkExperience } from "../interface/about.interface";

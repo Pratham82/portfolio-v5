@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import { useTheme } from "next-themes";
 import { Mascot } from "page-mascot";
 import { useEffect, useState } from "react";
-import GitHubCalendar from "react-github-calendar";
+import { GitHubCalendar } from "react-github-calendar";
 
 import {
   ActiveMiniTabs,

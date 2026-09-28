@@ -1,5 +1,5 @@
 import { X } from "@phosphor-icons/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useEffect } from "react";
 
 interface ModalProps {

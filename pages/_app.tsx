@@ -7,7 +7,7 @@ import Head from "next/head";
 import { ApolloProvider } from "@apollo/client";
 import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
 import { Analytics } from "@vercel/analytics/next";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "motion/react";
 import { ThemeProvider } from "next-themes";
 
 import { AnimatedBackground, Layout } from "@/components";

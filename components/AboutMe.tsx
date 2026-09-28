@@ -7,7 +7,7 @@ import {
   XLogoIcon,
 } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
-import GitHubCalendar from "react-github-calendar";
+import { GitHubCalendar } from "react-github-calendar";
 import { SiLetterboxd, SiSpotify } from "react-icons/si";
 
 import PageAnimationContainer from "./PageAnimationContainer";

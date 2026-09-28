@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 type SpotifyNowPlayingCardProps = {
   isPlaying: boolean;
