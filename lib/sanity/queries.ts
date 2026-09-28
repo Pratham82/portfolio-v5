@@ -12,6 +12,7 @@ import {
   fetchAuthorByUserName,
   homePage,
 } from "@/src/graphql/queries";
+import balanceInlineTags from "@/src/utils/balanceInlineTags";
 
 import { sanityQuery } from "./client";
 
@@ -31,7 +32,11 @@ export const getHomePage = async (): Promise<HomePageData> => {
   }>(homePage);
   const [page] = allHomePage;
 
-  return { title: page?.title ?? "", subtitle: page?.subtitle ?? "" };
+  return {
+    title: page?.title ?? "",
+    // Rendered as raw HTML; an unclosed tag would break hydration.
+    subtitle: balanceInlineTags(page?.subtitle ?? ""),
+  };
 };
 
 export const getExperiencePage = async (): Promise<ExperiencePageData> => {
