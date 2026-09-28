@@ -56,7 +56,8 @@ const HomeClient = (props: HomeClientProps) => {
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const spotifyNowPlayingData = useNowPlaying();
+  // Only poll Spotify while the widget is open.
+  const spotifyNowPlayingData = useNowPlaying(visibleData.isNowPlayingVisible);
   const { resolvedTheme } = useTheme();
 
   const spotifyNowPlayingProps = {

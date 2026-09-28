@@ -69,14 +69,14 @@ const SocialLinks = (props: SocialLinksProps) => {
         align === "left" ? "justify-start" : "justify-center",
       )}
     >
-      {socialLinks?.map(({ id, link }) => (
+      {socialLinks?.map(({ id, link, label, handle }) => (
         <Tooltip key={id}>
           <TooltipTrigger asChild>
             <Link
               href={id === SocialLinkType.RESUME ? resumeLink : link}
               rel="noopener noreferrer"
               target="_blank"
-              aria-label={`Visit my ${id} profile`}
+              aria-label={handle ? `${label}: ${handle}` : label}
               className={cn(
                 "rounded-md text-foreground/75 transition-colors hover:text-foreground",
                 id === SocialLinkType.RESUME ? "ml-2" : "p-1.5",
@@ -85,8 +85,9 @@ const SocialLinks = (props: SocialLinksProps) => {
               {iconSwitch(id)}
             </Link>
           </TooltipTrigger>
-          <TooltipContent className="capitalize">
-            {id.toLowerCase()}
+          <TooltipContent className="flex flex-col items-center gap-0.5">
+            <span className="font-medium">{label}</span>
+            {handle && <span className="font-mono opacity-70">{handle}</span>}
           </TooltipContent>
         </Tooltip>
       ))}

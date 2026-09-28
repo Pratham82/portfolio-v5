@@ -6,7 +6,7 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 
-import AnimatedBackground from "@/components/AnimatedBg";
+// import AnimatedBackground from "@/components/AnimatedBg";
 import Layout from "@/components/Layout";
 
 import Providers from "./providers";
@@ -24,7 +24,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
   >
     <body>
       <Providers>
-        <AnimatedBackground />
+        {/*<AnimatedBackground />*/}
         <Layout>
           <main>{children}</main>
           <Analytics />
