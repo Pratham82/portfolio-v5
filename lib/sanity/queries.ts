@@ -5,6 +5,7 @@ import {
 import { IHomePageResponse } from "@/interface/home.interface";
 import { Author } from "@/interface/post.interface";
 import { IProject, IProjectsPage } from "@/interface/projects.interface";
+import { getResumeExperience, ResumeJob } from "@/lib/resume";
 import {
   aboutPage,
   allExperience,
@@ -39,15 +40,59 @@ export const getHomePage = async (): Promise<HomePageData> => {
   };
 };
 
+const normalizeCompany = (name: string) =>
+  name.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+/**
+ * The resume is the source of truth for roles, dates and bullets; Sanity
+ * supplies the company logos (matched by company name).
+ */
+const mergeWithResume = (
+  cms: WorkExperience[],
+  resumeJobs: ResumeJob[],
+): WorkExperience[] =>
+  resumeJobs.map((job) => {
+    const match = cms.find(
+      (entry) =>
+        normalizeCompany(entry.companyName) ===
+        normalizeCompany(job.companyName),
+    );
+    // The resume only says "Remote"; keep the CMS's more specific
+    // "Indonesia (Remote)" style location when there is one.
+    const location =
+      job.location === "Remote" && match?.location.includes("Remote")
+        ? match.location
+        : job.location;
+
+    return {
+      _key: match?._key ?? normalizeCompany(job.companyName),
+      companyName: job.companyName,
+      position: job.position,
+      location,
+      startDate: job.startDate,
+      endDate: job.endDate ?? "",
+      companyLogo: match?.companyLogo ?? null,
+      description: match?.description ?? "",
+      highlights: job.highlights,
+    };
+  });
+
 export const getExperiencePage = async (): Promise<ExperiencePageData> => {
-  const { allWorkExperiencePage } = await sanityQuery<{
-    allWorkExperiencePage: IAllAboutPageResponse[];
-  }>(allExperience);
+  const [{ allWorkExperiencePage }, resumeLink] = await Promise.all([
+    sanityQuery<{ allWorkExperiencePage: IAllAboutPageResponse[] }>(
+      allExperience,
+    ),
+    getResumeLink(),
+  ]);
   const [page] = allWorkExperiencePage;
+  const cmsExperience = page?.workExperience ?? [];
+  const resumeJobs = await getResumeExperience(resumeLink);
 
   return {
     title: page?.title ?? "",
-    workExperience: page?.workExperience ?? [],
+    workExperience: resumeJobs
+      ? mergeWithResume(cmsExperience, resumeJobs)
+      : cmsExperience,
   };
 };
 

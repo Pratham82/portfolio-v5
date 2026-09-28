@@ -13,8 +13,16 @@ export interface WorkExperience {
   location: string;
   startDate: string;
   endDate: string;
-  companyLogo: CompanyLogo;
+  companyLogo?: CompanyLogo | null;
   description: string;
+  /** Bullet points parsed from the resume (see lib/resume.ts). */
+  highlights?: WorkHighlight[];
+}
+
+export interface WorkHighlight {
+  /** Optional bold lead-in, e.g. "Design System". */
+  label?: string;
+  text: string;
 }
 
 export interface CompanyLogo {

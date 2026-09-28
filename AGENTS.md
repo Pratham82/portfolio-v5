@@ -20,6 +20,7 @@
   - `lib/sanity/client.ts`: `sanityQuery()` runs a `.graphql` document against Sanity with `fetch`.
   - `lib/sanity/queries.ts`: typed loaders (`getHomePage`, `getExperiencePage`, `getProjects`, `getResumeLink`, `getAuthorByUsername`).
   - `lib/mdx.ts`: `renderMdx()` compiles local MDX with the site's rehype plugins.
+  - `lib/resume.ts`: fetches the resume PDF (the Sanity resume link) and parses its Experience section into jobs and bullets.
   - `lib/blogPosts.ts`, `lib/links.ts`: local content parsers.
 - **`content/blogs/`**, **`content/links/`**: local `.md` / `.mdx` parsed with `gray-matter`.
 - **`interface/`**: TypeScript interfaces.
@@ -45,7 +46,8 @@
 
 1. **Sanity CMS**: GraphQL endpoint (`NEXT_PUBLIC_PORTFOLIO_GRAPHQL_ENDPOINT`), queried **only on the server** through `lib/sanity`. Pages use ISR (`export const revalidate = 3600`, which must be a literal and should match `SANITY_REVALIDATE`). The build fails if Sanity is unreachable or the endpoint is missing. The browser never calls Sanity, and an e2e test enforces this.
 2. **Local MDX**: rendered on the server with `next-mdx-remote/rsc`. Slug routes use `generateStaticParams` with `dynamicParams = false`.
-3. **Spotify**: the `app/api/now-playing/route.ts` route handler. Needs the server-only `SPOTIFY_*` env vars (it falls back to the old `NEXT_PUBLIC_SPOTIFY_*` names until Vercel is updated).
+3. **Resume PDF**: `getExperiencePage()` takes roles, dates, locations and bullets from the resume that the Sanity resume link points to (a public Google Drive file works). Sanity still supplies the company logos, matched by company name. The PDF is re-downloaded at most once a day (`RESUME_REVALIDATE`), and on every build. If the resume can't be fetched or parsed, it logs and falls back to the Sanity work experience. The parser expects job headers like `Company · Title Month YYYY – Month YYYY (Location)` and bullets starting with `·`.
+4. **Spotify**: the `app/api/now-playing/route.ts` route handler. Needs the server-only `SPOTIFY_*` env vars (it falls back to the old `NEXT_PUBLIC_SPOTIFY_*` names until Vercel is updated).
 
 ## Developer Commands
 

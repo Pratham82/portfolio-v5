@@ -18,6 +18,7 @@ const WorkExCard = (props: WorkExperience) => {
     endDate = "",
     companyLogo,
     description,
+    highlights,
   } = props || {};
 
   const [isOpen, setIsOpen] = useState(false);
@@ -40,13 +41,23 @@ const WorkExCard = (props: WorkExperience) => {
         className="w-full rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       >
         <header className="flex cursor-pointer items-start gap-4">
-          <Image
-            src={companyLogo?.asset?.url || ""}
-            alt={companyLogo?.asset?.label || companyName || "Company logo"}
-            width={45}
-            height={45}
-            className="mt-0.5 rounded-md grayscale-[35%]"
-          />
+          {companyLogo?.asset?.url ? (
+            <Image
+              src={companyLogo.asset.url}
+              alt={companyLogo.asset.label || companyName || "Company logo"}
+              width={45}
+              height={45}
+              className="mt-0.5 rounded-md grayscale-[35%]"
+            />
+          ) : (
+            // Companies that are on the resume but have no logo in Sanity.
+            <span
+              aria-hidden
+              className="mt-0.5 flex size-[45px] shrink-0 items-center justify-center rounded-md border bg-card font-medium text-muted-foreground"
+            >
+              {companyName.charAt(0)}
+            </span>
+          )}
           <div>
             <div className="flex gap-2 items-center">
               <h3 className="font-medium text-foreground">{position}</h3>
@@ -72,7 +83,7 @@ const WorkExCard = (props: WorkExperience) => {
             </p>
             <time
               className="mt-0.5 block font-mono text-xs text-muted-foreground"
-              dateTime={startDateFormatted}
+              dateTime={startDate}
             >
               {startDateFormatted} – {endDateFormatted}
             </time>
@@ -88,7 +99,22 @@ const WorkExCard = (props: WorkExperience) => {
             exit={{ height: 0, opacity: 0 }}
             className="mt-3 overflow-hidden pl-[61px] text-sm leading-relaxed text-muted-foreground"
           >
-            <p>{description && description}</p>
+            {highlights?.length ? (
+              <ul className="flex list-disc flex-col gap-1.5 pl-4 marker:text-muted-foreground/50">
+                {highlights.map(({ label, text }) => (
+                  <li key={`${label ?? ""}${text}`}>
+                    {label && (
+                      <span className="font-medium text-foreground/90">
+                        {label}:{" "}
+                      </span>
+                    )}
+                    {text}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>{description}</p>
+            )}
           </motion.section>
         )}
       </AnimatePresence>
