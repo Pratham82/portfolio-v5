@@ -1,4 +1,4 @@
-import { CalendarBlankIcon, TagIcon } from "@phosphor-icons/react";
+import { CalendarBlankIcon, TagIcon } from "@phosphor-icons/react/ssr";
 import React from "react";
 
 import { Blog } from "../interface/blogs.interface";

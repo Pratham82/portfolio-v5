@@ -131,3 +131,15 @@ test("resume link comes from Sanity", async ({ page }) => {
   const resume = page.getByRole("link", { name: /resume/i });
   await expect(resume).toHaveAttribute("href", /^https?:\/\//);
 });
+
+test("blog MDX images load", async ({ page }) => {
+  await page.goto("/blogs/system-design-framework");
+  const image = page.getByRole("img", {
+    name: "Frontend System Design Template",
+  });
+
+  await expect(image).toBeVisible();
+  await expect
+    .poll(() => image.evaluate((img: HTMLImageElement) => img.naturalWidth))
+    .toBeGreaterThan(0);
+});
