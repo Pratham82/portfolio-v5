@@ -1,6 +1,0 @@
-query {
-  allCategory {
-    title
-    description
-  }
-}

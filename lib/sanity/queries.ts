@@ -1,5 +1,5 @@
 import {
-  IAllAboutPageResponse,
+  IWorkExperiencePageResponse,
   WorkExperience,
 } from "@/interface/about.interface";
 import { IHomePageResponse } from "@/interface/home.interface";
@@ -7,7 +7,6 @@ import { Author } from "@/interface/post.interface";
 import { IProject, IProjectsPage } from "@/interface/projects.interface";
 import { getResumeExperience, ResumeJob } from "@/lib/resume";
 import {
-  aboutPage,
   allExperience,
   allProjects,
   fetchAuthorByUserName,
@@ -17,10 +16,9 @@ import balanceInlineTags from "@/src/utils/balanceInlineTags";
 
 import { sanityQuery } from "./client";
 
-/** How often (seconds) ISR re-fetches Sanity content. */
-export const SANITY_REVALIDATE = 3600;
+export { SANITY_REVALIDATE } from "./client";
 
-export type HomePageData = Pick<IHomePageResponse, "title" | "subtitle">;
+export type HomePageData = IHomePageResponse;
 
 export type ExperiencePageData = {
   title: string;
@@ -77,16 +75,19 @@ const mergeWithResume = (
     };
   });
 
+/** The Experience singleton holds the work history and the resume link. */
+const getWorkExperienceDoc = async () => {
+  const { allWorkExperiencePage } = await sanityQuery<{
+    allWorkExperiencePage: IWorkExperiencePageResponse[];
+  }>(allExperience);
+
+  return allWorkExperiencePage[0];
+};
+
 export const getExperiencePage = async (): Promise<ExperiencePageData> => {
-  const [{ allWorkExperiencePage }, resumeLink] = await Promise.all([
-    sanityQuery<{ allWorkExperiencePage: IAllAboutPageResponse[] }>(
-      allExperience,
-    ),
-    getResumeLink(),
-  ]);
-  const [page] = allWorkExperiencePage;
+  const page = await getWorkExperienceDoc();
   const cmsExperience = page?.workExperience ?? [];
-  const resumeJobs = await getResumeExperience(resumeLink);
+  const resumeJobs = await getResumeExperience(page?.resume?.resumeLink ?? "");
 
   return {
     title: page?.title ?? "",
@@ -102,13 +103,8 @@ export const getProjects = async (): Promise<IProject[]> => {
   return allProject?.map(({ project }) => project) ?? [];
 };
 
-export const getResumeLink = async (): Promise<string> => {
-  const { allAboutPage } = await sanityQuery<{
-    allAboutPage: IAllAboutPageResponse[];
-  }>(aboutPage);
-
-  return allAboutPage[0]?.resume?.resumeLink ?? "";
-};
+export const getResumeLink = async (): Promise<string> =>
+  (await getWorkExperienceDoc())?.resume?.resumeLink ?? "";
 
 export const getAuthorByUsername = async (
   username: string,

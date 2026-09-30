@@ -1,8 +1,6 @@
 {
   allWorkExperiencePage {
-    pageName
     title
-    subtitle
     workExperience {
       _key
       position
@@ -19,18 +17,7 @@
         }
       }
     }
-    education {
-      _key
-      degree
-      institution {
-        institution
-        startYear
-        endYear
-      }
-    }
     resume {
-      _key
-      resumeText
       resumeLink
     }
   }

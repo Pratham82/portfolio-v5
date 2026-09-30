@@ -32,6 +32,14 @@ sequenceDiagram
 
 If Sanity is down during a rebuild, visitors keep getting the last good page.
 
+Publishing in Sanity doesn't have to wait for the hour. A Sanity webhook POSTs to `/api/revalidate`, which checks the `sanity-webhook-signature` header against `SANITY_REVALIDATE_SECRET` and expires the `sanity` cache tag that every Sanity fetch carries. The next visit to a Sanity-backed page then re-renders with fresh content.
+
+Webhook setup (sanity.io/manage → API → Webhooks):
+
+- URL: `https://<site>/api/revalidate`, method POST
+- Trigger on create, update and delete; the filter can be left empty
+- Secret: the same value as `SANITY_REVALIDATE_SECRET` in Vercel
+
 ## Server vs client rendering
 
 ```mermaid
@@ -78,6 +86,7 @@ The `components/sections/*` views are shared: each one renders both on its own r
 | `/uses`, `/guides/ai-guide` | Static | Hard-coded content |
 | `/api/now-playing` | Dynamic | Spotify |
 | `/api/callback` | Dynamic | One-time Spotify OAuth helper |
+| `/api/revalidate` | Dynamic | Sanity publish webhook (expires the `sanity` cache tag) |
 
 ## Project structure
 
