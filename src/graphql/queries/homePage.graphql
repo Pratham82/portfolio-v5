@@ -1,25 +1,6 @@
 {
   allHomePage {
-    pageName
     title
     subtitle
-    avatar {
-      asset {
-        altText
-        url
-      }
-    }
-    techStack {
-      techStackTitle
-      techStacks
-    }
-    contributions {
-      contributionsTitle
-      contributionsLink
-    }
-    pageRedirects {
-      link
-      linkTitle
-    }
   }
 }

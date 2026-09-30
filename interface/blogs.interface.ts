@@ -1,9 +1,3 @@
-export interface IBlogsPageResponse {
-  __typename: string;
-  pageName: string;
-  subTitle?: null;
-  blog?: Blog[] | null;
-}
 export interface Blog {
   title: string;
   subTitle?: string;

@@ -2,6 +2,12 @@ import { DocumentNode, print } from "graphql";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_PORTFOLIO_GRAPHQL_ENDPOINT;
 
+/** How often (seconds) ISR re-fetches Sanity content. */
+export const SANITY_REVALIDATE = 3600;
+
+/** Cache tag on every Sanity fetch; the publish webhook expires it. */
+export const SANITY_CACHE_TAG = "sanity";
+
 /**
  * Runs a Sanity GraphQL query on the server. Throws on HTTP or GraphQL
  * errors so a failed build (or ISR revalidation) keeps the last good page
@@ -19,6 +25,7 @@ export const sanityQuery = async <T>(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query: print(query), variables }),
+    next: { tags: [SANITY_CACHE_TAG], revalidate: SANITY_REVALIDATE },
   });
   if (!res.ok) {
     throw new Error(`Sanity request failed with status ${res.status}`);
