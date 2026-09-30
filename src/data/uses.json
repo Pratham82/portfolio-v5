@@ -1,0 +1,460 @@
+{
+  "hardware": [
+    {
+      "id": "computers",
+      "title": "Computers",
+      "emoji": "💻",
+      "items": [
+        {
+          "name": "Mac mini M4",
+          "url": "https://www.amazon.in/dp/B0DLCNVB5J",
+          "image": "/uses/hardware/mac-mini-m4.webp"
+        },
+        {
+          "name": "MacBook Air M4",
+          "url": "https://www.amazon.in/dp/B0DZDDV7GC",
+          "image": "/uses/hardware/macbook-air-m4.webp"
+        },
+        {
+          "name": "MacBook Pro M4",
+          "note": "Work laptop",
+          "url": "https://www.amazon.in/dp/B0DLHXVCXJ",
+          "image": "/uses/hardware/macbook-pro-m4.webp"
+        }
+      ]
+    },
+    {
+      "id": "phones-tablets",
+      "title": "Phones & Tablets",
+      "emoji": "📱",
+      "items": [
+        {
+          "name": "iPhone 15 Pro",
+          "url": "https://www.amazon.in/dp/B0CHX7V9TY",
+          "image": "/uses/hardware/iphone-15-pro.webp"
+        },
+        {
+          "name": "Nothing Phone (3)",
+          "url": "https://www.flipkart.com/nothing-phone-3-white-256-gb/p/itm0c32a18b0df8a",
+          "image": "/uses/hardware/nothing-phone-3.webp"
+        },
+        {
+          "name": "iPad Air M4",
+          "url": "https://www.amazon.in/dp/B0GQVHBK9M",
+          "image": "/uses/hardware/ipad-air-m4.webp"
+        }
+      ]
+    },
+    {
+      "id": "display",
+      "title": "Display & Desk",
+      "emoji": "🖥️",
+      "items": [
+        {
+          "name": "LG UltraGear 34GP63A",
+          "note": "34″ ultrawide",
+          "url": "https://www.amazon.in/dp/B0C61NNG55",
+          "image": "/uses/hardware/lg-34gp63a.webp"
+        }
+      ]
+    },
+    {
+      "id": "keyboards",
+      "title": "Keyboards",
+      "emoji": "⌨️",
+      "items": [
+        {
+          "name": "AULA F75",
+          "note": "Gray Gradient, Leobog Reaper switches",
+          "url": "https://www.amazon.in/dp/B0D14N2QZF",
+          "image": "/uses/hardware/aula-f75.webp"
+        },
+        {
+          "name": "Keychron K3 Pro",
+          "note": "White, RGB, hot-swappable",
+          "url": "https://www.amazon.in/dp/B0CNPVQBNK",
+          "image": "/uses/hardware/keychron-k3-pro.webp"
+        },
+        {
+          "name": "Royal Kludge 61",
+          "note": "Black, matcha green keycaps",
+          "url": "https://www.amazon.in/dp/B07P6XYS3V",
+          "image": "/uses/hardware/rk61.webp"
+        },
+        {
+          "name": "Apple Magic Keyboard",
+          "url": "https://www.amazon.in/dp/B0DL72QCGF",
+          "image": "/uses/hardware/magic-keyboard.webp"
+        }
+      ]
+    },
+    {
+      "id": "headphones",
+      "title": "Headphones",
+      "emoji": "🎧",
+      "items": [
+        {
+          "name": "Sony WH-1000XM4",
+          "note": "Cream",
+          "url": "https://www.headphonezone.in/products/sony-wh-1000xm4",
+          "image": "/uses/hardware/sony-wh-1000xm4.webp"
+        }
+      ]
+    },
+    {
+      "id": "tws",
+      "title": "TWS / Wireless",
+      "emoji": "🎧",
+      "items": [
+        {
+          "name": "Apple AirPods Pro 2nd Gen",
+          "url": "https://www.amazon.in/dp/B0CHX719JD",
+          "image": "/uses/hardware/airpods-pro-2.webp"
+        },
+        {
+          "name": "Nothing Ear (a)",
+          "url": "https://www.amazon.in/dp/B0D2MW6L54",
+          "image": "/uses/hardware/nothing-ear-a.webp"
+        },
+        {
+          "name": "Sony WF-1000XM4",
+          "url": "https://www.headphonezone.in/products/sony-wf-1000xm4",
+          "image": "/uses/hardware/sony-wf-1000xm4.webp"
+        }
+      ]
+    },
+    {
+      "id": "iems",
+      "title": "IEMs",
+      "emoji": "🎶",
+      "items": [
+        {
+          "name": "SIMGOT EW300",
+          "note": "Silver",
+          "url": "https://www.headphonezone.in/products/simgot-ew300?variant=44071999242428",
+          "image": "/uses/hardware/simgot-ew300.webp"
+        },
+        {
+          "name": "Moondrop Chu 2",
+          "url": "https://www.headphonezone.in/products/moondrop-chu-ii",
+          "image": "/uses/hardware/moondrop-chu-2.webp"
+        },
+        {
+          "name": "Moondrop Old Fashioned",
+          "url": "https://www.headphonezone.in/products/moondrop-old-fashioned",
+          "image": "/uses/hardware/moondrop-old-fashioned.webp"
+        },
+        {
+          "name": "Headphone Zone × KZ Thunder",
+          "url": "https://www.headphonezone.in/products/headphone-zone-x-kz-thunder",
+          "image": "/uses/hardware/kz-thunder.webp"
+        },
+        {
+          "name": "TANGZU Wan'er S.G 2",
+          "note": "Amethyst Dragon Edition",
+          "url": "https://www.headphonezone.in/products/tangzu-waner-s-g-2-amethyst-dragon-edition",
+          "image": "/uses/hardware/tangzu-waner-sg2-amethyst.webp"
+        }
+      ]
+    },
+    {
+      "id": "dac-dap",
+      "title": "DAC / DAP",
+      "emoji": "🔊",
+      "items": [
+        {
+          "name": "FiiO KA13",
+          "note": "DAC",
+          "url": "https://www.headphonezone.in/products/fiio-ka13",
+          "image": "/uses/hardware/fiio-ka13.webp"
+        },
+        {
+          "name": "HiBy R1",
+          "note": "DAP, black",
+          "url": "https://www.headphonezone.in/products/hiby-r1?variant=51666489770352",
+          "image": "/uses/hardware/hiby-r1.webp"
+        }
+      ]
+    },
+    {
+      "id": "gaming",
+      "title": "Gaming",
+      "emoji": "🎮",
+      "items": [
+        {
+          "name": "PlayStation 5",
+          "url": "https://www.amazon.in/dp/B0CY5QW186",
+          "image": "/uses/hardware/ps5.webp"
+        },
+        {
+          "name": "Nintendo Switch OLED",
+          "url": "https://www.amazon.in/dp/B098RKWHHZ",
+          "image": "/uses/hardware/switch-oled.webp"
+        }
+      ]
+    }
+  ],
+  "software": [
+    {
+      "id": "core",
+      "title": "Core Development Environment",
+      "emoji": "🧠",
+      "items": [
+        {
+          "name": "Visual Studio Code",
+          "url": "https://code.visualstudio.com/",
+          "iconPath": "/uses/software/vscode.webp"
+        },
+        {
+          "name": "Cursor",
+          "url": "https://cursor.com/",
+          "icon": "cursor",
+          "iconDarkColor": "white"
+        },
+        {
+          "name": "Neovim",
+          "url": "https://neovim.io/",
+          "icon": "neovim"
+        },
+        {
+          "name": "Zed",
+          "url": "https://zed.dev/",
+          "icon": "zedindustries"
+        }
+      ]
+    },
+    {
+      "id": "terminal",
+      "title": "Terminal & CLI Workflow",
+      "emoji": "🖥️",
+      "items": [
+        {
+          "name": "Ghostty",
+          "url": "https://ghostty.org/",
+          "icon": "ghostty"
+        },
+        {
+          "name": "tmux",
+          "url": "https://github.com/tmux/tmux",
+          "icon": "tmux"
+        },
+        {
+          "name": "lazygit",
+          "url": "https://github.com/jesseduffield/lazygit",
+          "icon": "git"
+        },
+        {
+          "name": "gh",
+          "url": "https://cli.github.com/",
+          "icon": "github",
+          "iconDarkColor": "white"
+        },
+        {
+          "name": "nvm",
+          "url": "https://github.com/nvm-sh/nvm",
+          "icon": "nvm"
+        }
+      ]
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend & JavaScript",
+      "emoji": "🌐",
+      "items": [
+        {
+          "name": "Node.js",
+          "note": "npm, corepack",
+          "url": "https://nodejs.org/",
+          "icon": "nodedotjs"
+        },
+        {
+          "name": "Deno",
+          "url": "https://deno.com/",
+          "icon": "deno",
+          "iconDarkColor": "white"
+        },
+        {
+          "name": "nodemon",
+          "url": "https://nodemon.io/",
+          "icon": "nodemon"
+        },
+        {
+          "name": "React",
+          "url": "https://react.dev/",
+          "icon": "react"
+        },
+        {
+          "name": "Next.js",
+          "url": "https://nextjs.org/",
+          "icon": "nextdotjs",
+          "iconDarkColor": "white"
+        }
+      ]
+    },
+    {
+      "id": "ai",
+      "title": "AI-Assisted Development",
+      "emoji": "🤖",
+      "items": [
+        {
+          "name": "Claude Code",
+          "note": "Primary AI coding interface",
+          "highlight": true,
+          "url": "https://claude.com/product/claude-code",
+          "icon": "claude"
+        },
+        {
+          "name": "OpenCode",
+          "url": "https://opencode.ai/",
+          "icon": "opencode",
+          "iconDarkColor": "white"
+        },
+        {
+          "name": "GitHub Copilot CLI",
+          "url": "https://github.com/features/copilot/cli",
+          "icon": "githubcopilot",
+          "iconDarkColor": "white"
+        },
+        {
+          "name": "OpenAI Codex CLI",
+          "url": "https://github.com/openai/codex",
+          "iconPath": "/uses/software/chatgpt.webp"
+        },
+        {
+          "name": "Ollama",
+          "url": "https://ollama.com/",
+          "icon": "ollama",
+          "iconDarkColor": "white"
+        },
+        {
+          "name": "ChatGPT",
+          "url": "https://chatgpt.com/",
+          "iconPath": "/uses/software/chatgpt.webp"
+        },
+        {
+          "name": "Claude",
+          "url": "https://claude.ai/",
+          "icon": "claude"
+        }
+      ]
+    },
+    {
+      "id": "mobile",
+      "title": "Mobile Development",
+      "emoji": "📱",
+      "items": [
+        {
+          "name": "Android Studio",
+          "url": "https://developer.android.com/studio",
+          "icon": "androidstudio"
+        },
+        {
+          "name": "Android Platform Tools",
+          "url": "https://developer.android.com/tools/releases/platform-tools",
+          "icon": "android"
+        },
+        {
+          "name": "scrcpy",
+          "url": "https://github.com/Genymobile/scrcpy",
+          "iconPath": "/uses/software/scrcpy.webp"
+        },
+        {
+          "name": "CocoaPods",
+          "url": "https://cocoapods.org/",
+          "icon": "cocoapods"
+        }
+      ]
+    },
+    {
+      "id": "infra",
+      "title": "Dev Environment & Infra",
+      "emoji": "🐳",
+      "items": [
+        {
+          "name": "OrbStack",
+          "url": "https://orbstack.dev/",
+          "iconPath": "/uses/software/orbstack.webp"
+        }
+      ]
+    },
+    {
+      "id": "api-db",
+      "title": "API & Database Tools",
+      "emoji": "🗄️",
+      "items": [
+        {
+          "name": "Postman",
+          "url": "https://www.postman.com/",
+          "icon": "postman"
+        },
+        {
+          "name": "DBeaver",
+          "url": "https://dbeaver.io/",
+          "icon": "dbeaver",
+          "iconDarkColor": "white"
+        }
+      ]
+    },
+    {
+      "id": "productivity",
+      "title": "Productivity & Workflow",
+      "emoji": "⚡",
+      "items": [
+        {
+          "name": "Obsidian",
+          "note": "Knowledge base / second brain",
+          "url": "https://obsidian.md/",
+          "icon": "obsidian"
+        },
+        {
+          "name": "Syncthing",
+          "note": "Syncs Obsidian vaults across devices",
+          "url": "https://syncthing.net/",
+          "icon": "syncthing"
+        },
+        {
+          "name": "Stretchly",
+          "note": "Break reminders, prevents burnout",
+          "url": "https://hovancik.net/stretchly/",
+          "iconPath": "/uses/software/stretchly.webp"
+        },
+        {
+          "name": "Lunar",
+          "note": "Brightness via keyboard",
+          "url": "https://lunar.fyi/",
+          "iconPath": "/uses/software/lunar.webp"
+        },
+        {
+          "name": "AeroSpace",
+          "note": "Keyboard-driven window management",
+          "url": "https://github.com/nikitabobko/AeroSpace",
+          "iconPath": "/uses/software/aerospace.webp"
+        },
+        {
+          "name": "Hidden Bar",
+          "note": "Declutters the menu bar",
+          "url": "https://github.com/dwarvesf/hidden",
+          "iconPath": "/uses/software/hiddenbar.webp"
+        },
+        {
+          "name": "AltTab",
+          "note": "Better Cmd+Tab",
+          "url": "https://alt-tab-macos.netlify.app/",
+          "iconPath": "/uses/software/alttab.webp"
+        },
+        {
+          "name": "Raycast",
+          "note": "Commands, scripts, search",
+          "url": "https://www.raycast.com/",
+          "icon": "raycast"
+        },
+        {
+          "name": "Maccy",
+          "note": "Clipboard management",
+          "url": "https://maccy.app/",
+          "iconPath": "/uses/software/maccy.webp"
+        }
+      ]
+    }
+  ]
+}
