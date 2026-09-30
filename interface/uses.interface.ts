@@ -24,10 +24,16 @@ export interface IUsesSection<T extends IUsesItem> {
   id: string;
   title: string;
   emoji?: string;
+  /** Simple Icons slug for a brand logo; shown instead of the emoji. */
+  logo?: string;
+  /** Local logo SVG under `public/`, for brands Simple Icons doesn't cover. */
+  logoPath?: string;
   items: T[];
 }
 
 export interface IUsesConfig {
   hardware: IUsesSection<IHardwareItem>[];
+  audio: IUsesSection<IHardwareItem>[];
   software: IUsesSection<ISoftwareItem>[];
+  sneakers: IUsesSection<IHardwareItem>[];
 }

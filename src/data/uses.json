@@ -89,6 +89,25 @@
       ]
     },
     {
+      "id": "gaming",
+      "title": "Gaming",
+      "emoji": "🎮",
+      "items": [
+        {
+          "name": "PlayStation 5",
+          "url": "https://www.amazon.in/dp/B0CY5QW186",
+          "image": "/uses/hardware/ps5.webp"
+        },
+        {
+          "name": "Nintendo Switch OLED",
+          "url": "https://www.amazon.in/dp/B098RKWHHZ",
+          "image": "/uses/hardware/switch-oled.webp"
+        }
+      ]
+    }
+  ],
+  "audio": [
+    {
       "id": "headphones",
       "title": "Headphones",
       "emoji": "🎧",
@@ -173,23 +192,6 @@
           "note": "DAP, black",
           "url": "https://www.headphonezone.in/products/hiby-r1?variant=51666489770352",
           "image": "/uses/hardware/hiby-r1.webp"
-        }
-      ]
-    },
-    {
-      "id": "gaming",
-      "title": "Gaming",
-      "emoji": "🎮",
-      "items": [
-        {
-          "name": "PlayStation 5",
-          "url": "https://www.amazon.in/dp/B0CY5QW186",
-          "image": "/uses/hardware/ps5.webp"
-        },
-        {
-          "name": "Nintendo Switch OLED",
-          "url": "https://www.amazon.in/dp/B098RKWHHZ",
-          "image": "/uses/hardware/switch-oled.webp"
         }
       ]
     }
@@ -453,6 +455,91 @@
           "note": "Clipboard management",
           "url": "https://maccy.app/",
           "iconPath": "/uses/software/maccy.webp"
+        }
+      ]
+    }
+  ],
+  "sneakers": [
+    {
+      "id": "jordan",
+      "title": "Jordan",
+      "logo": "jordan",
+      "items": [
+        {
+          "name": "Air Jordan 1 Low",
+          "note": "Bred Toe",
+          "url": "https://www.amazon.com/dp/B0C29MD9M7",
+          "image": "/uses/sneakers/jordan-1-low-bred-toe.webp"
+        }
+      ]
+    },
+    {
+      "id": "nike",
+      "title": "Nike",
+      "logo": "nike",
+      "items": [
+        {
+          "name": "Nike Air Force 1 '07",
+          "note": "Triple White",
+          "url": "https://www.amazon.in/dp/B08F8RG83K",
+          "image": "/uses/sneakers/nike-af1-white.webp"
+        }
+      ]
+    },
+    {
+      "id": "adidas",
+      "title": "adidas",
+      "logo": "adidas",
+      "items": [
+        {
+          "name": "adidas Stan Smith",
+          "note": "White, gum sole",
+          "url": "https://www.amazon.com/dp/B09KMH2SSC",
+          "image": "/uses/sneakers/adidas-stan-smith-gum.webp"
+        }
+      ]
+    },
+    {
+      "id": "asics",
+      "title": "ASICS",
+      "logoPath": "/uses/logos/asics.svg",
+      "items": [
+        {
+          "name": "ASICS Japan S",
+          "note": "White / Red",
+          "url": "https://www.amazon.in/dp/B0D8H4PMW1",
+          "image": "/uses/sneakers/asics-japan-s.webp"
+        },
+        {
+          "name": "ASICS GEL-1130",
+          "note": "Cream / Blueberry",
+          "url": "https://www.amazon.com/s?k=asics+gel-1130+cream+blueberry+1203A609-101",
+          "image": "/uses/sneakers/asics-gel-1130.webp"
+        }
+      ]
+    },
+    {
+      "id": "new-balance",
+      "title": "New Balance",
+      "logo": "newbalance",
+      "items": [
+        {
+          "name": "New Balance 574",
+          "note": "Black / White",
+          "url": "https://www.amazon.in/dp/B0CJY9X4H6",
+          "image": "/uses/sneakers/nb-574-black.webp"
+        },
+        {
+          "name": "New Balance 574",
+          "note": "Grey hairy suede",
+          "url": "https://www.amazon.in/s?k=new+balance+574+grey+hairy+suede",
+          "image": "/uses/sneakers/nb-574-grey.webp"
+        },
+        {
+          "name": "New Balance 530",
+          "note": "Metallic Silver",
+          "url": "https://www.amazon.com/dp/B0G852KGT6",
+          "image": "/uses/sneakers/nb-530-silver.webp"
         }
       ]
     }
