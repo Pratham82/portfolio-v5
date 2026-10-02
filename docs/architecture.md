@@ -102,7 +102,7 @@ lib/
   sanity/             Server-side Sanity client + typed loaders
   mdx.ts              Server MDX rendering (rehype highlight + autolink)
   blogPosts.ts        content/blogs parser
-  links.ts            content/links parser
+  links.ts            Sanity link loader (body rendered as MDX)
 src/
   graphql/queries/    .graphql documents (loaded via graphql-tag/loader)
   hooks/              useTabs, useNowPlaying
