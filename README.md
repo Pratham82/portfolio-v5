@@ -1,6 +1,6 @@
 # Portfolio V5
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Pratham82/portfolio-v5)
+[![Ask DeepWiki](https://img.shields.io/badge/Ask-DeepWiki-1f6feb)](https://deepwiki.com/Pratham82/portfolio-v5)
 
 Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://www.pratham82.in).
 
@@ -14,7 +14,7 @@ Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://w
 | Framework | Next.js 16 (App Router, React Server Components, ISR) |
 | UI | React 19, Tailwind CSS 4, Motion, Phosphor Icons |
 | Content | Sanity CMS (GraphQL), local MDX with `next-mdx-remote` |
-| Integrations | Spotify Web API, GitHub contributions, Vercel Analytics |
+| Integrations | Spotify Web API, PlayStation Network (`psn-api`), GitHub contributions, Vercel Analytics |
 | Tooling | TypeScript 6, ESLint 9, Prettier, Husky, Playwright |
 | Hosting | Vercel (Node 24) |
 
@@ -39,8 +39,10 @@ flowchart TB
         API["Route handlers<br/>/api/now-playing<br/>/api/callback"]
         SanityLib["lib/sanity<br/>sanityQuery + typed loaders<br/>(src/graphql/*.graphql)"]
         MdxLib["lib/mdx<br/>lib/blogPosts · lib/links"]
+        PsnLib["lib/psn<br/>getGamesData"]
         Pages --> SanityLib
         Pages --> MdxLib
+        Pages --> PsnLib
     end
 
     subgraph Sources["Server-side data sources"]
@@ -48,6 +50,7 @@ flowchart TB
         Sanity[("Sanity CMS<br/>GraphQL API")]
         Content[("content/blogs<br/>content/links<br/>.md / .mdx")]
         Spotify[("Spotify<br/>Web API")]
+        PSN[("PlayStation Network<br/>(psn-api)")]
     end
 
     UI -- "HTML + RSC payload" --> Pages
@@ -58,6 +61,7 @@ flowchart TB
     SanityLib -- "GraphQL over fetch" --> Sanity
     MdxLib -- "fs read at build" --> Content
     API -- "refresh token → now playing" --> Spotify
+    PsnLib -- "NPSSO → access token → trophies, games" --> PSN
 ```
 
 The main rules:
@@ -65,6 +69,7 @@ The main rules:
 - **The browser never talks to Sanity's API.** Pages fetch from Sanity on the server, at build time and then again at most once an hour through ISR. An e2e test checks this.
 - **Local MDX** in `content/` is read from disk and compiled to React on the server. The browser gets finished HTML.
 - **Spotify credentials stay on the server.** The browser calls `/api/now-playing`, and that route handler talks to Spotify.
+- **The PSN token stays on the server.** `/games` and `/home` load PlayStation data with `PSN_NPSSO` at build time and then at most once an hour through ISR. If the token is missing or expired, the Games section shows only the curated favourites and the build still passes. An e2e test checks that the browser never calls PSN.
 - **Client components** only handle interactivity: tabs, keyboard shortcuts, the theme, animations, widgets and the code copy buttons.
 
 ## Documentation
@@ -74,5 +79,6 @@ The main rules:
 | [Architecture](docs/architecture.md) | Request lifecycle (ISR), server vs client components, routes, project structure |
 | [Getting started](docs/getting-started.md) | Local setup, environment variables, scripts |
 | [Spotify setup](docs/spotify.md) | Getting the Spotify client credentials and refresh token for the now-playing widget |
+| [PlayStation setup](docs/psn.md) | Getting and renewing the PSN token (NPSSO) for the Games section, plus the PSN auth flow and endpoints it calls |
 | [Testing & CI](docs/testing.md) | Playwright tests, visual baselines, CI |
 | [Writing content](docs/writing-content.md) | Adding blog posts and links |

@@ -45,16 +45,16 @@ Webhook setup (sanity.io/manage → API → Webhooks):
 ```mermaid
 flowchart TB
     subgraph Server["Server Components (no JS shipped)"]
-        HomePage["app/home/page.tsx<br/>loads Sanity data + posts + links in parallel"]
+        HomePage["app/home/page.tsx<br/>loads Sanity data + posts + links + PSN in parallel"]
         BlogPage["app/blogs/[slug]/page.tsx<br/>MDX + author"]
         LinkPage["app/links/[slug]/page.tsx"]
-        SectionPages["app/experience · projects · about · uses · blogs · links"]
+        SectionPages["app/experience · projects · about · uses · games · blogs · links"]
     end
 
     subgraph Client["Client Components ('use client')"]
         HomeClient["components/home/HomeClient<br/>tabs · keyboard shortcuts · mobile menu"]
         Widgets["Spotify card · GitHub calendar · Skills"]
-        Sections["components/sections/*<br/>Experience · Projects · BlogList · Uses"]
+        Sections["components/sections/*<br/>Experience · Projects · BlogList · Uses · Games"]
         Copy["CodeCopyEnhancer"]
         Back["BackButton"]
         Shell["Providers (theme) · Layout · AnimatedBackground"]
@@ -77,13 +77,14 @@ The `components/sections/*` views are shared: each one renders both on its own r
 | Route | Rendering | Data |
 |-------|-----------|------|
 | `/` | Redirects (308) to `/home` | `next.config.js` |
-| `/home` | Static + ISR (1h) | Sanity + local posts/links |
+| `/home` | Static + ISR (1h) | Sanity + local posts/links + PSN |
 | `/experience`, `/about` | Static + ISR (1h) | Sanity work experience |
 | `/projects` | Static + ISR (1h) | Sanity projects |
 | `/blogs` | Static | `content/blogs` |
 | `/blogs/[slug]` | Static + ISR (1h) | MDX + Sanity author |
 | `/links`, `/links/[slug]` | Static | `content/links` |
 | `/uses`, `/guides/ai-guide` | Static | Hard-coded content |
+| `/games` | Static + ISR (1h) | PSN (`lib/psn.ts`) + `src/data/games.json` |
 | `/api/now-playing` | Dynamic | Spotify |
 | `/api/callback` | Dynamic | One-time Spotify OAuth helper |
 | `/api/revalidate` | Dynamic | Sanity publish webhook (expires the `sanity` cache tag) |

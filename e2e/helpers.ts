@@ -9,6 +9,7 @@ export const ROUTES = [
   "/experience",
   "/projects",
   "/uses",
+  "/games",
   "/blogs",
   `/blogs/${BLOG_SLUG}`,
   "/links",

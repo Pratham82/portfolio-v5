@@ -15,6 +15,7 @@ import PageAnimationContainer from "@/components/PageAnimationContainer";
 import ScrambleText from "@/components/ScrambleText";
 import BlogList from "@/components/sections/BlogList";
 import Experience from "@/components/sections/Experience";
+import Games from "@/components/sections/Games";
 import Projects from "@/components/sections/Projects";
 import Uses from "@/components/sections/Uses";
 import Skills from "@/components/Skills";
@@ -22,6 +23,7 @@ import SocialLinks from "@/components/SocialLinks";
 import SpotifyNowPlayingMonoChrome from "@/components/SpotifyNowPlayingMonoChrome";
 import HeroWashes from "@/components/ui/hero-washes";
 import { Separator } from "@/components/ui/separator";
+import type { IGamesData } from "@/interface/games.interface";
 import { HomePageTabs } from "@/interface/home.interface";
 import { IProject } from "@/interface/projects.interface";
 import type { PostMeta } from "@/lib/blogPosts";
@@ -44,9 +46,10 @@ export type HomeClientProps = {
   projects: IProject[];
   home: HomePageData;
   resumeLink: string;
+  games: IGamesData | null;
 };
 const HomeClient = (props: HomeClientProps) => {
-  const { posts, links, experience, projects, home, resumeLink } = props;
+  const { posts, links, experience, projects, home, resumeLink, games } = props;
   const { title, subtitle } = home;
 
   const [visibleData, setVisibleData] = useState({
@@ -199,6 +202,7 @@ const HomeClient = (props: HomeClientProps) => {
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
         {tabs.selected === HomePageTabs.USES && <Uses />}
+        {tabs.selected === HomePageTabs.GAMES && <Games games={games} />}
       </section>
       <FloatingNav
         isMenuOpen={isMobileMenuOpen}

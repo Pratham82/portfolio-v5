@@ -26,6 +26,15 @@ export default [
   },
   js.configs.recommended,
   {
+    // Plain Node scripts (e.g. .github/scripts), outside the TS project.
+    files: ["**/*.mjs"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: globals.node,
+    },
+  },
+  {
     files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       parser: tsParser,
