@@ -2,7 +2,7 @@ import type { INowData } from "@/interface/now.interface";
 import { nowPage } from "@/src/graphql/queries";
 
 import { getFootball } from "./football";
-import { getRecentFilms } from "./letterboxd";
+import { getFavouriteFilms, getRecentFilms } from "./letterboxd";
 import { renderMdx } from "./mdx";
 import { sanityQuery } from "./sanity/client";
 import { getTopItems } from "./spotify";
@@ -30,14 +30,23 @@ export const getNowContent = async () => {
 /** Every live widget on the Now page; each one is `null` if its source fails. */
 export const getNowData = async (): Promise<INowData> => {
   if (!LIVE_WIDGETS) {
-    return { topItems: null, coding: null, football: null, films: null };
+    return {
+      topItems: null,
+      coding: null,
+      football: null,
+      films: null,
+      favouriteFilms: null,
+    };
   }
 
-  const [topItems, coding, football, films] = await Promise.all([
-    getTopItems(),
-    getCodingStats(),
-    getFootball(),
-    getRecentFilms(),
-  ]);
-  return { topItems, coding, football, films };
+  const [topItems, coding, football, films, favouriteFilms] = await Promise.all(
+    [
+      getTopItems(),
+      getCodingStats(),
+      getFootball(),
+      getRecentFilms(),
+      getFavouriteFilms(),
+    ],
+  );
+  return { topItems, coding, football, films, favouriteFilms };
 };

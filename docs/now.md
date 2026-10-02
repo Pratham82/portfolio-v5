@@ -1,13 +1,14 @@
 # Now page setup
 
-The Now page (`/now`, the Now tab under Personal) is a short, hand-written update on what I'm focused on, followed by four live widgets:
+The Now page (`/now`, the Now tab under Personal) is a short, hand-written update on what I'm focused on, followed by five live widgets:
 
 | Widget | Shows | Source | Needs |
 |--------|-------|--------|-------|
 | On repeat | Top 5 artists and tracks, last ~4 weeks | Spotify Web API | `user-top-read` on `SPOTIFY_REFRESH_TOKEN` |
 | Coding this week | Hours coded in the last 7 days, a bar per day, top 5 languages | WakaTime API | `WAKATIME_API_KEY` |
 | Football | Next match, last 3 results (green W / red L) and table position (league + Champions League; rows tinted green → yellow → amber → red by position: top 20%, to 50%, to 80%, bottom 20%) for Man City and Real Madrid | FotMob (unofficial) | nothing |
-| Recently watched | Latest 8 films by the date I watched them, with rating | Letterboxd RSS | nothing |
+| Favourite films | The four films pinned to my Letterboxd profile | Letterboxd API | `LETTERBOXD_API_KEY` + `LETTERBOXD_API_SECRET` |
+| Recently watched | Latest 8 films by the date I watched them, with rating | Letterboxd API (diary), or the public RSS feed without a key | nothing (the API key, if set) |
 
 Every widget loads **on the server only** (`lib/now.ts` → one loader per source) when the page is built, then at most once an hour (ISR). If a source fails or isn't configured, its loader logs and returns `null`, and that widget is simply left out. The page and build never fail because of a third party.
 
@@ -40,12 +41,29 @@ Until then, the build log shows `spotify: Error: top artists (403): ... Insuffic
 
 Stats need a day or two of coding before they show up. The free plan covers the last 7 days, which is all this widget uses.
 
-## 4. Football and movies
+## 4. Football
 
-Nothing to set up.
+Nothing to set up. FotMob's site API needs no key. The clubs are the `TEAMS` list in `lib/football.ts`; a team's ID is in its FotMob URL (`fotmob.com/teams/8456/...`).
 
-- **Football:** FotMob's site API needs no key. The clubs are the `TEAMS` list in `lib/football.ts`; a team's ID is in its FotMob URL (`fotmob.com/teams/8456/...`).
-- **Movies:** the Letterboxd username is `LETTERBOXD_USER` in `lib/letterboxd.ts`. The profile must stay public.
+## 5. Letterboxd: favourite films and recently watched
+
+The favourite films (the top 4 on the profile) are only available from the official [Letterboxd API](https://letterboxd.com/api-beta/). The profile page blocks server requests, and the RSS feed doesn't include favourites. API access is by request:
+
+1. Apply at [letterboxd.com/api-beta](https://letterboxd.com/api-beta/). You get an **API key** and a **shared secret**.
+2. Add both to `.env` and to Vercel (Production + Preview):
+
+   ```bash
+   LETTERBOXD_API_KEY=<key>
+   LETTERBOXD_API_SECRET=<shared secret>
+   ```
+
+3. Redeploy.
+
+With the key set, both widgets use the API: favourites from `GET /member/{id}` and Recently watched from your diary (`GET /log-entries`). Requests are signed as the API requires: `apikey`, `nonce` and `timestamp` query parameters, plus an `Authorization: Signature <hex>` header that is the HMAC-SHA256 of `GET\0<url>\0`, keyed with the secret.
+
+Without the key, Favourite films is hidden, and Recently watched falls back to the public RSS feed, so it keeps working.
+
+The member ID (`MEMBER_ID` in `lib/letterboxd.ts`, `1dGNl`) comes from the public `GET https://api.letterboxd.com/api/v0/search?input=pratham82`, and the username is `LETTERBOXD_USER`. The profile must stay public.
 
 ## Check it works
 
@@ -62,7 +80,8 @@ The log shows a `spotify:`, `wakatime:`, `football:` or `letterboxd:` line for a
 | On repeat | `POST https://accounts.spotify.com/api/token` (refresh token → access token, shared with `/api/now-playing` via `lib/spotify.ts`), then `GET https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=5` and `/v1/me/top/tracks?...` |
 | Coding | `GET https://wakatime.com/api/v1/users/current/stats/last_7_days` and `GET .../summaries?range=last_7_days`, with `Authorization: Basic base64(WAKATIME_API_KEY)` |
 | Football | `GET https://www.fotmob.com/api/data/teams?id=<teamId>` (about 700 KB; uses `fixtures.allFixtures` for matches and `table[]` for standings, one entry per competition with the club's row and the zone legend). Crests: `https://images.fotmob.com/image_resources/logo/teamlogo/<teamId>.png` |
-| Movies | `GET https://letterboxd.com/Pratham82/rss/` (diary entries only; list posts are skipped). Sorted by `letterboxd:watchedDate` (newest first; same day: later `pubDate` first). |
+| Favourite films | `GET https://api.letterboxd.com/api/v0/member/1dGNl` (signed) → `favoriteFilms` |
+| Recently watched | With a key: `GET https://api.letterboxd.com/api/v0/log-entries?member=1dGNl&memberRelationship=Owner&perPage=20` (signed; entries with `diaryDetails` only). Without: `GET https://letterboxd.com/Pratham82/rss/` (diary entries only; list posts are skipped). Either way, sorted by watched date (newest first; same day: logged later first). |
 
 Images come from `i.scdn.co` (Spotify), `images.fotmob.com` and `a.ltrbxd.com`; all are allowed in `next.config.js`.
 
@@ -79,4 +98,6 @@ Playwright sets `NOW_LIVE_WIDGETS=off`, which skips every widget so screenshots 
 | `wakatime: Error: /stats/last_7_days (401)` | Wrong key. Copy the **Secret API Key** again. |
 | `football: Error: team 8456 (...)` | FotMob changed or blocked its API. Only that club is hidden; check the endpoint in a browser. |
 | `letterboxd: Error: feed (...)` | Letterboxd is down, or the profile is private or renamed. |
+| `letterboxd: Error: member/1dGNl (401)` | Wrong `LETTERBOXD_API_KEY` / `LETTERBOXD_API_SECRET`, or the key was revoked. Favourite films is hidden. |
+| `letterboxd api, using RSS: ...` | The API failed for the diary; Recently watched used the RSS feed instead. |
 | Images missing, `Invalid src prop` | A source served images from a new host. Add it to `images.remotePatterns` in `next.config.js`. |

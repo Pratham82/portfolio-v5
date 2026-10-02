@@ -18,6 +18,7 @@ npm run dev                  # http://localhost:3000
 | `SPOTIFY_REFRESH_TOKEN`                  | `lib/spotify` (server)  | See [Spotify setup](spotify.md)      |
 | `PSN_NPSSO`                              | `lib/psn` (server)      | See [PlayStation setup](psn.md)      |
 | `WAKATIME_API_KEY`                       | `lib/wakatime` (server) | See [Now page setup](now.md)         |
+| `LETTERBOXD_API_KEY` / `_SECRET`         | `lib/letterboxd` (server) | See [Now page setup](now.md)       |
 | `SANITY_REVALIDATE_SECRET`               | `/api/revalidate`       | The secret set on the Sanity webhook |
 
 See [Spotify setup](spotify.md) for how to get the three `SPOTIFY_*` values, and [PlayStation setup](psn.md) for `PSN_NPSSO`. Without `PSN_NPSSO` the site still builds; the Games section shows only the curated favourites. [Now page setup](now.md) covers `WAKATIME_API_KEY` and the extra Spotify scope; any Now widget without its key is just hidden.
