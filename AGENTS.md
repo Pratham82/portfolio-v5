@@ -14,6 +14,7 @@
   - `components/ui/`: shadcn/ui primitives (`button`, `badge`, `card`, `separator`, `tabs`, `tooltip`) plus Aceternity-style accents (`hover-list`, `spotlight`).
   - `components/SiteHeader.tsx`: the header on every page except `/guides`. It holds the theme toggle.
   - `components/sections/`: the Experience / Projects / Blogs / Uses / Games / Now views, rendered by the tab routes in `app/(home)/`.
+  - `components/skeletons/TabSkeletons.tsx`: one loading skeleton per tab, used by each `app/(home)/<tab>/loading.tsx`. Each mirrors its tab's wrappers, row heights and grid columns so it takes the same space at every width (Skills and Uses render from the same static data). Update the matching skeleton when a tab's layout changes.
   - `components/home/HomeShell.tsx`: the hero, tab bar and mobile menu, rendered by `app/(home)/layout.tsx` so it stays mounted while tabs change. `src/hooks/useTabs.ts` reads the selected tab from the URL; tabs are `<Link scroll={false}>`s.
 - **`src/`**: Hooks, GraphQL queries (`src/graphql/queries/*.graphql`), utilities, static data.
 - **`lib/`**: Server-side data access, plus `lib/utils.ts` (`cn()`). `cn()` is pure, so client components can import it.
