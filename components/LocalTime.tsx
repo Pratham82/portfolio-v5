@@ -36,7 +36,7 @@ const LocalTime = ({ className }: { className?: string }) => {
     >
       {time && (
         <>
-          · <time>{time}</time> IST
+          · <time className="font-semibold text-foreground/85">{time}</time> IST
         </>
       )}
     </span>
