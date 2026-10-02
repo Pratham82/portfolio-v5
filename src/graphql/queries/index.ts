@@ -3,6 +3,7 @@ import allLinks from "./allLinks.graphql";
 import allProjects from "./allProject.graphql";
 import fetchAuthorByUserName from "./fetchAuthorByUserName.graphql";
 import homePage from "./homePage.graphql";
+import nowFavouriteFilms from "./nowFavouriteFilms.graphql";
 import nowPage from "./nowPage.graphql";
 
 export {
@@ -11,5 +12,6 @@ export {
   allProjects,
   fetchAuthorByUserName,
   homePage,
+  nowFavouriteFilms,
   nowPage,
 };

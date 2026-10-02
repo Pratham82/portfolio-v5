@@ -1,8 +1,9 @@
 import type { INowData } from "@/interface/now.interface";
 import { nowPage } from "@/src/graphql/queries";
 
+import { getFavouriteFilms } from "./favouriteFilms";
 import { getFootball } from "./football";
-import { getFavouriteFilms, getRecentFilms } from "./letterboxd";
+import { getRecentFilms } from "./letterboxd";
 import { renderMdx } from "./mdx";
 import { sanityQuery } from "./sanity/client";
 import { getTopItems } from "./spotify";

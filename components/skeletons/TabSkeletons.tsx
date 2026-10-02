@@ -181,14 +181,9 @@ const WidgetHead = ({ width }: { width: string }) => (
 
 /**
  * `Now`: the MDX text, then On repeat, Coding, Football, Favourite films and
- * Recently watched. Favourite films only render with a Letterboxd API key, so
- * `now/loading.tsx` passes whether one is set.
+ * Recently watched.
  */
-export const NowSkeleton = ({
-  withFavouriteFilms = false,
-}: {
-  withFavouriteFilms?: boolean;
-}) => (
+export const NowSkeleton = () => (
   <Status>
     <div className="mb-4 flex items-center justify-between gap-2">
       <Title width="w-14" />
@@ -264,20 +259,18 @@ export const NowSkeleton = ({
     </div>
 
     {/* Favourite films: 4 posters in one row. */}
-    {withFavouriteFilms && (
-      <div className="mt-10">
-        <WidgetHead width="w-32" />
-        <div className="-mx-3 grid grid-cols-4">
-          {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="p-1.5 sm:p-3">
-              <Bone className="aspect-2/3" />
-              <Line line="mt-2 h-4" bar="h-3 w-4/5" />
-              <Line line="h-4 sm:hidden" bar="h-3 w-1/2" />
-            </div>
-          ))}
-        </div>
+    <div className="mt-10">
+      <WidgetHead width="w-32" />
+      <div className="-mx-3 grid grid-cols-4">
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={i} className="p-1.5 sm:p-3">
+            <Bone className="aspect-2/3" />
+            <Line line="mt-2 h-4" bar="h-3 w-4/5" />
+            <Line line="h-4 sm:hidden" bar="h-3 w-1/2" />
+          </div>
+        ))}
       </div>
-    )}
+    </div>
 
     {/* Recently watched: 8 posters, 3 / 4 columns. */}
     <div className="mt-10">

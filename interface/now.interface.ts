@@ -69,7 +69,7 @@ export interface IFilm {
   url: string;
 }
 
-/** One of the four favourite films on my Letterboxd profile. */
+/** One of my Letterboxd top 4 (picked in Sanity, poster from TMDB). */
 export type IFavouriteFilm = Pick<
   IFilm,
   "title" | "year" | "posterUrl" | "url"
