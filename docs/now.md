@@ -11,7 +11,7 @@ The Now page (`/now` and the Now tab on `/home`) is a short, hand-written update
 
 Every widget loads **on the server only** (`lib/now.ts` → one loader per source) when the page is built, then at most once an hour (ISR). If a source fails or isn't configured, its loader logs and returns `null`, and that widget is simply left out. The page and build never fail because of a third party.
 
-The site header also shows my local time ("10:42 AM in Mumbai"). That's `components/LocalTime.tsx`, rendered in the browser only, and it needs no setup.
+The home page also shows my local time next to my location ("Mumbai📍 · 10:42 AM IST"). That's `components/LocalTime.tsx`, rendered in the browser only, and it needs no setup. `HomeClient` splits the Sanity subtitle at its last `<br>` and puts the clock after that last line, so keep the location as the subtitle's last line.
 
 ## 1. Write the Now text
 
@@ -77,7 +77,7 @@ Images come from `i.scdn.co` (Spotify), `images.fotmob.com` and `a.ltrbxd.com`; 
 
 ## Tests
 
-Playwright sets `NOW_LIVE_WIDGETS=off`, which skips every widget so screenshots don't change with my listening, coding or football results. The header clock is marked `data-volatile` and masked in screenshots. An e2e test asserts the browser never calls any of these APIs.
+Playwright sets `NOW_LIVE_WIDGETS=off`, which skips every widget so screenshots don't change with my listening, coding or football results. The home page clock is marked `data-volatile` and masked in screenshots. An e2e test asserts the browser never calls any of these APIs.
 
 ## Troubleshooting
 

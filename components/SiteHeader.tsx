@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import LocalTime from "./LocalTime";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 const SiteHeader = () => (
@@ -12,10 +11,7 @@ const SiteHeader = () => (
       >
         ~/pratham82
       </Link>
-      <div className="flex items-center gap-3">
-        <LocalTime />
-        <ThemeSwitcher />
-      </div>
+      <ThemeSwitcher />
     </div>
   </header>
 );

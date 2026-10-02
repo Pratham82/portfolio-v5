@@ -10,6 +10,7 @@ import ActiveMiniTabs from "@/components/ActiveMiniTab";
 import FloatingNav from "@/components/FloatingNav";
 import HomeTabs from "@/components/HomePageTabs";
 import Links from "@/components/Links";
+import LocalTime from "@/components/LocalTime";
 import MobileMenu from "@/components/MobileMenu";
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import ScrambleText from "@/components/ScrambleText";
@@ -55,6 +56,14 @@ const HomeClient = (props: HomeClientProps) => {
   const { posts, links, experience, projects, home, resumeLink, games, now } =
     props;
   const { title, subtitle } = home;
+  // The Sanity subtitle ends with "<br> <small>...Mumbai📍...</small>"; split
+  // it off so the local time can sit right after the location.
+  const breakIndex = subtitle.search(/<br\s*\/?>(?![\s\S]*<br)/i);
+  const intro = breakIndex === -1 ? subtitle : subtitle.slice(0, breakIndex);
+  const location =
+    breakIndex === -1
+      ? ""
+      : subtitle.slice(breakIndex).replace(/^<br\s*\/?>/i, "");
 
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
@@ -128,10 +137,16 @@ const HomeClient = (props: HomeClientProps) => {
           label="mascot"
           className="hidden sm:block"
         />
-        <h2
-          dangerouslySetInnerHTML={{ __html: subtitle }}
-          className="mt-2 text-sm leading-relaxed text-foreground/85 sm:text-base"
-        />
+        <h2 className="mt-2 text-sm leading-relaxed text-foreground/85 sm:text-base">
+          <span dangerouslySetInnerHTML={{ __html: intro }} />
+          {location && (
+            <>
+              <br />
+              <span dangerouslySetInnerHTML={{ __html: location }} />{" "}
+              <LocalTime className="text-[10px] sm:text-xs" />
+            </>
+          )}
+        </h2>
       </div>
 
       <div className="my-4">

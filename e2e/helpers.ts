@@ -45,6 +45,6 @@ export const stableScreenshot = (page: Page) => ({
   fullPage: true,
   // The animated background is a full-viewport fixed canvas; hide rather than mask it.
   style: "canvas { visibility: hidden !important; }",
-  // Scrambling title text, and the header clock.
+  // Scrambling title text, and the local-time clock on /home.
   mask: [page.locator("h1 span"), page.locator("[data-volatile]")],
 });

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { cn } from "@/lib/utils";
+
 const formatter = new Intl.DateTimeFormat("en-US", {
   timeZone: "Asia/Kolkata",
   hour: "numeric",
@@ -12,11 +14,11 @@ const formatter = new Intl.DateTimeFormat("en-US", {
 const TICK_MS = 15_000;
 
 /**
- * My local time, so visitors in other time zones know when I'll reply.
- * Rendered only in the browser (the server's clock would be stale in cached
- * HTML and cause a hydration mismatch).
+ * My local time in IST, shown next to my location so visitors in other time
+ * zones know when I'll reply. Rendered only in the browser (the server's
+ * clock would be stale in cached HTML and cause a hydration mismatch).
  */
-const LocalTime = () => {
+const LocalTime = ({ className }: { className?: string }) => {
   const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,14 +29,14 @@ const LocalTime = () => {
   }, []);
 
   return (
-    // Fixed width so the header doesn't shift when the time appears.
     <span
       data-volatile
-      className="hidden min-w-32 text-right font-mono text-xs text-muted-foreground sm:inline-block"
+      title="My local time (IST)"
+      className={cn("font-mono text-muted-foreground", className)}
     >
       {time && (
         <>
-          <time>{time}</time> in Mumbai
+          · <time>{time}</time> IST
         </>
       )}
     </span>
