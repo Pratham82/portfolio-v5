@@ -44,7 +44,30 @@ Don't use a `NEXT_PUBLIC_` name for it. That prefix inlines the value into the b
 
 ## Renewing the token
 
-The NPSSO lasts roughly **2 months** (per psn-api's docs), or less if you sign out of playstation.com everywhere. When it expires, the Games section falls back to the curated favourites and the server logs a `psn:` error; nothing else breaks. To fix it, repeat steps 1–3, update `PSN_NPSSO` in `.env` and Vercel, and redeploy.
+The NPSSO is the `npsso` cookie from your playstation.com sign-in, and it stops working when that cookie expires (commonly reported as about 2 months; psn-api doesn't document it). It also stops early if you sign out of playstation.com everywhere or change your password. When it expires, the Games section falls back to the curated favourites and the server logs a `psn:` error; nothing else breaks.
+
+To renew it:
+
+1. Repeat steps 1–3 to get and check a new NPSSO.
+2. Note its expiry date: in the same browser, DevTools → **Application** → **Cookies** → `https://ca.account.sony.com` → `npsso` → **Expires**.
+3. Update `PSN_NPSSO` in `.env` and Vercel, and redeploy.
+4. Record the expiry date for the reminder below:
+
+   ```bash
+   gh variable set PSN_NPSSO_EXPIRES_ON --body YYYY-MM-DD
+   ```
+
+### Expiry reminder
+
+`.github/workflows/psn-token-reminder.yml` runs daily at 09:00 IST. It reads the `PSN_NPSSO_EXPIRES_ON` repository variable, and from the day before that date it opens an issue labelled `psn-token` and assigned to the repo owner. GitHub emails the assignee, and the issue holds the renewal steps. It opens only one issue at a time; close it once you've renewed. It needs no secrets: it reads a date, not the token. The logic lives in `.github/scripts/psn-token-reminder.mjs`. To test it locally:
+
+```bash
+PSN_NPSSO_EXPIRES_ON=2026-12-01 TODAY=2026-11-30 GITHUB_REPOSITORY=Pratham82/portfolio-v5 DRY_RUN=1 node .github/scripts/psn-token-reminder.mjs
+```
+
+It only knows the date you record. If the token stops working early (sign-out, password change), there's no reminder; the Games section just falls back to favourites.
+
+GitHub pauses scheduled workflows in a public repo after 60 days with no commits, and emails you before it does. If that happens, re-enable the workflow in the **Actions** tab.
 
 ## Auth flow
 

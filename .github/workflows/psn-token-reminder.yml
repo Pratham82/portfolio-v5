@@ -1,0 +1,31 @@
+name: psn-token-reminder
+
+# Opens an issue assigned to the repo owner (GitHub emails it) the day
+# before the PSN NPSSO expires. The date lives in the PSN_NPSSO_EXPIRES_ON
+# repository variable; see docs/psn.md.
+on:
+  schedule:
+    # 03:30 UTC = 09:00 IST, every day.
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node env
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Remind before the PSN token expires
+        env:
+          PSN_NPSSO_EXPIRES_ON: ${{ vars.PSN_NPSSO_EXPIRES_ON }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node .github/scripts/psn-token-reminder.mjs
