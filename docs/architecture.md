@@ -45,16 +45,16 @@ Webhook setup (sanity.io/manage → API → Webhooks):
 ```mermaid
 flowchart TB
     subgraph Server["Server Components (no JS shipped)"]
-        HomePage["app/home/page.tsx<br/>loads Sanity data + posts + links in parallel"]
+        HomePage["app/home/page.tsx<br/>loads Sanity data + posts + links + PSN in parallel"]
         BlogPage["app/blogs/[slug]/page.tsx<br/>MDX + author"]
         LinkPage["app/links/[slug]/page.tsx"]
-        SectionPages["app/experience · projects · about · uses · blogs · links"]
+        SectionPages["app/experience · projects · about · uses · games · blogs · links"]
     end
 
     subgraph Client["Client Components ('use client')"]
         HomeClient["components/home/HomeClient<br/>tabs · keyboard shortcuts · mobile menu"]
         Widgets["Spotify card · GitHub calendar · Skills"]
-        Sections["components/sections/*<br/>Experience · Projects · BlogList · Uses"]
+        Sections["components/sections/*<br/>Experience · Projects · BlogList · Uses · Games"]
         Copy["CodeCopyEnhancer"]
         Back["BackButton"]
         Shell["Providers (theme) · Layout · AnimatedBackground"]
