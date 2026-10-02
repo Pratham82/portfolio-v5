@@ -41,6 +41,14 @@ module.exports = {
         protocol: "https",
         hostname: "psnobj.prod.dl.playstation.net",
       },
+      {
+        protocol: "https",
+        hostname: "a.ltrbxd.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.fotmob.com",
+      },
     ],
   },
   async redirects() {

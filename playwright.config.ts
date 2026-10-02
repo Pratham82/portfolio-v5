@@ -30,7 +30,8 @@ export default defineConfig({
     // Always test a fresh production build, never a running dev server.
     reuseExistingServer: false,
     timeout: 300_000,
-    // Render the PSN fallback, so screenshots don't change with my playtime.
-    env: { PSN_NPSSO: "" },
+    // Render the PSN and Now-widget fallbacks, so screenshots don't change
+    // with my playtime, listening, coding or football results.
+    env: { PSN_NPSSO: "", NOW_LIVE_WIDGETS: "off" },
   },
 });

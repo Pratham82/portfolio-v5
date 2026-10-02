@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { Mascot } from "page-mascot";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 
 import AboutMe from "@/components/AboutMe";
@@ -16,6 +16,7 @@ import ScrambleText from "@/components/ScrambleText";
 import BlogList from "@/components/sections/BlogList";
 import Experience from "@/components/sections/Experience";
 import Games from "@/components/sections/Games";
+import Now from "@/components/sections/Now";
 import Projects from "@/components/sections/Projects";
 import Uses from "@/components/sections/Uses";
 import Skills from "@/components/Skills";
@@ -25,6 +26,7 @@ import HeroWashes from "@/components/ui/hero-washes";
 import { Separator } from "@/components/ui/separator";
 import type { IGamesData } from "@/interface/games.interface";
 import { HomePageTabs } from "@/interface/home.interface";
+import type { INowData } from "@/interface/now.interface";
 import { IProject } from "@/interface/projects.interface";
 import type { PostMeta } from "@/lib/blogPosts";
 import type { LinkMeta } from "@/lib/links";
@@ -47,9 +49,11 @@ export type HomeClientProps = {
   home: HomePageData;
   resumeLink: string;
   games: IGamesData | null;
+  now: { updated: string; content: ReactNode; data: INowData };
 };
 const HomeClient = (props: HomeClientProps) => {
-  const { posts, links, experience, projects, home, resumeLink, games } = props;
+  const { posts, links, experience, projects, home, resumeLink, games, now } =
+    props;
   const { title, subtitle } = home;
 
   const [visibleData, setVisibleData] = useState({
@@ -203,6 +207,7 @@ const HomeClient = (props: HomeClientProps) => {
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
         {tabs.selected === HomePageTabs.USES && <Uses />}
         {tabs.selected === HomePageTabs.GAMES && <Games games={games} />}
+        {tabs.selected === HomePageTabs.NOW && <Now {...now} />}
       </section>
       <FloatingNav
         isMenuOpen={isMobileMenuOpen}
