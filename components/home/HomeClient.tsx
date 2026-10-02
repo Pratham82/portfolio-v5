@@ -1,17 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
+
 import { useTheme } from "next-themes";
 import { Mascot } from "page-mascot";
 import { ReactNode, useEffect, useState } from "react";
-import { GitHubCalendar } from "react-github-calendar";
 
 import AboutMe from "@/components/AboutMe";
-import ActiveMiniTabs from "@/components/ActiveMiniTab";
 import FloatingNav from "@/components/FloatingNav";
 import HomeTabs from "@/components/HomePageTabs";
 import Links from "@/components/Links";
 import LocalTime from "@/components/LocalTime";
 import MobileMenu from "@/components/MobileMenu";
+import NowPlayingPill from "@/components/NowPlayingPill";
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import ScrambleText from "@/components/ScrambleText";
 import BlogList from "@/components/sections/BlogList";
@@ -22,7 +23,6 @@ import Projects from "@/components/sections/Projects";
 import Uses from "@/components/sections/Uses";
 import Skills from "@/components/Skills";
 import SocialLinks from "@/components/SocialLinks";
-import SpotifyNowPlayingMonoChrome from "@/components/SpotifyNowPlayingMonoChrome";
 import HeroWashes from "@/components/ui/hero-washes";
 import { Separator } from "@/components/ui/separator";
 import type { IGamesData } from "@/interface/games.interface";
@@ -35,6 +35,13 @@ import type { ExperiencePageData, HomePageData } from "@/lib/sanity/queries";
 import { CALENDAR_THEME } from "@/src/data/calendarTheme";
 import useNowPlaying from "@/src/hooks/useNowPlaying";
 import useTabs from "@/src/hooks/useTabs";
+
+// Client-only: the calendar depends on today's date and the resolved theme,
+// so rendering it on the server causes a hydration mismatch.
+const GitHubCalendar = dynamic(
+  () => import("react-github-calendar").then((mod) => mod.GitHubCalendar),
+  { ssr: false },
+);
 
 export type HomeClientProps = {
   posts: {
@@ -65,27 +72,12 @@ const HomeClient = (props: HomeClientProps) => {
       ? ""
       : subtitle.slice(breakIndex).replace(/^<br\s*\/?>/i, "");
 
-  const [visibleData, setVisibleData] = useState({
-    isContributionsVisible: false,
-    isNowPlayingVisible: false,
-    isSkillsVisible: false,
-  });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Only poll Spotify while the widget is open.
-  const spotifyNowPlayingData = useNowPlaying(visibleData.isNowPlayingVisible);
+  const { data: nowPlaying } = useNowPlaying();
   const { resolvedTheme } = useTheme();
 
-  const spotifyNowPlayingProps = {
-    album: spotifyNowPlayingData.data?.album || "",
-    albumImageUrl: spotifyNowPlayingData.data?.albumImageUrl || "",
-    artist: spotifyNowPlayingData.data?.artist || "",
-    title: spotifyNowPlayingData.data?.title || "",
-    isPlaying: spotifyNowPlayingData.data?.isPlaying ?? false,
-    songUrl: spotifyNowPlayingData.data?.songUrl || "",
-  };
-
-  const { tabs, handleTabChange } = useTabs();
+  const { tabs, group, handleTabChange, handleGroupChange } = useTabs();
   // Read ?from= from window.location rather than useSearchParams: on a static
   // page useSearchParams needs a Suspense boundary, which would drop the home
   // content from the server-rendered HTML.
@@ -144,6 +136,8 @@ const HomeClient = (props: HomeClientProps) => {
               <br />
               <span dangerouslySetInnerHTML={{ __html: location }} />{" "}
               <LocalTime className="text-[10px] sm:text-xs" />
+              <br />
+              <NowPlayingPill track={nowPlaying} className="mt-1" />
             </>
           )}
         </h2>
@@ -152,62 +146,22 @@ const HomeClient = (props: HomeClientProps) => {
       <div className="my-4">
         <SocialLinks align="left" resumeLink={resumeLink} />
       </div>
-      {/* <MindMap data={skillsMindMapData} /> */}
-      {/* <h2 className="mb-2 mt-4 text-xl">{techStack?.techStackTitle}</h2> */}
-      {/* <div className="flex flex-wrap justify-center">
-        {techStack?.techStacks?.map((tech) => (
-          <span className="text-md pr-1" key={tech}>
-            {tech},
-          </span>
-        ))}
-      </div> */}
 
-      {/* <h2 className="mb-2 mt-4 text-xl">{contributions?.contributionsTitle}</h2> */}
-      {/* <Link href={socialLinks[0].link} target="_blank">
-        <img
-          src={contributions?.contributionsLink || ""}
-          alt="github-contributions-chart"
-          // width={200}
-          height={90}
-          className="grayscale"
+      <div className="mb-4 min-h-[126px] overflow-x-auto" data-volatile>
+        <GitHubCalendar
+          username="Pratham82"
+          colorScheme={resolvedTheme === "light" ? "light" : "dark"}
+          theme={CALENDAR_THEME}
+          blockSize={7}
         />
-      </Link> */}
-      {/* <div className="flex pt-8">
-        {pageRedirects?.map((page) => (
-          <Link
-            key={page.linkTitle}
-            href={page?.link}
-            className="flex items-center pr-4"
-          >
-            {page?.linkTitle} <ArrowUpRightIcon className="pl-2" size={26} />
-          </Link>
-        ))}
-      </div> */}
-
-      <ActiveMiniTabs
-        setVisibleData={setVisibleData}
-        visibleData={visibleData}
-      />
-
-      <div className="mt-4 mb-2">
-        {visibleData.isContributionsVisible ? (
-          <GitHubCalendar
-            username="Pratham82"
-            colorScheme={resolvedTheme === "light" ? "light" : "dark"}
-            theme={CALENDAR_THEME}
-            blockSize={7}
-          />
-        ) : null}
-        {visibleData.isNowPlayingVisible ? (
-          <SpotifyNowPlayingMonoChrome {...spotifyNowPlayingProps} />
-        ) : null}
-        {visibleData.isSkillsVisible ? <Skills /> : null}
       </div>
 
       <Separator className="mb-2 mt-2 md:hidden" />
       <HomeTabs
         tabOptions={tabs}
+        group={group}
         onTabChange={handleTabChange}
+        onGroupChange={handleGroupChange}
         className="mt-2 hidden md:flex"
       />
       <section className="mt-6">
@@ -217,6 +171,7 @@ const HomeClient = (props: HomeClientProps) => {
         {tabs.selected === HomePageTabs.PROJECTS && (
           <Projects projects={projects} />
         )}
+        {tabs.selected === HomePageTabs.SKILLS && <Skills />}
         {tabs.selected === HomePageTabs.BLOGS && <BlogList posts={posts} />}
         {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
@@ -231,7 +186,7 @@ const HomeClient = (props: HomeClientProps) => {
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        tabOptions={tabs}
+        selected={tabs.selected}
         onTabChange={handleTabChange}
       />
     </PageAnimationContainer>

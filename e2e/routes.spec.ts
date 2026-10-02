@@ -51,6 +51,20 @@ for (const route of ROUTES) {
         await page.addInitScript((theme) => {
           localStorage.setItem("theme", theme);
         }, colorScheme);
+        // Live Spotify would show or hide the /home pill (and change the page
+        // height) depending on what's playing, so pin it to a fixed track.
+        await page.route("**/api/now-playing", (r) =>
+          r.fulfill({
+            json: {
+              isPlaying: false,
+              title: "Song",
+              artist: "Artist",
+              album: "Album",
+              albumImageUrl: "",
+              songUrl: "https://open.spotify.com",
+            },
+          }),
+        );
         await page.goto(route);
         await settle(page);
 

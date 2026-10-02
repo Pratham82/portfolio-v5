@@ -5,6 +5,11 @@ import { BLOG_SLUG, LINK_SLUG, settle, trackErrors } from "./helpers";
 const tab = (page: Page, name: string) =>
   page.getByTestId("home-tabs").getByRole("button", { name, exact: true });
 
+const group = (page: Page, name: string) =>
+  page
+    .getByTestId("home-tab-groups")
+    .getByRole("button", { name, exact: true });
+
 const expectSelected = (page: Page, name: string) =>
   expect(tab(page, name)).toHaveAttribute("aria-pressed", "true");
 
@@ -14,7 +19,8 @@ test.describe("home tabs", () => {
     await settle(page);
   });
 
-  test("defaults to Experience", async ({ page }) => {
+  test("defaults to Work > Experience", async ({ page }) => {
+    await expect(group(page, "Work")).toHaveAttribute("aria-pressed", "true");
     await expectSelected(page, "Experience");
   });
 
@@ -23,11 +29,27 @@ test.describe("home tabs", () => {
     await expectSelected(page, "Blogs");
     await expect(page.locator('a[href^="/blogs/"]').first()).toBeVisible();
 
+    await group(page, "Personal").click();
+    await expect(group(page, "Personal")).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    await expectSelected(page, "Now");
+
     await tab(page, "Links").click();
     await expectSelected(page, "Links");
     await expect(page.locator('a[href^="/links/"]').first()).toBeVisible();
 
-    for (const name of ["Projects", "About", "Uses", "Experience"]) {
+    for (const name of ["About", "Uses"]) {
+      await tab(page, name).click();
+      await expectSelected(page, name);
+    }
+
+    // Switching back restores the tab last open in that group.
+    await group(page, "Work").click();
+    await expectSelected(page, "Blogs");
+
+    for (const name of ["Projects", "Skills", "Experience"]) {
       await tab(page, name).click();
       await expectSelected(page, name);
     }
@@ -38,6 +60,8 @@ test.describe("home tabs", () => {
     await expectSelected(page, "Projects");
     await page.keyboard.press("b");
     await expectSelected(page, "Blogs");
+    await page.keyboard.press("s");
+    await expectSelected(page, "Skills");
     await page.keyboard.press("1");
     await expectSelected(page, "Experience");
   });
@@ -105,22 +129,22 @@ test("/api/now-playing responds with the expected shape", async ({
   }
 });
 
-test("home mini tabs render their widgets without errors", async ({ page }) => {
+test("home shows contributions and the Skills tab without errors", async ({
+  page,
+}) => {
   const errors = trackErrors(page);
   await page.goto("/home");
   await settle(page);
 
-  const miniTab = (label: string) =>
-    page.getByRole("button", { name: new RegExp(label) });
-
-  await miniTab("Contributions").click();
-  // One <rect> per day in the contributions grid.
+  // One <rect> per day in the contributions grid, shown without a toggle.
   await expect(page.locator("svg rect").nth(50)).toBeAttached({
     timeout: 15_000,
   });
 
-  await miniTab("Now Playing").click();
-  await miniTab("Skills").click();
+  await tab(page, "Skills").click();
+  await expect(
+    page.getByRole("heading", { name: "Skills", exact: true }),
+  ).toBeVisible();
   await settle(page);
 
   expect(errors).toEqual([]);
