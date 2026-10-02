@@ -14,7 +14,7 @@ Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://w
 | Framework | Next.js 16 (App Router, React Server Components, ISR) |
 | UI | React 19, Tailwind CSS 4, Motion, Phosphor Icons |
 | Content | Sanity CMS (GraphQL), local MDX with `next-mdx-remote` |
-| Integrations | Spotify Web API, PlayStation Network (`psn-api`), GitHub contributions, Vercel Analytics |
+| Integrations | Spotify Web API, PlayStation Network (`psn-api`), WakaTime, FotMob, Letterboxd, GitHub contributions, Vercel Analytics |
 | Tooling | TypeScript 6, ESLint 9, Prettier, Husky, Playwright |
 | Hosting | Vercel (Node 24) |
 
@@ -40,9 +40,11 @@ flowchart TB
         SanityLib["lib/sanity<br/>sanityQuery + typed loaders<br/>(src/graphql/*.graphql)"]
         MdxLib["lib/mdx<br/>lib/blogPosts · lib/links"]
         PsnLib["lib/psn<br/>getGamesData"]
+        NowLib["lib/now<br/>spotify · wakatime · football · letterboxd"]
         Pages --> SanityLib
         Pages --> MdxLib
         Pages --> PsnLib
+        Pages --> NowLib
     end
 
     subgraph Sources["Server-side data sources"]
@@ -51,6 +53,7 @@ flowchart TB
         Content[("content/blogs<br/>content/links<br/>.md / .mdx")]
         Spotify[("Spotify<br/>Web API")]
         PSN[("PlayStation Network<br/>(psn-api)")]
+        NowSources[("WakaTime · FotMob<br/>Letterboxd RSS")]
     end
 
     UI -- "HTML + RSC payload" --> Pages
@@ -62,6 +65,8 @@ flowchart TB
     MdxLib -- "fs read at build" --> Content
     API -- "refresh token → now playing" --> Spotify
     PsnLib -- "NPSSO → access token → trophies, games" --> PSN
+    NowLib -- "top artists & tracks" --> Spotify
+    NowLib -- "coding stats, fixtures, films" --> NowSources
 ```
 
 The main rules:
@@ -70,6 +75,7 @@ The main rules:
 - **Local MDX** in `content/` is read from disk and compiled to React on the server. The browser gets finished HTML.
 - **Spotify credentials stay on the server.** The browser calls `/api/now-playing`, and that route handler talks to Spotify.
 - **The PSN token stays on the server.** `/games` and `/home` load PlayStation data with `PSN_NPSSO` at build time and then at most once an hour through ISR. If the token is missing or expired, the Games section shows only the curated favourites and the build still passes. An e2e test checks that the browser never calls PSN.
+- **The Now page widgets load on the server too.** Spotify top items, WakaTime, FotMob and Letterboxd are fetched with ISR; a widget whose source fails is left out.
 - **Client components** only handle interactivity: tabs, keyboard shortcuts, the theme, animations, widgets and the code copy buttons.
 
 ## Documentation
@@ -79,6 +85,7 @@ The main rules:
 | [Architecture](docs/architecture.md) | Request lifecycle (ISR), server vs client components, routes, project structure |
 | [Getting started](docs/getting-started.md) | Local setup, environment variables, scripts |
 | [Spotify setup](docs/spotify.md) | Getting the Spotify client credentials and refresh token for the now-playing widget |
+| [Now page setup](docs/now.md) | The Now page widgets (Spotify, WakaTime, football, Letterboxd), their keys and endpoints, and the header clock |
 | [PlayStation setup](docs/psn.md) | Getting and renewing the PSN token (NPSSO) for the Games section, plus the PSN auth flow and endpoints it calls |
 | [Testing & CI](docs/testing.md) | Playwright tests, visual baselines, CI |
 | [Writing content](docs/writing-content.md) | Adding blog posts and links |

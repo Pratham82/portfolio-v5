@@ -48,13 +48,13 @@ flowchart TB
         HomePage["app/home/page.tsx<br/>loads Sanity data + posts + links + PSN in parallel"]
         BlogPage["app/blogs/[slug]/page.tsx<br/>MDX + author"]
         LinkPage["app/links/[slug]/page.tsx"]
-        SectionPages["app/experience · projects · about · uses · games · blogs · links"]
+        SectionPages["app/experience · projects · about · uses · games · now · blogs · links"]
     end
 
     subgraph Client["Client Components ('use client')"]
         HomeClient["components/home/HomeClient<br/>tabs · keyboard shortcuts · mobile menu"]
         Widgets["Spotify card · GitHub calendar · Skills"]
-        Sections["components/sections/*<br/>Experience · Projects · BlogList · Uses · Games"]
+        Sections["components/sections/*<br/>Experience · Projects · BlogList · Uses · Games · Now"]
         Copy["CodeCopyEnhancer"]
         Back["BackButton"]
         Shell["Providers (theme) · Layout · AnimatedBackground"]
@@ -77,7 +77,7 @@ The `components/sections/*` views are shared: each one renders both on its own r
 | Route | Rendering | Data |
 |-------|-----------|------|
 | `/` | Redirects (308) to `/home` | `next.config.js` |
-| `/home` | Static + ISR (1h) | Sanity + local posts/links + PSN |
+| `/home` | Static + ISR (1h) | Sanity + local posts/links + PSN + Now widgets |
 | `/experience`, `/about` | Static + ISR (1h) | Sanity work experience |
 | `/projects` | Static + ISR (1h) | Sanity projects |
 | `/blogs` | Static | `content/blogs` |
@@ -85,6 +85,7 @@ The `components/sections/*` views are shared: each one renders both on its own r
 | `/links`, `/links/[slug]` | Static | `content/links` |
 | `/uses`, `/guides/ai-guide` | Static | Hard-coded content |
 | `/games` | Static + ISR (1h) | PSN (`lib/psn.ts`) + `src/data/games.json` |
+| `/now` | Static + ISR (1h) | `content/now.mdx` + Spotify, WakaTime, FotMob, Letterboxd (`lib/now.ts`) |
 | `/api/now-playing` | Dynamic | Spotify |
 | `/api/callback` | Dynamic | One-time Spotify OAuth helper |
 | `/api/revalidate` | Dynamic | Sanity publish webhook (expires the `sanity` cache tag) |
