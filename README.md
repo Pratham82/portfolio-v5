@@ -5,7 +5,7 @@
 Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://www.pratham82.in).
 
 - Backend repo: [portfolio-api](https://github.com/Pratham82/portfolio-api) (Sanity Studio)
-- [Portfolio API GraphQL URL](https://sfjfod25.api.sanity.io/v2024-01-01/graphql/production/default)
+- [Portfolio API GraphQL URL](https://sfjfod25.api.sanity.io/v2025-09-19/graphql/production/default)
 
 ## Tech Stack
 
@@ -13,8 +13,8 @@ Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://w
 |-------|-------|
 | Framework | Next.js 16 (App Router, React Server Components, ISR) |
 | UI | React 19, Tailwind CSS 4, Motion, Phosphor Icons |
-| Content | Sanity CMS (GraphQL), local MDX with `next-mdx-remote` |
-| Integrations | Spotify Web API, PlayStation Network (`psn-api`), WakaTime, FotMob, Letterboxd, GitHub contributions, Vercel Analytics |
+| Content | Sanity CMS (GraphQL; hero, projects, links, Now text and favourite films), local MDX blogs with `next-mdx-remote` |
+| Integrations | Spotify Web API, PlayStation Network (`psn-api`), WakaTime, FotMob, Letterboxd RSS, TMDB, GitHub contributions, Vercel Analytics |
 | Tooling | TypeScript 6, ESLint 9, Prettier, Husky, Playwright |
 | Hosting | Vercel (Node 24) |
 
@@ -23,24 +23,24 @@ Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://w
 ```mermaid
 flowchart TB
     subgraph Browser["Browser"]
-        UI["Client components<br/>HomeShell · tabs · widgets<br/>theme toggle · copy buttons"]
+        UI["Client components<br/>HomeShell · tab links · widgets<br/>theme toggle · copy buttons"]
     end
 
     subgraph Direct["Loaded directly by the browser"]
         direction LR
-        SanityCDN[("Sanity CDN<br/>images")]
         GitHub[("GitHub<br/>contributions API")]
+        Icons[("Simple Icons CDN<br/>Uses page icons")]
         Analytics[("Vercel<br/>Analytics")]
     end
 
     subgraph Vercel["Vercel · Next.js 16 App Router"]
         direction LR
-        Pages["Server Components<br/>app/**/page.tsx<br/>static + ISR (1h)"]
-        API["Route handlers<br/>/api/now-playing<br/>/api/callback"]
-        SanityLib["lib/sanity<br/>sanityQuery + typed loaders<br/>(src/graphql/*.graphql)"]
-        MdxLib["lib/mdx<br/>lib/blogPosts · lib/links"]
+        Pages["Server Components<br/>app/(home)/&lt;tab&gt;/page.tsx · detail pages<br/>static + ISR (1h)"]
+        API["Route handlers<br/>/api/now-playing · /api/callback<br/>/api/revalidate"]
+        SanityLib["lib/sanity · lib/links<br/>sanityQuery + typed loaders<br/>(src/graphql/*.graphql)"]
+        MdxLib["lib/mdx · lib/blogPosts"]
         PsnLib["lib/psn<br/>getGamesData"]
-        NowLib["lib/now<br/>spotify · wakatime · football · letterboxd"]
+        NowLib["lib/now<br/>spotify · wakatime · football<br/>letterboxd · favouriteFilms"]
         Pages --> SanityLib
         Pages --> MdxLib
         Pages --> PsnLib
@@ -49,43 +49,47 @@ flowchart TB
 
     subgraph Sources["Server-side data sources"]
         direction LR
-        Sanity[("Sanity CMS<br/>GraphQL API<br/>(incl. Now + Links)")]
+        Sanity[("Sanity CMS<br/>GraphQL API<br/>hero · projects · links · Now")]
         Content[("content/blogs<br/>.md / .mdx")]
         Spotify[("Spotify<br/>Web API")]
         PSN[("PlayStation Network<br/>(psn-api)")]
-        NowSources[("WakaTime · FotMob<br/>Letterboxd RSS")]
+        NowSources[("WakaTime · FotMob<br/>Letterboxd RSS · TMDB")]
     end
 
-    UI -- "HTML + RSC payload" --> Pages
+    UI -- "HTML + RSC payload<br/>(tab links prefetched)" --> Pages
     UI -- "poll every 60s" --> API
-    UI -.-> SanityCDN
     UI -.-> GitHub
+    UI -.-> Icons
     UI -.-> Analytics
     SanityLib -- "GraphQL over fetch" --> Sanity
+    Sanity -- "publish webhook" --> API
     MdxLib -- "fs read at build" --> Content
     API -- "refresh token → now playing" --> Spotify
     PsnLib -- "NPSSO → access token → trophies, games" --> PSN
     NowLib -- "top artists & tracks" --> Spotify
-    NowLib -- "coding stats, fixtures, films" --> NowSources
+    NowLib -- "favourite films" --> Sanity
+    NowLib -- "coding stats, fixtures, films, posters" --> NowSources
 ```
 
 The main rules:
 
-- **The browser never talks to Sanity's API.** Pages fetch from Sanity on the server, at build time and then again at most once an hour through ISR. An e2e test checks this.
-- **Local MDX** in `content/` is read from disk and compiled to React on the server. The browser gets finished HTML.
+- **The browser never talks to Sanity's API.** Pages fetch from Sanity on the server: at build time, again right after a publish (a Sanity webhook hits `/api/revalidate` and expires the `sanity` cache tag), and at most once an hour through ISR otherwise. Editing the hero, projects, links, the Now text or the favourite films in Studio needs no deploy. An e2e test checks that the browser never calls Sanity.
+- **Every home tab is its own route** under `app/(home)`, sharing one layout with the hero and tab bar. URLs like `/now` or `/skills` can be shared, back and forward move between tabs, and each tab shows a size-matched skeleton while it loads.
+- **Local MDX** in `content/blogs` is read from disk and compiled to React on the server. The browser gets finished HTML.
 - **Spotify credentials stay on the server.** The browser calls `/api/now-playing`, and that route handler talks to Spotify.
 - **The PSN token stays on the server.** `/games` loads PlayStation data with `PSN_NPSSO` at build time and then at most once an hour through ISR. If the token is missing or expired, the Games section shows only the curated favourites and the build still passes. An e2e test checks that the browser never calls PSN.
-- **The Now page widgets load on the server too.** Spotify top items, WakaTime, FotMob and Letterboxd are fetched with ISR; a widget whose source fails is left out.
+- **The Now page widgets load on the server too.** Spotify top items, WakaTime, FotMob, the Letterboxd RSS feed (Recently watched) and the favourite films (picked in Sanity, posters from TMDB) are fetched with ISR; a widget whose source fails is left out.
+- **Images** (Sanity, Spotify, PSN, TMDB, Letterboxd, FotMob) go through Next's image optimizer, so the browser loads them from the site. The Uses icons are SVGs and load straight from the Simple Icons CDN.
 - **Client components** only handle interactivity: tabs, keyboard shortcuts, the theme, animations, widgets and the code copy buttons.
 
 ## Documentation
 
 | Doc | What's inside |
 |-----|---------------|
-| [Architecture](docs/architecture.md) | Request lifecycle (ISR), server vs client components, routes, project structure |
+| [Architecture](docs/architecture.md) | Request lifecycle (ISR + publish webhook), home tab routing and loading skeletons, server vs client components, routes, where content lives, project structure |
 | [Getting started](docs/getting-started.md) | Local setup, environment variables, scripts |
 | [Spotify setup](docs/spotify.md) | Getting the Spotify client credentials and refresh token for the now-playing widget |
-| [Now page setup](docs/now.md) | The Now page widgets (Spotify, WakaTime, football, Letterboxd), their keys and endpoints, and the home page clock |
+| [Now page setup](docs/now.md) | The Now page text and widgets (Spotify, WakaTime, football, favourite films + TMDB, Letterboxd), their keys and endpoints, and the home page clock |
 | [PlayStation setup](docs/psn.md) | Getting and renewing the PSN token (NPSSO) for the Games section, plus the PSN auth flow and endpoints it calls |
-| [Testing & CI](docs/testing.md) | Playwright tests, visual baselines, CI |
-| [Writing content](docs/writing-content.md) | Adding blog posts and links |
+| [Testing & CI](docs/testing.md) | Playwright tests, fixtures, visual baselines, CI |
+| [Writing content](docs/writing-content.md) | Adding blog posts, and editing links, the Now page and favourite films in Studio |

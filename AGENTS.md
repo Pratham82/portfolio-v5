@@ -9,11 +9,12 @@
 
 ## Project Structure
 
-- **`app/`**: Routes. `layout.tsx` is the only shell (fonts, theme, animated background, analytics). `app/(home)/layout.tsx` wraps every home tab: each tab is its own route (`/experience`, `/projects`, `/skills`, `/blogs`, `/now`, `/games`, `/uses`, `/links`, `/about`), and `/` and `/home` open Experience. Tab names, URLs and groups are defined once in `interface/home.interface.ts` (`HOME_TAB_GROUPS`, `HOME_TAB_HREF`, `getTabFromPath`). Detail pages (`blogs/[slug]`, `links/[slug]`) and `guides/` sit outside the group, so they have no hero.
+- **`app/`**: Routes. `layout.tsx` is the root shell (fonts, theme, header, analytics). `app/(home)/layout.tsx` wraps every home tab (hero + tab bar, `revalidate = 3600`): each tab is its own route (`/experience`, `/projects`, `/skills`, `/blogs`, `/now`, `/games`, `/uses`, `/links`, `/about`), and `/` and `/home` open Experience. Tab names, URLs and groups are defined once in `interface/home.interface.ts` (`HOME_TAB_GROUPS`, `HOME_TAB_HREF`, `getTabFromPath`). Each tab folder has a `page.tsx` and a `loading.tsx`. Detail pages (`blogs/[slug]`, `links/[slug]`) and `guides/` sit outside the group, so they have no hero.
 - **`components/`**: React components. Import each file directly; there is no barrel, because `@/components` resolves to `components.json` before the directory index.
-  - `components/ui/`: shadcn/ui primitives (`button`, `badge`, `card`, `separator`, `tabs`, `tooltip`) plus Aceternity-style accents (`hover-list`, `spotlight`).
+  - `components/ui/`: shadcn/ui primitives (`button`, `badge`, `card`, `separator`, `tabs`, `tooltip`) plus `hover-list` (Aceternity-style hover highlight) and `hero-washes`.
   - `components/SiteHeader.tsx`: the header on every page except `/guides`. It holds the theme toggle.
   - `components/sections/`: the Experience / Projects / Blogs / Uses / Games / Now views, rendered by the tab routes in `app/(home)/`.
+  - `components/now/`: the Now widgets (`OnRepeat`, `CodingStats`, `Football`, `FavouriteFilms`, `Movies`), each wrapped in `Widget`.
   - `components/skeletons/TabSkeletons.tsx`: one loading skeleton per tab, used by each `app/(home)/<tab>/loading.tsx`. Each mirrors its tab's wrappers, row heights and grid columns so it takes the same space at every width (Skills and Uses render from the same static data). Update the matching skeleton when a tab's layout changes.
   - `components/home/HomeShell.tsx`: the hero, tab bar and mobile menu, rendered by `app/(home)/layout.tsx` so it stays mounted while tabs change. `src/hooks/useTabs.ts` reads the selected tab from the URL; tabs are `<Link scroll={false}>`s.
 - **`src/`**: Hooks, GraphQL queries (`src/graphql/queries/*.graphql`), utilities, static data.
@@ -22,7 +23,7 @@
   - `lib/sanity/queries.ts`: typed loaders (`getHomePage`, `getExperiencePage`, `getProjects`, `getResumeLink`, `getAuthorByUsername`).
   - `lib/mdx.ts`: `renderMdx()` compiles local MDX with the site's rehype plugins.
   - `lib/resume.ts`: fetches the resume PDF (the Sanity resume link) and parses its Experience section into jobs and bullets.
-  - `lib/now.ts`: `getNowContent()` (renders the Sanity `nowPage` body as MDX) and `getNowData()`, which calls `lib/spotify.ts` (`getTopItems`, plus the shared `getAccessToken` used by `/api/now-playing`), `lib/wakatime.ts`, `lib/football.ts` (FotMob) and `lib/letterboxd.ts`.
+  - `lib/now.ts`: `getNowContent()` (renders the Sanity `nowPage` body as MDX) and `getNowData()`, which calls `lib/spotify.ts` (`getTopItems`, plus the shared `getAccessToken` used by `/api/now-playing`), `lib/wakatime.ts`, `lib/football.ts` (FotMob), `lib/letterboxd.ts` (Recently watched, RSS) and `lib/favouriteFilms.ts` (top 4 from Sanity, posters from TMDB).
   - `lib/psn.ts`: `getGamesData()` loads the PlayStation trophy summary, played and owned games, and trophy progress (`psn-api`).
   - `lib/blogPosts.ts`: local blog parser. `lib/links.ts`: loads `link` documents from Sanity (body rendered as MDX).
 - **`content/blogs/`**: local `.md` / `.mdx` parsed with `gray-matter`. Now and Links live in Sanity, so editing them needs no deploy.
@@ -47,8 +48,8 @@
 
 ## Data Sources
 
-1. **Sanity CMS**: GraphQL endpoint (`NEXT_PUBLIC_PORTFOLIO_GRAPHQL_ENDPOINT`), queried **only on the server** through `lib/sanity`. Pages use ISR (`export const revalidate = 3600`, which must be a literal and should match `SANITY_REVALIDATE`). Every fetch carries the `sanity` cache tag. A Sanity webhook POSTs to `app/api/revalidate/route.ts`, which checks the signature (`SANITY_REVALIDATE_SECRET`) and expires that tag, so published edits show up on the next visit; the hourly ISR is the fallback. The build fails if Sanity is unreachable or the endpoint is missing. The browser never calls Sanity, and an e2e test enforces this.
-2. **Local MDX**: rendered on the server with `next-mdx-remote/rsc`. Slug routes use `generateStaticParams` with `dynamicParams = false`.
+1. **Sanity CMS**: GraphQL endpoint (`NEXT_PUBLIC_PORTFOLIO_GRAPHQL_ENDPOINT`), queried **only on the server** through `lib/sanity`. Pages use ISR (`export const revalidate = 3600`, which must be a literal and should match `SANITY_REVALIDATE`). Every fetch carries the `sanity` cache tag. A Sanity webhook POSTs to `app/api/revalidate/route.ts`, which checks the signature (`SANITY_REVALIDATE_SECRET`) and expires that tag, so published edits show up on the next visit; the hourly ISR is the fallback. The build fails if Sanity is unreachable or the endpoint is missing. The browser never calls Sanity, and an e2e test enforces this. In `next dev`, `sanityQuery` skips the fetch cache (`revalidate: 0`), because the webhook can't reach `localhost`. Schema changes live in the `portfolio-api` repo; after one, run `npm run deploy-graphql` there, or queries for new fields fail.
+2. **MDX**: blogs are local files; link bodies and the Now text come from Sanity. All are rendered on the server with `next-mdx-remote/rsc` (`lib/mdx.ts`). `/blogs/[slug]` uses `dynamicParams = false`; `/links/[slug]` uses `dynamicParams = true`, so links published after a deploy render on first visit.
 3. **Resume PDF**: `getExperiencePage()` takes roles, dates, locations and bullets from the resume that the Sanity resume link points to (`resume.resumeLink` on the Experience singleton; a public Google Drive file works). Sanity still supplies the company logos, matched by company name. The PDF is re-downloaded at most once a day (`RESUME_REVALIDATE`), and on every build. If the resume can't be fetched or parsed, it logs and falls back to the Sanity work experience. The parser expects job headers like `Company · Title Month YYYY – Month YYYY (Location)` and bullets starting with `·`.
 4. **Spotify**: the `app/api/now-playing/route.ts` route handler. Needs the server-only `SPOTIFY_*` env vars (it falls back to the old `NEXT_PUBLIC_SPOTIFY_*` names until Vercel is updated).
 5. **PlayStation**: `lib/psn.ts`, called **only on the server** from `/games` (ISR, 1h) with the unofficial `psn-api` package. Needs `PSN_NPSSO` (see `docs/psn.md`); it expires when the browser's `npsso` cookie does (about 2 months). The `psn-token-reminder` workflow opens an issue assigned to the owner the day before the date in the `PSN_NPSSO_EXPIRES_ON` repo variable. If it's missing, expired, or PSN fails, the loader logs and returns `null`, and the Games section shows only the curated favourites (`src/data/games.json`). The build never fails on PSN. Playwright sets `PSN_NPSSO=""` so screenshots use that fallback, and an e2e test asserts the browser never calls PSN.
@@ -112,7 +113,7 @@ Stored in `.env` / `.env.local` (see `.env.example`):
 
 ## Content Conventions
 
-- Blog and link frontmatter uses `gray-matter`. Common fields: `title`, `date`, `description`, `tags`, `author`.
+- Blog frontmatter uses `gray-matter`. Common fields: `title`, `date`, `description`, `tags`, `author`. Links, the Now text and favourite films are edited in Sanity Studio (`docs/writing-content.md`).
 - Lists are sorted newest first. Items with the same date are ordered by slug, descending.
 - **Blog MDX images**: `app/blogs/[slug]/page.tsx` remaps `src`s that don't start with `/` to `/content/${src}`. Use paths starting with `/content/`. Absolute `https://` URLs are currently broken by this remap.
 - Code blocks use `rehype-highlight` with the `night-owl` theme. `CodeCopyEnhancer` adds the Copy buttons.
