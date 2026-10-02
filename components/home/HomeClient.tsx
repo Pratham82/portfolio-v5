@@ -122,14 +122,21 @@ const HomeClient = (props: HomeClientProps) => {
           height={90}
           className="relative rounded-2xl grayscale mt-2"
         /> */}
-        <Mascot
-          directions="/mascots/kamran-directions.webp"
-          reactions="/mascots/kamran-reactions.webp"
-          size={160}
-          label="mascot"
-          className="hidden sm:block"
-        />
-        <h2 className="mt-2 text-sm leading-relaxed text-foreground/85 sm:text-base">
+        {/* Mascot sizes itself with inline styles, so shrink it on phones with a
+            scale inside a box of the scaled size. */}
+        <div className="size-24 shrink-0 sm:size-40">
+          <div className="origin-top-left scale-[0.6] sm:scale-100">
+            <Mascot
+              directions="/mascots/kamran-directions.webp"
+              reactions="/mascots/kamran-reactions.webp"
+              size={160}
+              label="mascot"
+            />
+          </div>
+        </div>
+        {/* min-w-0: a flex item won't shrink below its content, so a long
+            track name in the pill would widen the page on mobile. */}
+        <h2 className="mt-2 min-w-0 text-sm leading-relaxed text-foreground/85 sm:text-base">
           <span dangerouslySetInnerHTML={{ __html: intro }} />
           {location && (
             <>

@@ -49,7 +49,7 @@ const NowPlayingPill = ({ track, className }: NowPlayingPillProps) => {
       {/* Always shown, so it's clear where the track comes from. */}
       <SiSpotify className="shrink-0 text-foreground/85" size={12} />
       {!track.isPlaying && <span className="shrink-0">Last played</span>}
-      <span className="max-w-[14rem] truncate text-foreground/85">
+      <span className="min-w-0 max-w-[14rem] truncate text-foreground/85">
         {track.title} — {track.artist}
       </span>
       {track.isPlaying && <EqualizerBars />}
