@@ -49,6 +49,10 @@ module.exports = {
         protocol: "https",
         hostname: "images.fotmob.com",
       },
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org",
+      },
     ],
   },
   async redirects() {

@@ -1,12 +1,13 @@
 # Now page setup
 
-The Now page (`/now`, the Now tab under Personal) is a short, hand-written update on what I'm focused on, followed by four live widgets:
+The Now page (`/now`, the Now tab under Personal) is a short, hand-written update on what I'm focused on, followed by five live widgets:
 
 | Widget | Shows | Source | Needs |
 |--------|-------|--------|-------|
 | On repeat | Top 5 artists and tracks, last ~4 weeks | Spotify Web API | `user-top-read` on `SPOTIFY_REFRESH_TOKEN` |
 | Coding this week | Hours coded in the last 7 days, a bar per day, top 5 languages | WakaTime API | `WAKATIME_API_KEY` |
 | Football | Next match, last 3 results (green W / red L) and table position (league + Champions League; rows tinted green → yellow → amber → red by position: top 20%, to 50%, to 80%, bottom 20%) for Man City and Real Madrid | FotMob (unofficial) | nothing |
+| Favourite films | My Letterboxd top 4, with posters | Picked in Sanity (Now → Favourite films); posters from TMDB | `TMDB_API_KEY` for posters |
 | Recently watched | Latest 8 films by the date I watched them, with rating | Letterboxd RSS | nothing |
 
 Every widget loads **on the server only** (`lib/now.ts` → one loader per source) when the page is built, then at most once an hour (ISR). If a source fails or isn't configured, its loader logs and returns `null`, and that widget is simply left out. The page and build never fail because of a third party.
@@ -40,12 +41,24 @@ Until then, the build log shows `spotify: Error: top artists (403): ... Insuffic
 
 Stats need a day or two of coding before they show up. The free plan covers the last 7 days, which is all this widget uses.
 
-## 4. Football and movies
+## 4. Football
 
-Nothing to set up.
+Nothing to set up. FotMob's site API needs no key. The clubs are the `TEAMS` list in `lib/football.ts`; a team's ID is in its FotMob URL (`fotmob.com/teams/8456/...`).
 
-- **Football:** FotMob's site API needs no key. The clubs are the `TEAMS` list in `lib/football.ts`; a team's ID is in its FotMob URL (`fotmob.com/teams/8456/...`).
-- **Movies:** the Letterboxd username is `LETTERBOXD_USER` in `lib/letterboxd.ts`. The profile must stay public.
+## 5. Movies: favourite films and recently watched
+
+**Recently watched** reads the public Letterboxd RSS feed. Nothing to set up. The username is `LETTERBOXD_USER` in `lib/letterboxd.ts`, and the profile must stay public.
+
+**Favourite films** (the top 4) can't come from Letterboxd: its API isn't open to personal projects, the profile page blocks server requests, and the RSS feed has no favourites. So:
+
+1. In Studio, open **Now → Favourite films** and add up to 4 films: title, release year, and the Letterboxd film URL (the poster links there). Publish. The webhook updates the site.
+2. For posters, get a free TMDB key at [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api). Either the **API Read Access Token** or the **API Key** works. Add it to `.env` and to Vercel (Production + Preview):
+
+   ```bash
+   TMDB_API_KEY=<token or key>
+   ```
+
+`lib/favouriteFilms.ts` searches TMDB by title and release year (it retries without the year if nothing matches) and uses the first result with a poster. Lookups are cached for a day. Without `TMDB_API_KEY`, or if TMDB fails, the films still show, with a blank poster.
 
 ## Check it works
 
@@ -62,9 +75,10 @@ The log shows a `spotify:`, `wakatime:`, `football:` or `letterboxd:` line for a
 | On repeat | `POST https://accounts.spotify.com/api/token` (refresh token → access token, shared with `/api/now-playing` via `lib/spotify.ts`), then `GET https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=5` and `/v1/me/top/tracks?...` |
 | Coding | `GET https://wakatime.com/api/v1/users/current/stats/last_7_days` and `GET .../summaries?range=last_7_days`, with `Authorization: Basic base64(WAKATIME_API_KEY)` |
 | Football | `GET https://www.fotmob.com/api/data/teams?id=<teamId>` (about 700 KB; uses `fixtures.allFixtures` for matches and `table[]` for standings, one entry per competition with the club's row and the zone legend). Crests: `https://images.fotmob.com/image_resources/logo/teamlogo/<teamId>.png` |
-| Movies | `GET https://letterboxd.com/Pratham82/rss/` (diary entries only; list posts are skipped). Sorted by `letterboxd:watchedDate` (newest first; same day: later `pubDate` first). |
+| Favourite films | Sanity `nowPage.favouriteFilms`, then per film `GET https://api.themoviedb.org/3/search/movie?query=<title>&primary_release_year=<year>` → `https://image.tmdb.org/t/p/w342<poster_path>` |
+| Recently watched | `GET https://letterboxd.com/Pratham82/rss/` (diary entries only; list posts are skipped). Sorted by `letterboxd:watchedDate` (newest first; same day: later `pubDate` first). |
 
-Images come from `i.scdn.co` (Spotify), `images.fotmob.com` and `a.ltrbxd.com`; all are allowed in `next.config.js`.
+Images come from `i.scdn.co` (Spotify), `images.fotmob.com`, `a.ltrbxd.com` and `image.tmdb.org`; all are allowed in `next.config.js`.
 
 ## Tests
 
@@ -79,4 +93,6 @@ Playwright sets `NOW_LIVE_WIDGETS=off`, which skips every widget so screenshots 
 | `wakatime: Error: /stats/last_7_days (401)` | Wrong key. Copy the **Secret API Key** again. |
 | `football: Error: team 8456 (...)` | FotMob changed or blocked its API. Only that club is hidden; check the endpoint in a browser. |
 | `letterboxd: Error: feed (...)` | Letterboxd is down, or the profile is private or renamed. |
+| `tmdb: Error: tmdb search/movie (401)` | Wrong `TMDB_API_KEY`. The films show without posters. |
+| A favourite has the wrong poster | Set its release year in Studio, or check the title spelling against TMDB. |
 | Images missing, `Invalid src prop` | A source served images from a new host. Add it to `images.remotePatterns` in `next.config.js`. |

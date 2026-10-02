@@ -69,10 +69,17 @@ export interface IFilm {
   url: string;
 }
 
+/** One of my Letterboxd top 4 (picked in Sanity, poster from TMDB). */
+export type IFavouriteFilm = Pick<
+  IFilm,
+  "title" | "year" | "posterUrl" | "url"
+>;
+
 /** Everything the Now page renders; each live widget is `null` when unavailable. */
 export interface INowData {
   topItems: ITopItems | null;
   coding: ICodingStats | null;
   football: ITeamFixtures[] | null;
   films: IFilm[] | null;
+  favouriteFilms: IFavouriteFilm[] | null;
 }

@@ -179,7 +179,10 @@ const WidgetHead = ({ width }: { width: string }) => (
   </div>
 );
 
-/** `Now`: the MDX text, then On repeat, Coding, Football and Movies. */
+/**
+ * `Now`: the MDX text, then On repeat, Coding, Football, Favourite films and
+ * Recently watched.
+ */
 export const NowSkeleton = () => (
   <Status>
     <div className="mb-4 flex items-center justify-between gap-2">
@@ -252,6 +255,20 @@ export const NowSkeleton = () => (
       <div className="grid gap-3 sm:grid-cols-2">
         <Bone className="h-[398px] rounded-xl" />
         <Bone className="h-[398px] rounded-xl" />
+      </div>
+    </div>
+
+    {/* Favourite films: 4 posters in one row. */}
+    <div className="mt-10">
+      <WidgetHead width="w-32" />
+      <div className="-mx-3 grid grid-cols-4">
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={i} className="p-1.5 sm:p-3">
+            <Bone className="aspect-2/3" />
+            <Line line="mt-2 h-4" bar="h-3 w-4/5" />
+            <Line line="h-4 sm:hidden" bar="h-3 w-1/2" />
+          </div>
+        ))}
       </div>
     </div>
 

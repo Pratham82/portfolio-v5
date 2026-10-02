@@ -1,0 +1,9 @@
+{
+  allNowPage {
+    favouriteFilms {
+      title
+      year
+      letterboxdUrl
+    }
+  }
+}

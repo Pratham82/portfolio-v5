@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 
 import CodingStats from "@/components/now/CodingStats";
+import FavouriteFilms from "@/components/now/FavouriteFilms";
 import Football from "@/components/now/Football";
 import Movies from "@/components/now/Movies";
 import OnRepeat from "@/components/now/OnRepeat";
@@ -37,6 +38,9 @@ const Now = ({ updated, content, data }: NowProps) => (
     {data.topItems && <OnRepeat topItems={data.topItems} />}
     {data.coding && <CodingStats coding={data.coding} />}
     {data.football && <Football teams={data.football} />}
+    {data.favouriteFilms && data.favouriteFilms.length > 0 && (
+      <FavouriteFilms films={data.favouriteFilms} />
+    )}
     {data.films && data.films.length > 0 && <Movies films={data.films} />}
   </PageAnimationContainer>
 );
