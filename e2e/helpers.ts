@@ -4,10 +4,12 @@ export const BLOG_SLUG = "fetch-api-blog";
 export const LINK_SLUG = "system-design";
 
 export const ROUTES = [
+  "/",
   "/home",
   "/about",
   "/experience",
   "/projects",
+  "/skills",
   "/uses",
   "/games",
   "/now",

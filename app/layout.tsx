@@ -12,7 +12,7 @@ import Layout from "@/components/Layout";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "Prathamesh's Website",
+  title: { default: "Prathamesh's Website", template: "%s | Prathamesh" },
   description: "Prathamesh's portfolio website",
 };
 

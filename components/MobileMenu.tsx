@@ -1,9 +1,12 @@
+import Link from "next/link";
+
 import { motion, AnimatePresence } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
 import {
   HOME_TAB_GROUPS,
+  HOME_TAB_HREF,
   HomeTabGroup,
   TabType,
 } from "../interface/home.interface";
@@ -12,11 +15,10 @@ type MobileMenuProps = {
   isOpen: boolean;
   onClose: () => void;
   selected: TabType;
-  onTabChange: (_tab: TabType) => void;
 };
 
 const MobileMenu = (props: MobileMenuProps) => {
-  const { isOpen, onClose, selected, onTabChange } = props;
+  const { isOpen, onClose, selected } = props;
 
   return (
     <AnimatePresence>
@@ -34,23 +36,20 @@ const MobileMenu = (props: MobileMenuProps) => {
                 {group}
               </p>
               {HOME_TAB_GROUPS[group].map((tab) => (
-                <button
-                  type="button"
+                <Link
                   key={tab}
-                  aria-pressed={selected === tab}
-                  onClick={() => {
-                    onTabChange(tab);
-                    onClose();
-                  }}
+                  href={HOME_TAB_HREF[tab]}
+                  aria-current={selected === tab ? "page" : undefined}
+                  onClick={onClose}
                   className={cn(
-                    "w-full rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent",
+                    "block w-full rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent",
                     selected === tab
                       ? "font-medium text-foreground"
                       : "text-muted-foreground",
                   )}
                 >
                   {tab}
-                </button>
+                </Link>
               ))}
             </div>
           ))}

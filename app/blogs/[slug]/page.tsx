@@ -56,7 +56,7 @@ const PostPage = async ({ params }: PostPageProps) => {
 
   return (
     <PageAnimationContainer>
-      <BackButton href="/home?from=blog">
+      <BackButton href="/blogs">
         <ArrowLeftIcon />
         back
       </BackButton>

@@ -18,12 +18,12 @@ sequenceDiagram
     N->>F: getAllPosts, getAllLinks, renderMdx
     N->>V: Prerendered HTML for every route
 
-    U->>V: GET /home
+    U->>V: GET /now
     V-->>U: Cached HTML (instant, content included)
     U->>U: Hydrate client components
 
     Note over V,N: After 1h (revalidate = 3600)
-    U->>V: GET /home
+    U->>V: GET /now
     V-->>U: Stale HTML (still instant)
     V->>N: Regenerate in background
     N->>S: Re-fetch content
@@ -45,14 +45,14 @@ Webhook setup (sanity.io/manage → API → Webhooks):
 ```mermaid
 flowchart TB
     subgraph Server["Server Components (no JS shipped)"]
-        HomePage["app/home/page.tsx<br/>loads Sanity data + posts + links + PSN in parallel"]
+        HomeLayout["app/(home)/layout.tsx<br/>hero data: Sanity home page + resume link"]
         BlogPage["app/blogs/[slug]/page.tsx<br/>MDX + author"]
         LinkPage["app/links/[slug]/page.tsx"]
-        SectionPages["app/experience · projects · about · uses · games · now · blogs · links"]
+        SectionPages["app/(home)/experience · projects · skills · blogs<br/>now · games · uses · links · about<br/>one route per tab, each loads its own data"]
     end
 
     subgraph Client["Client Components ('use client')"]
-        HomeClient["components/home/HomeClient<br/>tabs · keyboard shortcuts · mobile menu"]
+        HomeShell["components/home/HomeShell<br/>hero · tab links · keyboard shortcuts · mobile menu"]
         Widgets["Spotify card · GitHub calendar · Skills"]
         Sections["components/sections/*<br/>Experience · Projects · BlogList · Uses · Games · Now"]
         Copy["CodeCopyEnhancer"]
@@ -60,25 +60,25 @@ flowchart TB
         Shell["Providers (theme) · Layout · AnimatedBackground"]
     end
 
-    HomePage -- props --> HomeClient
-    HomeClient --> Widgets
-    HomeClient --> Sections
-    SectionPages -- props --> Sections
+    HomeLayout -- props --> HomeShell
+    HomeShell --> Widgets
+    SectionPages -- "props (children of HomeShell)" --> Sections
     BlogPage --> Copy
     BlogPage --> Back
     LinkPage --> Copy
     LinkPage --> Back
 ```
 
-The `components/sections/*` views are shared: each one renders both on its own route (like `/projects`) and inside the matching `/home` tab.
+Each home tab is a route in the `app/(home)` group. Its layout renders `HomeShell` (hero + tab bar) once and keeps it mounted, so switching tabs only swaps the page below it, keeps the scroll position, and updates the URL. A tab URL like `/now` can be shared, and back/forward move between tabs.
 
 ## Routes
 
 | Route | Rendering | Data |
 |-------|-----------|------|
-| `/` | Redirects (308) to `/home` | `next.config.js` |
-| `/home` | Static + ISR (1h) | Sanity (incl. links) + local posts + PSN + Now widgets |
-| `/experience`, `/about` | Static + ISR (1h) | Sanity work experience |
+| `/`, `/home` | Static + ISR (1h) | Hero + Experience tab. `/home` is the old landing URL; it renders the same view with a canonical of `/` |
+| `/home?from=blog\|links` | Redirects (308) to `/blogs` / `/links` | `next.config.js` (old back-button links) |
+| `/experience` | Static + ISR (1h) | Resume PDF + Sanity logos |
+| `/skills`, `/about` | Static | Hard-coded content |
 | `/projects` | Static + ISR (1h) | Sanity projects |
 | `/blogs` | Static | `content/blogs` |
 | `/blogs/[slug]` | Static + ISR (1h) | MDX + Sanity author |
@@ -95,7 +95,7 @@ The `components/sections/*` views are shared: each one renders both on its own r
 ```
 app/                  Routes (App Router), layout, API route handlers
 components/
-  home/               HomeClient: interactive home page
+  home/               HomeShell: hero, tab bar, mobile menu (via app/(home)/layout)
   sections/           Views shared by routes and home tabs
   guides/             The AI engineering guide
 lib/

@@ -23,7 +23,7 @@ Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://w
 ```mermaid
 flowchart TB
     subgraph Browser["Browser"]
-        UI["Client components<br/>HomeClient · tabs · widgets<br/>theme toggle · copy buttons"]
+        UI["Client components<br/>HomeShell · tabs · widgets<br/>theme toggle · copy buttons"]
     end
 
     subgraph Direct["Loaded directly by the browser"]
@@ -74,7 +74,7 @@ The main rules:
 - **The browser never talks to Sanity's API.** Pages fetch from Sanity on the server, at build time and then again at most once an hour through ISR. An e2e test checks this.
 - **Local MDX** in `content/` is read from disk and compiled to React on the server. The browser gets finished HTML.
 - **Spotify credentials stay on the server.** The browser calls `/api/now-playing`, and that route handler talks to Spotify.
-- **The PSN token stays on the server.** `/games` and `/home` load PlayStation data with `PSN_NPSSO` at build time and then at most once an hour through ISR. If the token is missing or expired, the Games section shows only the curated favourites and the build still passes. An e2e test checks that the browser never calls PSN.
+- **The PSN token stays on the server.** `/games` loads PlayStation data with `PSN_NPSSO` at build time and then at most once an hour through ISR. If the token is missing or expired, the Games section shows only the curated favourites and the build still passes. An e2e test checks that the browser never calls PSN.
 - **The Now page widgets load on the server too.** Spotify top items, WakaTime, FotMob and Letterboxd are fetched with ISR; a widget whose source fails is left out.
 - **Client components** only handle interactivity: tabs, keyboard shortcuts, the theme, animations, widgets and the code copy buttons.
 

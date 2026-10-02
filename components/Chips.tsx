@@ -37,7 +37,9 @@ const Chips = ({ skills, selectedSkill, onSkillClick }: ChipsProps) => (
             <Chip
               key={skill.id}
               label={skill.id}
-              onClick={() => onSkillClick?.(skill.id)}
+              // Only interactive when a handler is given, so /skills can
+              // render on the server.
+              onClick={onSkillClick && (() => onSkillClick(skill.id))}
               isSelected={selectedSkill === skill.id}
             />
           ))}

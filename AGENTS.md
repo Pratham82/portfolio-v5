@@ -9,12 +9,12 @@
 
 ## Project Structure
 
-- **`app/`**: Routes. `layout.tsx` is the only shell (fonts, theme, animated background, analytics). Root `/` redirects to `/home` (`next.config.js`).
+- **`app/`**: Routes. `layout.tsx` is the only shell (fonts, theme, animated background, analytics). `app/(home)/layout.tsx` wraps every home tab: each tab is its own route (`/experience`, `/projects`, `/skills`, `/blogs`, `/now`, `/games`, `/uses`, `/links`, `/about`), and `/` and `/home` open Experience. Tab names, URLs and groups are defined once in `interface/home.interface.ts` (`HOME_TAB_GROUPS`, `HOME_TAB_HREF`, `getTabFromPath`). Detail pages (`blogs/[slug]`, `links/[slug]`) and `guides/` sit outside the group, so they have no hero.
 - **`components/`**: React components. Import each file directly; there is no barrel, because `@/components` resolves to `components.json` before the directory index.
   - `components/ui/`: shadcn/ui primitives (`button`, `badge`, `card`, `separator`, `tabs`, `tooltip`) plus Aceternity-style accents (`hover-list`, `spotlight`).
   - `components/SiteHeader.tsx`: the header on every page except `/guides`. It holds the theme toggle.
-  - `components/sections/`: the Experience / Projects / Blogs / Uses / Games / Now views, shared by their own routes and the `/home` tabs.
-  - `components/home/HomeClient.tsx`: the interactive home page (tabs, keyboard shortcuts, widgets).
+  - `components/sections/`: the Experience / Projects / Blogs / Uses / Games / Now views, rendered by the tab routes in `app/(home)/`.
+  - `components/home/HomeShell.tsx`: the hero, tab bar and mobile menu, rendered by `app/(home)/layout.tsx` so it stays mounted while tabs change. `src/hooks/useTabs.ts` reads the selected tab from the URL; tabs are `<Link scroll={false}>`s.
 - **`src/`**: Hooks, GraphQL queries (`src/graphql/queries/*.graphql`), utilities, static data.
 - **`lib/`**: Server-side data access, plus `lib/utils.ts` (`cn()`). `cn()` is pure, so client components can import it.
   - `lib/sanity/client.ts`: `sanityQuery()` runs a `.graphql` document against Sanity with `fetch`.
@@ -35,7 +35,7 @@
 - **Fonts:** Geist Sans for text (`font-sans`) and Geist Mono for accents like dates, tags and labels (`font-mono`). Both load through the `geist` package in `app/layout.tsx`.
 - **Code blocks** stay dark in both themes (the `--code` token), because night-owl assumes a dark background.
 - **Adding shadcn components:** run `npx shadcn@latest add <name>`, then `npx eslint --fix components/ui`, which converts the output to arrow functions and double quotes. Check that the CLI imported `cn` from `@/lib/utils`: it has rewritten the import to a `cn` npm package before.
-- **Test hooks:** the selected home tab and the selected project filter are marked with `aria-pressed`, and the e2e tests assert on it.
+- **Test hooks:** the selected home tab link has `aria-current="page"`; the selected group and project filter have `aria-pressed`. Tab content is inside `data-testid="home-tab-content"`. The e2e tests assert on these. `e2e/fixtures.ts` serves the GitHub calendar fixed data, so import `test` / `expect` from there.
 
 ## Server vs Client Components
 
@@ -50,8 +50,8 @@
 2. **Local MDX**: rendered on the server with `next-mdx-remote/rsc`. Slug routes use `generateStaticParams` with `dynamicParams = false`.
 3. **Resume PDF**: `getExperiencePage()` takes roles, dates, locations and bullets from the resume that the Sanity resume link points to (`resume.resumeLink` on the Experience singleton; a public Google Drive file works). Sanity still supplies the company logos, matched by company name. The PDF is re-downloaded at most once a day (`RESUME_REVALIDATE`), and on every build. If the resume can't be fetched or parsed, it logs and falls back to the Sanity work experience. The parser expects job headers like `Company · Title Month YYYY – Month YYYY (Location)` and bullets starting with `·`.
 4. **Spotify**: the `app/api/now-playing/route.ts` route handler. Needs the server-only `SPOTIFY_*` env vars (it falls back to the old `NEXT_PUBLIC_SPOTIFY_*` names until Vercel is updated).
-5. **PlayStation**: `lib/psn.ts`, called **only on the server** from `/games` and `/home` (ISR, 1h) with the unofficial `psn-api` package. Needs `PSN_NPSSO` (see `docs/psn.md`); it expires when the browser's `npsso` cookie does (about 2 months). The `psn-token-reminder` workflow opens an issue assigned to the owner the day before the date in the `PSN_NPSSO_EXPIRES_ON` repo variable. If it's missing, expired, or PSN fails, the loader logs and returns `null`, and the Games section shows only the curated favourites (`src/data/games.json`). The build never fails on PSN. Playwright sets `PSN_NPSSO=""` so screenshots use that fallback, and an e2e test asserts the browser never calls PSN.
-6. **Now page widgets**: `lib/now.ts`, server-only with ISR (1h) on `/now` and `/home`. Spotify top items (needs `user-top-read` on the refresh token), WakaTime (`WAKATIME_API_KEY`), FotMob (unofficial, no key) and Letterboxd RSS (no key). Each loader logs and returns `null` on failure, and the widget is hidden. Playwright sets `NOW_LIVE_WIDGETS=off` to skip them all. See `docs/now.md`.
+5. **PlayStation**: `lib/psn.ts`, called **only on the server** from `/games` (ISR, 1h) with the unofficial `psn-api` package. Needs `PSN_NPSSO` (see `docs/psn.md`); it expires when the browser's `npsso` cookie does (about 2 months). The `psn-token-reminder` workflow opens an issue assigned to the owner the day before the date in the `PSN_NPSSO_EXPIRES_ON` repo variable. If it's missing, expired, or PSN fails, the loader logs and returns `null`, and the Games section shows only the curated favourites (`src/data/games.json`). The build never fails on PSN. Playwright sets `PSN_NPSSO=""` so screenshots use that fallback, and an e2e test asserts the browser never calls PSN.
+6. **Now page widgets**: `lib/now.ts`, server-only with ISR (1h) on `/now`. Spotify top items (needs `user-top-read` on the refresh token), WakaTime (`WAKATIME_API_KEY`), FotMob (unofficial, no key) and Letterboxd RSS (no key). Each loader logs and returns `null` on failure, and the widget is hidden. Playwright sets `NOW_LIVE_WIDGETS=off` to skip them all. See `docs/now.md`.
 
 ## Developer Commands
 

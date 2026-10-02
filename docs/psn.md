@@ -1,6 +1,6 @@
 # PlayStation (Games section) setup
 
-The Games section (`/games` and the Games tab on `/home`) shows my trophy level, recently played games, library and trophy progress. `lib/psn.ts` loads them on the server with [`psn-api`](https://github.com/achievements-app/psn-api), and pages re-fetch at most once an hour (ISR). On each re-fetch, `getGamesData()`:
+The Games section (`/games`, the Games tab under Personal) shows my trophy level, recently played games, library and trophy progress. `lib/psn.ts` loads them on the server with [`psn-api`](https://github.com/achievements-app/psn-api), and pages re-fetch at most once an hour (ISR). On each re-fetch, `getGamesData()`:
 
 1. exchanges `PSN_NPSSO` for an access code, then the access code for an access token ([Auth flow](#auth-flow)), and
 2. calls the [data endpoints](#data-endpoints) in parallel and merges the results.

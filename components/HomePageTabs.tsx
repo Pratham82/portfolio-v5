@@ -1,24 +1,23 @@
+import Link from "next/link";
+
 import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-import { HomeTabGroup, TabOptions, TabType } from "../interface/home.interface";
+import {
+  HOME_TAB_HREF,
+  HomeTabGroup,
+  TabOptions,
+} from "../interface/home.interface";
 
 type HomePageTabsProps = {
   tabOptions: TabOptions;
   group: HomeTabGroup;
-  onTabChange?: (_tab: TabType) => void;
   onGroupChange?: (_group: HomeTabGroup) => void;
   className?: string;
 };
 const HomeTabs = (props: HomePageTabsProps) => {
-  const {
-    tabOptions,
-    group,
-    onTabChange = () => {},
-    onGroupChange = () => {},
-    className = "",
-  } = props;
+  const { tabOptions, group, onGroupChange = () => {}, className = "" } = props;
 
   return (
     <div className={cn("flex-col gap-3", className)}>
@@ -60,19 +59,18 @@ const HomeTabs = (props: HomePageTabsProps) => {
         {tabOptions.options.map((tab) => {
           const isSelected = tabOptions.selected === tab;
           return (
-            <button
-              type="button"
+            <Link
               key={tab}
-              aria-pressed={isSelected}
+              href={HOME_TAB_HREF[tab]}
+              // Keep the page where it is; only the tab content changes.
+              scroll={false}
+              aria-current={isSelected ? "page" : undefined}
               className={cn(
                 "relative px-3 py-2 text-sm transition-colors",
                 isSelected
                   ? "font-medium text-foreground"
                   : "text-foreground/70 hover:text-foreground",
               )}
-              onClick={() => {
-                onTabChange(tab);
-              }}
             >
               {tab}
               {isSelected && (
@@ -82,7 +80,7 @@ const HomeTabs = (props: HomePageTabsProps) => {
                   transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
                 />
               )}
-            </button>
+            </Link>
           );
         })}
       </div>

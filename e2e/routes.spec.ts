@@ -1,5 +1,4 @@
-import { expect, test } from "@playwright/test";
-
+import { expect, test } from "./fixtures";
 import { ROUTES, settle, stableScreenshot, trackErrors } from "./helpers";
 
 /** APIs behind the Now page widgets; only the server may call them. */
@@ -10,9 +9,10 @@ const THIRD_PARTY_DATA_HOSTS = [
   "letterboxd.com/pratham82/rss",
 ];
 
-test("/ redirects to /home", async ({ page }) => {
-  await page.goto("/");
-  await expect(page).toHaveURL(/\/home$/);
+test("/ renders the home without redirecting", async ({ page }) => {
+  const response = await page.goto("/");
+  expect(response?.status()).toBe(200);
+  await expect(page).toHaveURL(/\/$/);
 });
 
 for (const route of ROUTES) {
