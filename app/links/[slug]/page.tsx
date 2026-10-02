@@ -42,7 +42,7 @@ const LinkPage = async ({ params }: LinkPageProps) => {
 
   return (
     <PageAnimationContainer>
-      <BackButton href="/home?from=links">← back to links</BackButton>
+      <BackButton href="/links">← back to links</BackButton>
 
       <h1 className="mb-4 mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
         {meta?.title}

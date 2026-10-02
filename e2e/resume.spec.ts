@@ -1,7 +1,6 @@
-import { expect, test } from "@playwright/test";
-
 import { parseResumeExperience, toDirectDownloadUrl } from "../lib/resume";
 
+import { expect, test } from "./fixtures";
 import { settle } from "./helpers";
 
 const RESUME_TEXT = [
@@ -95,7 +94,11 @@ test("experience cards expand to show bullet points", async ({ page }) => {
   await page.goto("/experience");
   await settle(page);
 
-  const firstCard = page.locator("main article").first();
+  // Scoped to the tab: the hero's GitHub calendar is an <article> too.
+  const firstCard = page
+    .getByTestId("home-tab-content")
+    .locator("article")
+    .first();
   await firstCard.getByRole("button").click();
   await expect(firstCard.locator("li").first()).toBeVisible();
 });

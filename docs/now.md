@@ -1,6 +1,6 @@
 # Now page setup
 
-The Now page (`/now` and the Now tab on `/home`) is a short, hand-written update on what I'm focused on, followed by four live widgets:
+The Now page (`/now`, the Now tab under Personal) is a short, hand-written update on what I'm focused on, followed by four live widgets:
 
 | Widget | Shows | Source | Needs |
 |--------|-------|--------|-------|
@@ -11,7 +11,7 @@ The Now page (`/now` and the Now tab on `/home`) is a short, hand-written update
 
 Every widget loads **on the server only** (`lib/now.ts` → one loader per source) when the page is built, then at most once an hour (ISR). If a source fails or isn't configured, its loader logs and returns `null`, and that widget is simply left out. The page and build never fail because of a third party.
 
-The home page also shows my local time next to my location ("Mumbai📍 · 10:42 AM IST"). That's `components/LocalTime.tsx`, rendered in the browser only, and it needs no setup. `HomeClient` splits the Sanity subtitle at its last `<br>` and puts the clock after that last line, so keep the location as the subtitle's last line.
+The home page also shows my local time next to my location ("Mumbai📍 · 10:42 AM IST"). That's `components/LocalTime.tsx`, rendered in the browser only, and it needs no setup. `HomeShell` splits the Sanity subtitle at its last `<br>` and puts the clock after that last line, so keep the location as the subtitle's last line.
 
 ## 1. Write the Now text
 

@@ -37,6 +37,28 @@ export const HOME_TAB_GROUPS: Record<HomeTabGroup, HomePageTabs[]> = {
   ],
 };
 
+/** Each tab's URL. `/` and `/home` also open Experience. */
+export const HOME_TAB_HREF: Record<HomePageTabs, string> = {
+  [HomePageTabs.EXPERIENCE]: "/experience",
+  [HomePageTabs.PROJECTS]: "/projects",
+  [HomePageTabs.SKILLS]: "/skills",
+  [HomePageTabs.BLOGS]: "/blogs",
+  [HomePageTabs.NOW]: "/now",
+  [HomePageTabs.GAMES]: "/games",
+  [HomePageTabs.USES]: "/uses",
+  [HomePageTabs.LINKS]: "/links",
+  [HomePageTabs.ABOUTME]: "/about",
+};
+
+/** The tab a pathname opens, or `null` for a non-tab route. */
+export const getTabFromPath = (pathname: string): HomePageTabs | null => {
+  if (pathname === "/" || pathname === "/home") return HomePageTabs.EXPERIENCE;
+  const entry = Object.entries(HOME_TAB_HREF).find(
+    ([, href]) => href === pathname,
+  );
+  return entry ? (entry[0] as HomePageTabs) : null;
+};
+
 export const getTabGroup = (tab: HomePageTabs): HomeTabGroup =>
   HOME_TAB_GROUPS[HomeTabGroup.PERSONAL].includes(tab)
     ? HomeTabGroup.PERSONAL

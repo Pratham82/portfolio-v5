@@ -4,34 +4,19 @@ import dynamic from "next/dynamic";
 
 import { useTheme } from "next-themes";
 import { Mascot } from "page-mascot";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 
-import AboutMe from "@/components/AboutMe";
 import FloatingNav from "@/components/FloatingNav";
 import HomeTabs from "@/components/HomePageTabs";
-import Links from "@/components/Links";
 import LocalTime from "@/components/LocalTime";
 import MobileMenu from "@/components/MobileMenu";
 import NowPlayingPill from "@/components/NowPlayingPill";
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import ScrambleText from "@/components/ScrambleText";
-import BlogList from "@/components/sections/BlogList";
-import Experience from "@/components/sections/Experience";
-import Games from "@/components/sections/Games";
-import Now from "@/components/sections/Now";
-import Projects from "@/components/sections/Projects";
-import Uses from "@/components/sections/Uses";
-import Skills from "@/components/Skills";
 import SocialLinks from "@/components/SocialLinks";
 import HeroWashes from "@/components/ui/hero-washes";
 import { Separator } from "@/components/ui/separator";
-import type { IGamesData } from "@/interface/games.interface";
-import { HomePageTabs } from "@/interface/home.interface";
-import type { INowData } from "@/interface/now.interface";
-import { IProject } from "@/interface/projects.interface";
-import type { PostMeta } from "@/lib/blogPosts";
-import type { LinkMeta } from "@/lib/links";
-import type { ExperiencePageData, HomePageData } from "@/lib/sanity/queries";
+import type { HomePageData } from "@/lib/sanity/queries";
 import { CALENDAR_THEME } from "@/src/data/calendarTheme";
 import useNowPlaying from "@/src/hooks/useNowPlaying";
 import useTabs from "@/src/hooks/useTabs";
@@ -43,25 +28,15 @@ const GitHubCalendar = dynamic(
   { ssr: false },
 );
 
-export type HomeClientProps = {
-  posts: {
-    content: string;
-    meta: PostMeta;
-  }[];
-  links: {
-    content: string;
-    meta: LinkMeta;
-  }[];
-  experience: ExperiencePageData;
-  projects: IProject[];
+export type HomeShellProps = {
   home: HomePageData;
   resumeLink: string;
-  games: IGamesData | null;
-  now: { updated: string; content: ReactNode; data: INowData };
+  /** The selected tab's route. */
+  children: ReactNode;
 };
-const HomeClient = (props: HomeClientProps) => {
-  const { posts, links, experience, projects, home, resumeLink, games, now } =
-    props;
+
+/** The home hero and tab bar, shared by every tab route via `app/(home)/layout.tsx`. */
+const HomeShell = ({ home, resumeLink, children }: HomeShellProps) => {
   const { title, subtitle } = home;
   // The Sanity subtitle ends with "<br> <small>...Mumbai📍...</small>"; split
   // it off so the local time can sit right after the location.
@@ -77,28 +52,7 @@ const HomeClient = (props: HomeClientProps) => {
   const { data: nowPlaying } = useNowPlaying();
   const { resolvedTheme } = useTheme();
 
-  const { tabs, group, handleTabChange, handleGroupChange } = useTabs();
-  // Read ?from= from window.location rather than useSearchParams: on a static
-  // page useSearchParams needs a Suspense boundary, which would drop the home
-  // content from the server-rendered HTML.
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const from = url.searchParams.get("from");
-    const tabMap: Record<string, HomePageTabs> = {
-      blog: HomePageTabs.BLOGS,
-      links: HomePageTabs.LINKS,
-    };
-
-    const targetTab = from ? tabMap[from] : undefined;
-    if (targetTab) {
-      handleTabChange(targetTab);
-
-      // Clean up the query parameter without a navigation.
-      url.searchParams.delete("from");
-      window.history.replaceState(null, "", url.pathname + url.search);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
-  }, []);
+  const { tabs, group, handleGroupChange } = useTabs();
 
   const [title1, title2] = title.split(/(?<=I'm)/).map((s: string) => s.trim());
 
@@ -167,24 +121,11 @@ const HomeClient = (props: HomeClientProps) => {
       <HomeTabs
         tabOptions={tabs}
         group={group}
-        onTabChange={handleTabChange}
         onGroupChange={handleGroupChange}
         className="mt-2 hidden md:flex"
       />
-      <section className="mt-6">
-        {tabs.selected === HomePageTabs.EXPERIENCE && (
-          <Experience {...experience} />
-        )}
-        {tabs.selected === HomePageTabs.PROJECTS && (
-          <Projects projects={projects} />
-        )}
-        {tabs.selected === HomePageTabs.SKILLS && <Skills />}
-        {tabs.selected === HomePageTabs.BLOGS && <BlogList posts={posts} />}
-        {tabs.selected === HomePageTabs.LINKS && <Links links={links} />}
-        {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
-        {tabs.selected === HomePageTabs.USES && <Uses />}
-        {tabs.selected === HomePageTabs.GAMES && <Games games={games} />}
-        {tabs.selected === HomePageTabs.NOW && <Now {...now} />}
+      <section className="mt-6" data-testid="home-tab-content">
+        {children}
       </section>
       <FloatingNav
         isMenuOpen={isMobileMenuOpen}
@@ -194,10 +135,9 @@ const HomeClient = (props: HomeClientProps) => {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         selected={tabs.selected}
-        onTabChange={handleTabChange}
       />
     </PageAnimationContainer>
   );
 };
 
-export default HomeClient;
+export default HomeShell;

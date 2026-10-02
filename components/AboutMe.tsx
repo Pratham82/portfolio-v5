@@ -1,3 +1,6 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import {
@@ -7,7 +10,6 @@ import {
   XLogoIcon,
 } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
-import { GitHubCalendar } from "react-github-calendar";
 import { SiLetterboxd, SiSpotify } from "react-icons/si";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,13 @@ import { CALENDAR_THEME } from "@/src/data/calendarTheme";
 
 import PageAnimationContainer from "./PageAnimationContainer";
 import PageTitle from "./PageTitle";
+
+// Client-only: the calendar depends on today's date and the resolved theme,
+// so rendering it on the server causes a hydration mismatch.
+const GitHubCalendar = dynamic(
+  () => import("react-github-calendar").then((mod) => mod.GitHubCalendar),
+  { ssr: false },
+);
 
 interface SocialCard {
   id: string;

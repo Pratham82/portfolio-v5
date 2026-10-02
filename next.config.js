@@ -52,10 +52,18 @@ module.exports = {
     ],
   },
   async redirects() {
+    // Old back-button links reopened a home tab with ?from=; tabs have URLs now.
     return [
       {
-        source: "/",
-        destination: "/home",
+        source: "/home",
+        has: [{ type: "query", key: "from", value: "blog" }],
+        destination: "/blogs",
+        permanent: true,
+      },
+      {
+        source: "/home",
+        has: [{ type: "query", key: "from", value: "links" }],
+        destination: "/links",
         permanent: true,
       },
     ];

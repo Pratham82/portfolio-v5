@@ -26,7 +26,7 @@ export default defineConfig({
   ],
   webServer: {
     command: `npm run build && npm run start -- -p ${PORT}`,
-    url: `http://localhost:${PORT}/home`,
+    url: `http://localhost:${PORT}/`,
     // Always test a fresh production build, never a running dev server.
     reuseExistingServer: false,
     timeout: 300_000,
