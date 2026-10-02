@@ -19,25 +19,6 @@ enum GamesTab {
 
 const CARD_GRID = "grid grid-cols-2 sm:grid-cols-3";
 
-// UTC and a fixed locale, so the server and browser render the same text.
-const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-
-const gameMeta = (game: ILibraryGame, showDate = false) =>
-  [
-    game.platform,
-    game.hours !== undefined ? `${game.hours}h` : "Not played",
-    showDate && game.lastPlayed ? formatDate(game.lastPlayed) : undefined,
-    game.psPlus ? "PS Plus" : undefined,
-  ]
-    .filter(Boolean)
-    .join(" · ");
-
 const GameGrid = ({
   id,
   games,
@@ -53,8 +34,11 @@ const GameGrid = ({
         <GameCard
           name={game.name}
           imageUrl={game.imageUrl}
-          meta={gameMeta(game, showDate)}
+          platform={game.platform}
+          hours={game.hours ?? null}
+          lastPlayed={showDate ? game.lastPlayed : undefined}
           progress={game.trophyProgress}
+          psPlus={game.psPlus}
         />
       </HoverItem>
     ))}
@@ -68,7 +52,7 @@ const Favourites = () => (
         <GameCard
           name={game.name}
           imageUrl={game.image}
-          meta={game.platform}
+          platform={game.platform}
           note={game.note}
           url={game.url}
         />

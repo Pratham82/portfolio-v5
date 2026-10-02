@@ -49,12 +49,12 @@ const getAuth = async (npsso: string): Promise<AuthorizationPayload> => {
   return cachedAuth.payload;
 };
 
-/** "PT150H6M42S" → 150.1 */
+/** "PT150H6M42S" → 150.11 (kept to ~minutes; the UI rounds for display) */
 const durationToHours = (duration: string): number => {
   const match = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/.exec(duration);
   if (!match) return 0;
   const [, h = "0", m = "0", s = "0"] = match;
-  return Math.round((+h + +m / 60 + +s / 3600) * 10) / 10;
+  return Math.round((+h + +m / 60 + +s / 3600) * 100) / 100;
 };
 
 /** `ps5_native_game` → PS5, `ps4_game` → PS4, `pspc_game` → PC. */
@@ -206,7 +206,7 @@ export const getGamesData = async (): Promise<IGamesData | null> => {
       playedByName.set(key, {
         ...latest,
         hours:
-          Math.round(((existing.hours ?? 0) + (entry.hours ?? 0)) * 10) / 10,
+          Math.round(((existing.hours ?? 0) + (entry.hours ?? 0)) * 100) / 100,
         trophyProgress:
           existing.trophyProgress === undefined
             ? entry.trophyProgress
