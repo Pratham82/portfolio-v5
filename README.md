@@ -1,6 +1,6 @@
 # Portfolio V5
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Pratham82/portfolio-v5)
+[![Ask DeepWiki](https://img.shields.io/badge/Ask-DeepWiki-1f6feb)](https://deepwiki.com/Pratham82/portfolio-v5)
 
 Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://www.pratham82.in).
 
