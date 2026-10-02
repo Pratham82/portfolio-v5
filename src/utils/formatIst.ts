@@ -30,6 +30,10 @@ export const formatIst = (iso: string, withTime = true) => {
   return `${date}, ${hours}:${minutes}`;
 };
 
+/** "2026-10-02T06:00:58.000Z" → "2026-10-02", the date in IST. */
+export const toIstDate = (iso: string) =>
+  new Date(new Date(iso).getTime() + IST_OFFSET_MS).toISOString().slice(0, 10);
+
 /** "2026-09-27" → "27 Sep" */
 export const formatDay = (isoDate: string) => {
   const [, month, day] = isoDate.split("-").map(Number);

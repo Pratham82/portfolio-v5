@@ -1,4 +1,5 @@
 import type { IFilm } from "@/interface/now.interface";
+import { toIstDate } from "@/src/utils/formatIst";
 
 const LETTERBOXD_USER = "Pratham82";
 const FEED_URL = `https://letterboxd.com/${LETTERBOXD_USER}/rss/`;
@@ -18,8 +19,9 @@ const field = (xml: string, tag: string) => {
 };
 
 /**
- * My latest Letterboxd diary entries from the public RSS feed. List posts in
- * the feed are skipped. Returns `null` (and logs) on failure.
+ * My latest Letterboxd diary entries from the public RSS feed, most recently
+ * watched first. List posts in the feed are skipped. Returns `null` (and logs)
+ * on failure.
  */
 export const getRecentFilms = async (limit = 8): Promise<IFilm[] | null> => {
   try {
@@ -35,12 +37,17 @@ export const getRecentFilms = async (limit = 8): Promise<IFilm[] | null> => {
       // Lists and other non-diary posts have no film title.
       if (!title) continue;
 
+      const pubDate = field(item, "pubDate");
+      const addedAt = pubDate ? new Date(pubDate) : null;
+      if (!addedAt || Number.isNaN(addedAt.getTime())) continue;
+
       const year = field(item, "letterboxd:filmYear");
       const rating = field(item, "letterboxd:memberRating");
       films.push({
         title,
         year: year ? Number(year) : undefined,
         rating: rating ? Number(rating) : undefined,
+        addedAt: addedAt.toISOString(),
         watchedDate: field(item, "letterboxd:watchedDate"),
         rewatch: field(item, "letterboxd:rewatch") === "Yes",
         posterUrl: /<img src="([^"]+)"/.exec(
@@ -49,10 +56,19 @@ export const getRecentFilms = async (limit = 8): Promise<IFilm[] | null> => {
         url:
           field(item, "link") ?? `https://letterboxd.com/${LETTERBOXD_USER}/`,
       });
-      if (films.length === limit) break;
     }
 
-    return films;
+    // The feed is ordered by when I logged each film; show them by when I
+    // watched them instead. Same day: the one logged later first.
+    const watchedOn = (film: IFilm) =>
+      film.watchedDate ?? toIstDate(film.addedAt);
+    return films
+      .sort(
+        (a, b) =>
+          watchedOn(b).localeCompare(watchedOn(a)) ||
+          b.addedAt.localeCompare(a.addedAt),
+      )
+      .slice(0, limit);
   } catch (error) {
     console.error("letterboxd:", error);
     return null;

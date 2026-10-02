@@ -4,7 +4,7 @@ import { ArrowsClockwiseIcon, FilmSlateIcon } from "@phosphor-icons/react";
 
 import { HoverItem, HoverList } from "@/components/ui/hover-list";
 import { IFilm } from "@/interface/now.interface";
-import { formatDay } from "@/src/utils/formatIst";
+import { formatDay, toIstDate } from "@/src/utils/formatIst";
 
 import Widget from "./Widget";
 
@@ -60,12 +60,10 @@ const Movies = ({ films }: { films: IFilm[] }) => (
               {film.rewatch && (
                 <ArrowsClockwiseIcon aria-label="Rewatch" className="size-3" />
               )}
-              {film.watchedDate && (
-                <span>
-                  {film.rating !== undefined || film.rewatch ? "· " : ""}
-                  {formatDay(film.watchedDate)}
-                </span>
-              )}
+              <span>
+                {film.rating !== undefined || film.rewatch ? "· " : ""}
+                {formatDay(film.watchedDate ?? toIstDate(film.addedAt))}
+              </span>
             </p>
           </a>
         </HoverItem>
