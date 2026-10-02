@@ -1,0 +1,13 @@
+{
+  allLink(sort: [{ date: DESC }]) {
+    title
+    slug {
+      current
+    }
+    description
+    category
+    url
+    date
+    body
+  }
+}

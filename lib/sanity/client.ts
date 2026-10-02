@@ -25,7 +25,12 @@ export const sanityQuery = async <T>(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query: print(query), variables }),
-    next: { tags: [SANITY_CACHE_TAG], revalidate: SANITY_REVALIDATE },
+    next: {
+      tags: [SANITY_CACHE_TAG],
+      // The publish webhook can't reach localhost, so dev always refetches.
+      revalidate:
+        process.env.NODE_ENV === "development" ? 0 : SANITY_REVALIDATE,
+    },
   });
   if (!res.ok) {
     throw new Error(`Sanity request failed with status ${res.status}`);

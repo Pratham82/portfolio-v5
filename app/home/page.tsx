@@ -14,21 +14,30 @@ import {
 export const revalidate = 3600;
 
 const HomePage = async () => {
-  const [experience, projects, home, resumeLink, games, nowContent, nowData] =
-    await Promise.all([
-      getExperiencePage(),
-      getProjects(),
-      getHomePage(),
-      getResumeLink(),
-      getGamesData(),
-      getNowContent(),
-      getNowData(),
-    ]);
+  const [
+    experience,
+    projects,
+    home,
+    resumeLink,
+    games,
+    nowContent,
+    nowData,
+    links,
+  ] = await Promise.all([
+    getExperiencePage(),
+    getProjects(),
+    getHomePage(),
+    getResumeLink(),
+    getGamesData(),
+    getNowContent(),
+    getNowData(),
+    getAllLinks(),
+  ]);
 
   return (
     <HomeClient
       posts={getAllPosts()}
-      links={getAllLinks()}
+      links={links}
       experience={experience}
       projects={projects}
       home={home}

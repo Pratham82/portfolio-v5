@@ -21,10 +21,10 @@
   - `lib/sanity/queries.ts`: typed loaders (`getHomePage`, `getExperiencePage`, `getProjects`, `getResumeLink`, `getAuthorByUsername`).
   - `lib/mdx.ts`: `renderMdx()` compiles local MDX with the site's rehype plugins.
   - `lib/resume.ts`: fetches the resume PDF (the Sanity resume link) and parses its Experience section into jobs and bullets.
-  - `lib/now.ts`: `getNowContent()` (renders `content/now.mdx`) and `getNowData()`, which calls `lib/spotify.ts` (`getTopItems`, plus the shared `getAccessToken` used by `/api/now-playing`), `lib/wakatime.ts`, `lib/football.ts` (FotMob) and `lib/letterboxd.ts`.
+  - `lib/now.ts`: `getNowContent()` (renders the Sanity `nowPage` body as MDX) and `getNowData()`, which calls `lib/spotify.ts` (`getTopItems`, plus the shared `getAccessToken` used by `/api/now-playing`), `lib/wakatime.ts`, `lib/football.ts` (FotMob) and `lib/letterboxd.ts`.
   - `lib/psn.ts`: `getGamesData()` loads the PlayStation trophy summary, played and owned games, and trophy progress (`psn-api`).
-  - `lib/blogPosts.ts`, `lib/links.ts`: local content parsers.
-- **`content/blogs/`**, **`content/links/`**: local `.md` / `.mdx` parsed with `gray-matter`.
+  - `lib/blogPosts.ts`: local blog parser. `lib/links.ts`: loads `link` documents from Sanity (body rendered as MDX).
+- **`content/blogs/`**: local `.md` / `.mdx` parsed with `gray-matter`. Now and Links live in Sanity, so editing them needs no deploy.
 - **`interface/`**: TypeScript interfaces.
 - **`e2e/`**: Playwright tests and screenshot baselines.
 

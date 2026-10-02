@@ -1,6 +1,8 @@
 # Writing Content
 
-Add a `.md` or `.mdx` file to `content/blogs/` or `content/links/`. It's picked up at build time.
+Blogs: add a `.md` or `.mdx` file to `content/blogs/`. It's picked up at build time.
+
+Links and the Now page: edit them in Sanity Studio (**Links** list and the **Now** singleton). The body field is markdown and is rendered as MDX, so `{/* comments */}` work. Publishing calls the `/api/revalidate` webhook and the site updates on the next visit, without a deploy. A new link's URL is its slug.
 
 ```md
 ---
