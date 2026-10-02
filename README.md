@@ -49,8 +49,8 @@ flowchart TB
 
     subgraph Sources["Server-side data sources"]
         direction LR
-        Sanity[("Sanity CMS<br/>GraphQL API")]
-        Content[("content/blogs<br/>content/links<br/>.md / .mdx")]
+        Sanity[("Sanity CMS<br/>GraphQL API<br/>(incl. Now + Links)")]
+        Content[("content/blogs<br/>.md / .mdx")]
         Spotify[("Spotify<br/>Web API")]
         PSN[("PlayStation Network<br/>(psn-api)")]
         NowSources[("WakaTime · FotMob<br/>Letterboxd RSS")]

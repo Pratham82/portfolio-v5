@@ -12,9 +12,9 @@ import type { INowData } from "@/interface/now.interface";
 import { formatDay } from "@/src/utils/formatIst";
 
 type NowProps = {
-  /** YYYY-MM-DD from `content/now.mdx`. */
+  /** YYYY-MM-DD from the Sanity `nowPage`. */
   updated: string;
-  /** The rendered `content/now.mdx`. */
+  /** The rendered `nowPage` body. */
   content: ReactNode;
   data: INowData;
 };

@@ -1,55 +1,54 @@
-import fs from "fs";
-import path from "path";
+import { allLinks } from "@/src/graphql/queries";
 
-import matter from "gray-matter";
+import { sanityQuery } from "./sanity/client";
 
-const LINKS_PATH = path.join(process.cwd(), "content/links");
+interface SanityLink {
+  title: string | null;
+  slug: { current: string } | null;
+  description: string | null;
+  category: string[] | null;
+  url: string | null;
+  date: string | null;
+  body: string | null;
+}
 
-export const getLinkSlugs = (): string[] => {
-  return fs
-    .readdirSync(LINKS_PATH)
-    .filter((fileName) => /\.mdx?$/.test(fileName)) // Support both .md and .mdx
-    .map((fileName) => fileName.replace(/\.mdx?$/, ""));
-};
-
-export const getLinkFromSlug = (slug: string): Link => {
-  const mdxPath = path.join(LINKS_PATH, `${slug}.mdx`);
-  const mdPath = path.join(LINKS_PATH, `${slug}.md`);
-
-  let source: string;
-  if (fs.existsSync(mdxPath)) {
-    source = fs.readFileSync(mdxPath, "utf-8");
-  } else if (fs.existsSync(mdPath)) {
-    source = fs.readFileSync(mdPath, "utf-8");
-  } else {
-    throw new Error(`Link file for slug "${slug}" not found`);
-  }
-
-  const { content, data } = matter(source);
+const toLink = (link: SanityLink): Link | null => {
+  const slug = link.slug?.current;
+  if (!slug) return null;
 
   return {
-    content,
+    content: link.body ?? "",
     meta: {
       slug,
-      title: data.title ?? slug,
-      description: data.description ?? "",
-      category: data.category ?? "",
-      url: data.url ?? "",
-      date: data.date ? new Date(data.date).toString() : new Date().toString(),
+      title: link.title ?? slug,
+      description: link.description ?? "",
+      category: link.category ?? [],
+      url: link.url ?? "",
+      date: link.date ? new Date(link.date).toString() : new Date().toString(),
     },
   };
 };
 
-export const getAllLinks = (): Link[] => {
-  return getLinkSlugs()
-    .map((slug) => getLinkFromSlug(slug))
+/** Every link, newest first. Edited in Sanity; a publish expires the cache. */
+export const getAllLinks = async (): Promise<Link[]> => {
+  const { allLink } = await sanityQuery<{ allLink: SanityLink[] }>(allLinks);
+
+  return allLink
+    .map(toLink)
+    .filter((link): link is Link => link !== null)
     .sort(
       (a, b) =>
         new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime() ||
-        // Same date: newest-slug-first keeps the order stable across filesystems.
+        // Same date: newest-slug-first keeps the order stable.
         b.meta.slug.localeCompare(a.meta.slug),
     );
 };
+
+export const getLinkSlugs = async (): Promise<string[]> =>
+  (await getAllLinks()).map(({ meta }) => meta.slug);
+
+export const getLinkFromSlug = async (slug: string): Promise<Link | null> =>
+  (await getAllLinks()).find(({ meta }) => meta.slug === slug) ?? null;
 
 interface Link {
   content: string;
@@ -60,7 +59,7 @@ export interface LinkMeta {
   slug: string;
   title: string;
   description: string;
-  category: string;
+  category: string[];
   url: string;
   date: string;
 }

@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import type { Metadata } from "next";
 
 import "highlight.js/styles/night-owl.css";
@@ -10,15 +12,21 @@ import { renderMdx } from "@/lib/mdx";
 
 type LinkPageProps = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
+// Keep in sync with SANITY_REVALIDATE (segment config must be a literal).
+export const revalidate = 3600;
 
-export const generateStaticParams = () =>
-  getLinkSlugs().map((slug) => ({ slug }));
+// Links published in Sanity after a deploy render on first visit.
+export const dynamicParams = true;
+
+export const generateStaticParams = async () =>
+  (await getLinkSlugs()).map((slug) => ({ slug }));
 
 export const generateMetadata = async ({
   params,
 }: LinkPageProps): Promise<Metadata> => {
-  const { meta } = getLinkFromSlug((await params).slug);
+  const link = await getLinkFromSlug((await params).slug);
+  if (!link) return {};
+  const { meta } = link;
 
   return {
     title: `${meta.title} | Links`,
@@ -27,7 +35,9 @@ export const generateMetadata = async ({
 };
 
 const LinkPage = async ({ params }: LinkPageProps) => {
-  const { content, meta } = getLinkFromSlug((await params).slug);
+  const link = await getLinkFromSlug((await params).slug);
+  if (!link) notFound();
+  const { content, meta } = link;
   const mdx = await renderMdx(content);
 
   return (

@@ -30,11 +30,9 @@ const Links = (props: ILinksProps) => {
                   {linkData.description}
                 </p>
               )}
-              {linkData.category && (
+              {linkData.category.length > 0 && (
                 <span className="mt-2 block font-mono text-xs text-muted-foreground/80">
-                  {Array.isArray(linkData.category)
-                    ? linkData.category.join(", ")
-                    : linkData.category}
+                  {linkData.category.join(", ")}
                 </span>
               )}
             </Link>

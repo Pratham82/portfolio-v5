@@ -77,15 +77,15 @@ The `components/sections/*` views are shared: each one renders both on its own r
 | Route | Rendering | Data |
 |-------|-----------|------|
 | `/` | Redirects (308) to `/home` | `next.config.js` |
-| `/home` | Static + ISR (1h) | Sanity + local posts/links + PSN + Now widgets |
+| `/home` | Static + ISR (1h) | Sanity (incl. links) + local posts + PSN + Now widgets |
 | `/experience`, `/about` | Static + ISR (1h) | Sanity work experience |
 | `/projects` | Static + ISR (1h) | Sanity projects |
 | `/blogs` | Static | `content/blogs` |
 | `/blogs/[slug]` | Static + ISR (1h) | MDX + Sanity author |
-| `/links`, `/links/[slug]` | Static | `content/links` |
+| `/links`, `/links/[slug]` | Static + ISR (1h) | Sanity `link` documents (new slugs render on demand) |
 | `/uses`, `/guides/ai-guide` | Static | Hard-coded content |
 | `/games` | Static + ISR (1h) | PSN (`lib/psn.ts`) + `src/data/games.json` |
-| `/now` | Static + ISR (1h) | `content/now.mdx` + Spotify, WakaTime, FotMob, Letterboxd (`lib/now.ts`) |
+| `/now` | Static + ISR (1h) | Sanity `nowPage` + Spotify, WakaTime, FotMob, Letterboxd (`lib/now.ts`) |
 | `/api/now-playing` | Dynamic | Spotify |
 | `/api/callback` | Dynamic | One-time Spotify OAuth helper |
 | `/api/revalidate` | Dynamic | Sanity publish webhook (expires the `sanity` cache tag) |

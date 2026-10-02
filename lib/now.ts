@@ -1,17 +1,12 @@
-import fs from "fs";
-import path from "path";
-
-import matter from "gray-matter";
-
 import type { INowData } from "@/interface/now.interface";
+import { nowPage } from "@/src/graphql/queries";
 
 import { getFootball } from "./football";
 import { getRecentFilms } from "./letterboxd";
 import { renderMdx } from "./mdx";
+import { sanityQuery } from "./sanity/client";
 import { getTopItems } from "./spotify";
 import { getCodingStats } from "./wakatime";
-
-const NOW_PATH = path.join(process.cwd(), "content/now.mdx");
 
 /**
  * `NOW_LIVE_WIDGETS=off` skips every third-party call, so e2e screenshots
@@ -19,15 +14,17 @@ const NOW_PATH = path.join(process.cwd(), "content/now.mdx");
  */
 const LIVE_WIDGETS = process.env.NOW_LIVE_WIDGETS !== "off";
 
-/** The hand-written Now text, rendered on the server. */
+/** The hand-written Now text from Sanity, rendered on the server. */
 export const getNowContent = async () => {
-  const { content, data } = matter(fs.readFileSync(NOW_PATH, "utf-8"));
-  // YAML reads an unquoted 2026-10-02 as a Date.
-  const updated =
-    data.updated instanceof Date
-      ? data.updated.toISOString().slice(0, 10)
-      : String(data.updated ?? "");
-  return { updated, content: await renderMdx(content) };
+  const { allNowPage } = await sanityQuery<{
+    allNowPage: { updated: string | null; body: string | null }[];
+  }>(nowPage);
+  const [page] = allNowPage;
+
+  return {
+    updated: page?.updated ?? "",
+    content: await renderMdx(page?.body ?? ""),
+  };
 };
 
 /** Every live widget on the Now page; each one is `null` if its source fails. */
