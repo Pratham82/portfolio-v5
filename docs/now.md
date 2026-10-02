@@ -16,7 +16,7 @@ The home page also shows my local time next to my location ("Mumbai📍 · 10:42
 
 ## 1. Write the Now text
 
-Open **Now** in Sanity Studio, edit the body (markdown, rendered as MDX) and bump **Updated**, then publish. The Sanity webhook expires the cache, so `/now` and the home Now tab update on the next visit without a deploy.
+Open **Now** in Sanity Studio, edit the body (markdown, rendered as MDX) and bump **Updated**, then publish. The Sanity webhook expires the cache, so `/now` updates on the next visit without a deploy. The favourite films are in the same document; see section 5.
 
 ## 2. Spotify: allow top artists and tracks
 

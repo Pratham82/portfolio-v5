@@ -21,7 +21,13 @@ npm run dev                  # http://localhost:3000
 | `TMDB_API_KEY`                           | `lib/favouriteFilms` (server) | See [Now page setup](now.md)   |
 | `SANITY_REVALIDATE_SECRET`               | `/api/revalidate`       | The secret set on the Sanity webhook |
 
-See [Spotify setup](spotify.md) for how to get the three `SPOTIFY_*` values, and [PlayStation setup](psn.md) for `PSN_NPSSO`. Without `PSN_NPSSO` the site still builds; the Games section shows only the curated favourites. [Now page setup](now.md) covers `WAKATIME_API_KEY` and the extra Spotify scope; any Now widget without its key is just hidden.
+See [Spotify setup](spotify.md) for how to get the three `SPOTIFY_*` values, and [PlayStation setup](psn.md) for `PSN_NPSSO`. Without `PSN_NPSSO` the site still builds; the Games section shows only the curated favourites. [Now page setup](now.md) covers `WAKATIME_API_KEY`, `TMDB_API_KEY` and the extra Spotify scope; any Now widget without its key is just hidden (favourite films still show, without posters).
+
+## Local development notes
+
+- `npm run dev` renders every request on demand and skips the Sanity fetch cache, so Studio edits show on the next reload. Tab switches take about a second locally; run `npm run build && npm start` to see production speed (about 50 ms).
+- The Sanity publish webhook can't reach `localhost`; it only revalidates the deployed site.
+- Content is edited in the Studio repo, [portfolio-api](https://github.com/Pratham82/portfolio-api): `npm run dev` there starts Studio locally.
 
 ## Scripts
 
