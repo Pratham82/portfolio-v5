@@ -14,7 +14,7 @@ Personal portfolio and blog of Prathamesh Mali, live at [pratham82.in](https://w
 | Framework | Next.js 16 (App Router, React Server Components, ISR) |
 | UI | React 19, Tailwind CSS 4, Motion, Phosphor Icons |
 | Content | Sanity CMS (GraphQL), local MDX with `next-mdx-remote` |
-| Integrations | Spotify Web API, GitHub contributions, Vercel Analytics |
+| Integrations | Spotify Web API, PlayStation Network (`psn-api`), GitHub contributions, Vercel Analytics |
 | Tooling | TypeScript 6, ESLint 9, Prettier, Husky, Playwright |
 | Hosting | Vercel (Node 24) |
 
@@ -74,5 +74,6 @@ The main rules:
 | [Architecture](docs/architecture.md) | Request lifecycle (ISR), server vs client components, routes, project structure |
 | [Getting started](docs/getting-started.md) | Local setup, environment variables, scripts |
 | [Spotify setup](docs/spotify.md) | Getting the Spotify client credentials and refresh token for the now-playing widget |
+| [PlayStation setup](docs/psn.md) | Getting the PSN token for the Games section, and renewing it |
 | [Testing & CI](docs/testing.md) | Playwright tests, visual baselines, CI |
 | [Writing content](docs/writing-content.md) | Adding blog posts and links |

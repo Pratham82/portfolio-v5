@@ -30,5 +30,7 @@ export default defineConfig({
     // Always test a fresh production build, never a running dev server.
     reuseExistingServer: false,
     timeout: 300_000,
+    // Render the PSN fallback, so screenshots don't change with my playtime.
+    env: { PSN_NPSSO: "" },
   },
 });

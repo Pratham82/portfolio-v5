@@ -33,6 +33,14 @@ module.exports = {
         protocol: "https",
         hostname: "cdn.simpleicons.org",
       },
+      {
+        protocol: "https",
+        hostname: "image.api.playstation.com",
+      },
+      {
+        protocol: "https",
+        hostname: "psnobj.prod.dl.playstation.net",
+      },
     ],
   },
   async redirects() {

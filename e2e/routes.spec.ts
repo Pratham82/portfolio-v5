@@ -12,9 +12,12 @@ for (const route of ROUTES) {
     test("renders without errors", async ({ page }) => {
       const errors = trackErrors(page);
       const sanityApiCalls: string[] = [];
+      const psnApiCalls: string[] = [];
       page.on("request", (req) => {
         if (req.url().includes(".api.sanity.io"))
           sanityApiCalls.push(req.url());
+        if (req.url().includes("m.np.playstation.com"))
+          psnApiCalls.push(req.url());
       });
       const response = await page.goto(route);
 
@@ -24,6 +27,8 @@ for (const route of ROUTES) {
       expect(errors).toEqual([]);
       // Sanity content is fetched at build time, never from the browser.
       expect(sanityApiCalls).toEqual([]);
+      // PSN is only called on the server; the NPSSO never reaches the browser.
+      expect(psnApiCalls).toEqual([]);
     });
 
     for (const colorScheme of ["light", "dark"] as const) {
