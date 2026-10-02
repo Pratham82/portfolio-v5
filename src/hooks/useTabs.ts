@@ -1,31 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
+  HOME_TAB_GROUPS,
   HomePageTabs,
+  HomeTabGroup,
   TabOptions,
   TabType,
+  getTabGroup,
 } from "../../interface/home.interface";
 
 const useTabs = () => {
-  const [tabs, setTabs] = useState<TabOptions>({
-    options: [
-      HomePageTabs.EXPERIENCE,
-      HomePageTabs.PROJECTS,
-      HomePageTabs.BLOGS,
-      HomePageTabs.LINKS,
-      HomePageTabs.ABOUTME,
-      HomePageTabs.USES,
-      HomePageTabs.GAMES,
-      HomePageTabs.NOW,
-    ],
-    selected: HomePageTabs.EXPERIENCE,
+  const [selected, setSelected] = useState<TabType>(HomePageTabs.EXPERIENCE);
+  // The tab last open in each group, so switching back restores it.
+  const lastTabByGroup = useRef<Record<HomeTabGroup, TabType>>({
+    [HomeTabGroup.WORK]: HOME_TAB_GROUPS[HomeTabGroup.WORK][0],
+    [HomeTabGroup.PERSONAL]: HOME_TAB_GROUPS[HomeTabGroup.PERSONAL][0],
   });
 
+  const group = getTabGroup(selected);
+  const tabs: TabOptions = { options: HOME_TAB_GROUPS[group], selected };
+
   const handleTabChange = (tab: TabType) => {
-    setTabs((prev) => ({
-      ...prev,
-      selected: tab,
-    }));
+    lastTabByGroup.current[getTabGroup(tab)] = tab;
+    setSelected(tab);
+  };
+
+  const handleGroupChange = (nextGroup: HomeTabGroup) => {
+    setSelected(lastTabByGroup.current[nextGroup]);
   };
 
   useEffect(() => {
@@ -34,10 +35,6 @@ const useTabs = () => {
         case "p":
         case "P":
         case "2": {
-          // setTabs((prev) => ({
-          //   ...prev,
-          //   selected: HomePageTabs.PROJECTS,
-          // }));
           handleTabChange(HomePageTabs.PROJECTS);
           break;
         }
@@ -51,6 +48,11 @@ const useTabs = () => {
         case "E":
         case "1": {
           handleTabChange(HomePageTabs.EXPERIENCE);
+          break;
+        }
+        case "s":
+        case "S": {
+          handleTabChange(HomePageTabs.SKILLS);
           break;
         }
         default: {
@@ -68,8 +70,9 @@ const useTabs = () => {
   }, []);
   return {
     tabs,
-    setTabs,
+    group,
     handleTabChange,
+    handleGroupChange,
   };
 };
 
