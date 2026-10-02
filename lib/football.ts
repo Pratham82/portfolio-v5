@@ -1,4 +1,8 @@
-import type { IFixture, ITeamFixtures } from "@/interface/now.interface";
+import type {
+  IFixture,
+  IStanding,
+  ITeamFixtures,
+} from "@/interface/now.interface";
 
 /** FotMob team IDs (from the team page URL, fotmob.com/teams/<id>/...). */
 const TEAMS = [
@@ -21,11 +25,60 @@ type FotmobFixture = {
   };
 };
 
+type FotmobTableRow = {
+  id: number;
+  idx: number;
+  played: number;
+  pts: number;
+  goalConDiff: number;
+};
+
+type FotmobTable = {
+  data: {
+    leagueName: string;
+    pageUrl: string;
+    legend?: { tKey?: string; title: string; indices: number[] }[];
+    table?: { all?: FotmobTableRow[] };
+  };
+};
+
 type FotmobTeam = {
   fixtures: {
     allFixtures: { fixtures: FotmobFixture[]; nextMatch?: FotmobFixture };
   };
+  table?: FotmobTable[];
 };
+
+/** FotMob's zone keys, shortened; unknown zones fall back to FotMob's title. */
+const ZONE_LABELS: Record<string, string> = {
+  championsleague: "UCL spot",
+  europaleague: "UEL spot",
+  europa_conference_league: "UECL spot",
+  q1of8finals: "Round of 16 spot",
+  q1of16finals: "Playoff spot",
+  relegation: "Relegation zone",
+};
+
+const toStandings = (tables: FotmobTable[], teamId: number): IStanding[] =>
+  tables.flatMap(({ data }) => {
+    const rows = data.table?.all ?? [];
+    const row = rows.find((r) => r.id === teamId);
+    if (!row) return [];
+    // Legend indices are 0-based positions; idx is 1-based.
+    const zone = data.legend?.find((z) => z.indices.includes(row.idx - 1));
+    return [
+      {
+        competition: data.leagueName,
+        position: row.idx,
+        teamCount: rows.length,
+        played: row.played,
+        points: row.pts,
+        goalDiff: row.goalConDiff,
+        zone: zone ? (ZONE_LABELS[zone.tKey ?? ""] ?? zone.title) : undefined,
+        url: `${FOTMOB}${data.pageUrl}`,
+      },
+    ];
+  });
 
 const toFixture = (fixture: FotmobFixture, withScore: boolean): IFixture => ({
   id: fixture.id,
@@ -57,7 +110,7 @@ const getTeam = async ({
     headers: { "User-Agent": "Mozilla/5.0 (pratham82.in)" },
   });
   if (!res.ok) throw new Error(`team ${id} (${res.status})`);
-  const { fixtures } = (await res.json()) as FotmobTeam;
+  const { fixtures, table = [] } = (await res.json()) as FotmobTeam;
   const { fixtures: all, nextMatch } = fixtures.allFixtures;
 
   const recent = all
@@ -72,6 +125,7 @@ const getTeam = async ({
     crestUrl: crestUrl(id),
     next: nextMatch ? toFixture(nextMatch, false) : undefined,
     recent,
+    standings: toStandings(table, id),
   };
 };
 

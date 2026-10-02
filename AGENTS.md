@@ -30,7 +30,7 @@
 
 ## Design System
 
-- **Colors:** use the semantic tokens defined in `styles/globals.css` (`bg-background`, `bg-card`, `text-muted-foreground`, `border-border`, `bg-accent`, and so on), not raw palette classes like `gray-*` or `slate-*`. The `/guides/ai-guide` page is the one exception; it keeps its own hardcoded dark theme.
+- **Colors:** use the semantic tokens defined in `styles/globals.css` (`bg-background`, `bg-card`, `text-muted-foreground`, `border-border`, `bg-accent`, and so on), not raw palette classes like `gray-*` or `slate-*`. The `/guides/ai-guide` page is the one exception; it keeps its own hardcoded dark theme. The only hues are `win` / `loss` (`bg-win/15 text-win`) for match results, plus `rank-mid` / `rank-low` for the green → yellow → amber → red standings bands, all on the Now page's football widget.
 - **Theme:** dark is the default (`defaultTheme="dark"` in `app/providers.tsx`). It is a neutral gray-dark, not pure black. Read `resolvedTheme` from `useTheme()`, never `theme`, because `theme` can be `"system"`.
 - **Fonts:** Geist Sans for text (`font-sans`) and Geist Mono for accents like dates, tags and labels (`font-mono`). Both load through the `geist` package in `app/layout.tsx`.
 - **Code blocks** stay dark in both themes (the `--code` token), because night-owl assumes a dark background.

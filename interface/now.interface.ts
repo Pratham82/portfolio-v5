@@ -29,7 +29,20 @@ export interface IFixture {
   url: string;
 }
 
-/** One club's next match and latest results (FotMob). */
+/** Where a club sits in one competition's table. */
+export interface IStanding {
+  competition: string;
+  position: number;
+  teamCount: number;
+  played: number;
+  points: number;
+  goalDiff: number;
+  /** Short label for the table zone, e.g. "UCL spot" or "Relegation zone". */
+  zone?: string;
+  url: string;
+}
+
+/** One club's next match, latest results and table positions (FotMob). */
 export interface ITeamFixtures {
   id: number;
   name: string;
@@ -37,6 +50,8 @@ export interface ITeamFixtures {
   next?: IFixture;
   /** Latest finished matches, newest first. */
   recent: IFixture[];
+  /** League first, then Champions League (and any other table it's in). */
+  standings: IStanding[];
 }
 
 /** A diary entry from Letterboxd. */
@@ -45,6 +60,9 @@ export interface IFilm {
   year?: number;
   /** 0.5–5 stars; absent when I didn't rate it. */
   rating?: number;
+  /** When I logged it on Letterboxd (RSS pubDate), ISO 8601. */
+  addedAt: string;
+  /** YYYY-MM-DD, as entered on Letterboxd. */
   watchedDate?: string;
   rewatch: boolean;
   posterUrl?: string;

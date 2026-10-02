@@ -6,8 +6,8 @@ The Now page (`/now` and the Now tab on `/home`) is a short, hand-written update
 |--------|-------|--------|-------|
 | On repeat | Top 5 artists and tracks, last ~4 weeks | Spotify Web API | `user-top-read` on `SPOTIFY_REFRESH_TOKEN` |
 | Coding this week | Hours coded in the last 7 days, a bar per day, top 5 languages | WakaTime API | `WAKATIME_API_KEY` |
-| Football | Next match and last 3 results for Man City and Real Madrid | FotMob (unofficial) | nothing |
-| Recently watched | Latest 8 films with rating and watched date | Letterboxd RSS | nothing |
+| Football | Next match, last 3 results (green W / red L) and table position (league + Champions League; rows tinted green → yellow → amber → red by position: top 20%, to 50%, to 80%, bottom 20%) for Man City and Real Madrid | FotMob (unofficial) | nothing |
+| Recently watched | Latest 8 films by the date I watched them, with rating | Letterboxd RSS | nothing |
 
 Every widget loads **on the server only** (`lib/now.ts` → one loader per source) when the page is built, then at most once an hour (ISR). If a source fails or isn't configured, its loader logs and returns `null`, and that widget is simply left out. The page and build never fail because of a third party.
 
@@ -70,8 +70,8 @@ The log shows a `spotify:`, `wakatime:`, `football:` or `letterboxd:` line for a
 |--------|---------|
 | On repeat | `POST https://accounts.spotify.com/api/token` (refresh token → access token, shared with `/api/now-playing` via `lib/spotify.ts`), then `GET https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=5` and `/v1/me/top/tracks?...` |
 | Coding | `GET https://wakatime.com/api/v1/users/current/stats/last_7_days` and `GET .../summaries?range=last_7_days`, with `Authorization: Basic base64(WAKATIME_API_KEY)` |
-| Football | `GET https://www.fotmob.com/api/data/teams?id=<teamId>` (about 700 KB; uses `fixtures.allFixtures`). Crests: `https://images.fotmob.com/image_resources/logo/teamlogo/<teamId>.png` |
-| Movies | `GET https://letterboxd.com/Pratham82/rss/` (diary entries only; list posts are skipped) |
+| Football | `GET https://www.fotmob.com/api/data/teams?id=<teamId>` (about 700 KB; uses `fixtures.allFixtures` for matches and `table[]` for standings, one entry per competition with the club's row and the zone legend). Crests: `https://images.fotmob.com/image_resources/logo/teamlogo/<teamId>.png` |
+| Movies | `GET https://letterboxd.com/Pratham82/rss/` (diary entries only; list posts are skipped). Sorted by `letterboxd:watchedDate` (newest first; same day: later `pubDate` first). |
 
 Images come from `i.scdn.co` (Spotify), `images.fotmob.com` and `a.ltrbxd.com`; all are allowed in `next.config.js`.
 

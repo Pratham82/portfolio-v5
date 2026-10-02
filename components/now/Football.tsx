@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { SoccerBallIcon } from "@phosphor-icons/react";
 
-import { IFixture, ITeamFixtures } from "@/interface/now.interface";
+import { IFixture, IStanding, ITeamFixtures } from "@/interface/now.interface";
 import { cn } from "@/lib/utils";
 import { formatIst } from "@/src/utils/formatIst";
 
@@ -18,16 +18,73 @@ const resultFor = (fixture: IFixture, teamId: number): Result => {
   return ours === theirs ? "D" : "L";
 };
 
+// Tinted chips with the letter inside, so the result reads without color too.
 const RESULT_STYLES: Record<Result, string> = {
-  W: "bg-foreground text-background",
-  D: "bg-muted text-foreground",
-  L: "border text-muted-foreground",
+  W: "bg-win/15 text-win",
+  D: "bg-muted text-muted-foreground",
+  L: "bg-loss/15 text-loss",
 };
 
 const opponentOf = (fixture: IFixture, teamId: number) =>
   fixture.home.id === teamId
     ? `vs ${fixture.away.name}`
     : `at ${fixture.home.name}`;
+
+/** 1 → "1st", 2 → "2nd", 11 → "11th", 22 → "22nd" */
+const ordinal = (n: number) => {
+  const teen = n % 100 >= 11 && n % 100 <= 13;
+  const suffix = teen ? "th" : (["th", "st", "nd", "rd"][n % 10] ?? "th");
+  return `${n}${suffix}`;
+};
+
+const SubHeading = ({ children }: { children: string }) => (
+  <p className="mb-1.5 font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
+    {children}
+  </p>
+);
+
+/**
+ * Tints a standings row by how high the club sits in the table, relative to
+ * its size (so 8th of 36 counts as near the top): green, yellow, amber, red.
+ */
+const rankStyle = ({ position, teamCount }: IStanding) => {
+  const share = teamCount > 1 ? (position - 1) / (teamCount - 1) : 0;
+  if (share <= 0.2) return "bg-win/10 [--rank:var(--win)]";
+  if (share <= 0.5) return "bg-rank-mid/10 [--rank:var(--rank-mid)]";
+  if (share <= 0.8) return "bg-rank-low/10 [--rank:var(--rank-low)]";
+  return "bg-loss/10 [--rank:var(--loss)]";
+};
+
+const StandingRow = ({ standing }: { standing: IStanding }) => (
+  <li>
+    <a
+      href={standing.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(
+        "flex items-center gap-3 rounded-lg px-2.5 py-1.5 hover:underline",
+        rankStyle(standing),
+      )}
+    >
+      <span className="w-9 shrink-0 font-mono text-base font-semibold text-(--rank)">
+        {ordinal(standing.position)}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm text-foreground">
+          {standing.competition}
+        </span>
+        <span className="block truncate font-mono text-[11px] text-muted-foreground">
+          of {standing.teamCount}
+          {standing.zone && ` · ${standing.zone}`}
+        </span>
+      </span>
+      <span className="shrink-0 text-right font-mono text-xs text-muted-foreground">
+        <span className="font-semibold text-foreground">{standing.points}</span>{" "}
+        pts · {standing.played}P
+      </span>
+    </a>
+  </li>
+);
 
 const TeamCard = ({ team }: { team: ITeamFixtures }) => (
   <div className="rounded-xl border bg-card/40 p-4">
@@ -61,6 +118,7 @@ const TeamCard = ({ team }: { team: ITeamFixtures }) => (
       </a>
     )}
 
+    <SubHeading>Recent</SubHeading>
     <ul className="flex flex-col gap-1.5">
       {team.recent.map((fixture) => {
         const result = resultFor(fixture, team.id);
@@ -75,7 +133,7 @@ const TeamCard = ({ team }: { team: ITeamFixtures }) => (
               <span
                 aria-label={{ W: "Win", D: "Draw", L: "Loss" }[result]}
                 className={cn(
-                  "grid size-5 shrink-0 place-items-center rounded font-mono text-[10px] font-semibold",
+                  "grid size-6 shrink-0 place-items-center rounded-md font-mono text-xs font-bold",
                   RESULT_STYLES[result],
                 )}
               >
@@ -93,6 +151,17 @@ const TeamCard = ({ team }: { team: ITeamFixtures }) => (
         );
       })}
     </ul>
+
+    {team.standings.length > 0 && (
+      <div className="mt-4">
+        <SubHeading>Standings</SubHeading>
+        <ul className="flex flex-col gap-1.5">
+          {team.standings.map((standing) => (
+            <StandingRow key={standing.competition} standing={standing} />
+          ))}
+        </ul>
+      </div>
+    )}
   </div>
 );
 
