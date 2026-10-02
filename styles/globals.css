@@ -39,6 +39,12 @@
   --wash-rose: oklch(0.62 0.12 350);
   --wash-amber: oklch(0.72 0.11 75);
   --wash-sky: oklch(0.62 0.1 240);
+  /* Match results on the Now page; muted so they sit in the neutral palette. */
+  --win: oklch(0.48 0.13 150);
+  --loss: oklch(0.52 0.17 25);
+  /* Table-position bands, top to bottom: win (green), these two, loss (red). */
+  --rank-mid: oklch(0.55 0.12 95);
+  --rank-low: oklch(0.56 0.15 60);
 }
 
 /* Gray-dark rather than pure black, with a faint cool tint. */
@@ -66,6 +72,10 @@
   --wash-rose: oklch(0.7 0.1 350);
   --wash-amber: oklch(0.78 0.09 75);
   --wash-sky: oklch(0.72 0.08 240);
+  --win: oklch(0.78 0.14 150);
+  --loss: oklch(0.74 0.14 25);
+  --rank-mid: oklch(0.86 0.14 95);
+  --rank-low: oklch(0.8 0.14 65);
 }
 
 @theme inline {
@@ -87,6 +97,10 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-win: var(--win);
+  --color-loss: var(--loss);
+  --color-rank-mid: var(--rank-mid);
+  --color-rank-low: var(--rank-low);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);

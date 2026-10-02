@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { Mascot } from "page-mascot";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 
 import AboutMe from "@/components/AboutMe";
@@ -10,12 +10,14 @@ import ActiveMiniTabs from "@/components/ActiveMiniTab";
 import FloatingNav from "@/components/FloatingNav";
 import HomeTabs from "@/components/HomePageTabs";
 import Links from "@/components/Links";
+import LocalTime from "@/components/LocalTime";
 import MobileMenu from "@/components/MobileMenu";
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import ScrambleText from "@/components/ScrambleText";
 import BlogList from "@/components/sections/BlogList";
 import Experience from "@/components/sections/Experience";
 import Games from "@/components/sections/Games";
+import Now from "@/components/sections/Now";
 import Projects from "@/components/sections/Projects";
 import Uses from "@/components/sections/Uses";
 import Skills from "@/components/Skills";
@@ -25,6 +27,7 @@ import HeroWashes from "@/components/ui/hero-washes";
 import { Separator } from "@/components/ui/separator";
 import type { IGamesData } from "@/interface/games.interface";
 import { HomePageTabs } from "@/interface/home.interface";
+import type { INowData } from "@/interface/now.interface";
 import { IProject } from "@/interface/projects.interface";
 import type { PostMeta } from "@/lib/blogPosts";
 import type { LinkMeta } from "@/lib/links";
@@ -47,10 +50,20 @@ export type HomeClientProps = {
   home: HomePageData;
   resumeLink: string;
   games: IGamesData | null;
+  now: { updated: string; content: ReactNode; data: INowData };
 };
 const HomeClient = (props: HomeClientProps) => {
-  const { posts, links, experience, projects, home, resumeLink, games } = props;
+  const { posts, links, experience, projects, home, resumeLink, games, now } =
+    props;
   const { title, subtitle } = home;
+  // The Sanity subtitle ends with "<br> <small>...Mumbai📍...</small>"; split
+  // it off so the local time can sit right after the location.
+  const breakIndex = subtitle.search(/<br\s*\/?>(?![\s\S]*<br)/i);
+  const intro = breakIndex === -1 ? subtitle : subtitle.slice(0, breakIndex);
+  const location =
+    breakIndex === -1
+      ? ""
+      : subtitle.slice(breakIndex).replace(/^<br\s*\/?>/i, "");
 
   const [visibleData, setVisibleData] = useState({
     isContributionsVisible: false,
@@ -124,10 +137,16 @@ const HomeClient = (props: HomeClientProps) => {
           label="mascot"
           className="hidden sm:block"
         />
-        <h2
-          dangerouslySetInnerHTML={{ __html: subtitle }}
-          className="mt-2 text-sm leading-relaxed text-foreground/85 sm:text-base"
-        />
+        <h2 className="mt-2 text-sm leading-relaxed text-foreground/85 sm:text-base">
+          <span dangerouslySetInnerHTML={{ __html: intro }} />
+          {location && (
+            <>
+              <br />
+              <span dangerouslySetInnerHTML={{ __html: location }} />{" "}
+              <LocalTime className="text-[10px] sm:text-xs" />
+            </>
+          )}
+        </h2>
       </div>
 
       <div className="my-4">
@@ -203,6 +222,7 @@ const HomeClient = (props: HomeClientProps) => {
         {tabs.selected === HomePageTabs.ABOUTME && <AboutMe />}
         {tabs.selected === HomePageTabs.USES && <Uses />}
         {tabs.selected === HomePageTabs.GAMES && <Games games={games} />}
+        {tabs.selected === HomePageTabs.NOW && <Now {...now} />}
       </section>
       <FloatingNav
         isMenuOpen={isMobileMenuOpen}

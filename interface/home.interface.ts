@@ -12,6 +12,7 @@ export enum HomePageTabs {
   ABOUTME = "About",
   USES = "Uses",
   GAMES = "Games",
+  NOW = "Now",
 }
 export type TabType = HomePageTabs;
 export type TabOptions = {

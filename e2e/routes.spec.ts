@@ -2,6 +2,14 @@ import { expect, test } from "@playwright/test";
 
 import { ROUTES, settle, stableScreenshot, trackErrors } from "./helpers";
 
+/** APIs behind the Now page widgets; only the server may call them. */
+const THIRD_PARTY_DATA_HOSTS = [
+  "api.spotify.com/v1/me/top",
+  "wakatime.com/api",
+  "fotmob.com/api",
+  "letterboxd.com/pratham82/rss",
+];
+
 test("/ redirects to /home", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\/home$/);
@@ -13,11 +21,14 @@ for (const route of ROUTES) {
       const errors = trackErrors(page);
       const sanityApiCalls: string[] = [];
       const psnApiCalls: string[] = [];
+      const thirdPartyDataCalls: string[] = [];
       page.on("request", (req) => {
         if (req.url().includes(".api.sanity.io"))
           sanityApiCalls.push(req.url());
         if (req.url().includes("m.np.playstation.com"))
           psnApiCalls.push(req.url());
+        if (THIRD_PARTY_DATA_HOSTS.some((host) => req.url().includes(host)))
+          thirdPartyDataCalls.push(req.url());
       });
       const response = await page.goto(route);
 
@@ -29,6 +40,8 @@ for (const route of ROUTES) {
       expect(sanityApiCalls).toEqual([]);
       // PSN is only called on the server; the NPSSO never reaches the browser.
       expect(psnApiCalls).toEqual([]);
+      // Same for the Now page widgets.
+      expect(thirdPartyDataCalls).toEqual([]);
     });
 
     for (const colorScheme of ["light", "dark"] as const) {

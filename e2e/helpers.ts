@@ -10,6 +10,7 @@ export const ROUTES = [
   "/projects",
   "/uses",
   "/games",
+  "/now",
   "/blogs",
   `/blogs/${BLOG_SLUG}`,
   "/links",
@@ -44,6 +45,6 @@ export const stableScreenshot = (page: Page) => ({
   fullPage: true,
   // The animated background is a full-viewport fixed canvas; hide rather than mask it.
   style: "canvas { visibility: hidden !important; }",
-  // Scrambling title text.
-  mask: [page.locator("h1 span")],
+  // Scrambling title text, and the local-time clock on /home.
+  mask: [page.locator("h1 span"), page.locator("[data-volatile]")],
 });

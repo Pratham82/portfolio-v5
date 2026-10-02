@@ -1,6 +1,7 @@
 import HomeClient from "@/components/home/HomeClient";
 import { getAllPosts } from "@/lib/blogPosts";
 import { getAllLinks } from "@/lib/links";
+import { getNowContent, getNowData } from "@/lib/now";
 import { getGamesData } from "@/lib/psn";
 import {
   getExperiencePage,
@@ -13,13 +14,16 @@ import {
 export const revalidate = 3600;
 
 const HomePage = async () => {
-  const [experience, projects, home, resumeLink, games] = await Promise.all([
-    getExperiencePage(),
-    getProjects(),
-    getHomePage(),
-    getResumeLink(),
-    getGamesData(),
-  ]);
+  const [experience, projects, home, resumeLink, games, nowContent, nowData] =
+    await Promise.all([
+      getExperiencePage(),
+      getProjects(),
+      getHomePage(),
+      getResumeLink(),
+      getGamesData(),
+      getNowContent(),
+      getNowData(),
+    ]);
 
   return (
     <HomeClient
@@ -30,6 +34,7 @@ const HomePage = async () => {
       home={home}
       resumeLink={resumeLink}
       games={games}
+      now={{ ...nowContent, data: nowData }}
     />
   );
 };

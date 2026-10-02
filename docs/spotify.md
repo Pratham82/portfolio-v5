@@ -41,12 +41,12 @@ set -a; source .env; set +a
 Start the app with `npm run dev`, then open:
 
 ```bash
-open "https://accounts.spotify.com/authorize?client_id=$SPOTIFY_CLIENT_ID&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fapi%2Fcallback&scope=user-read-currently-playing%20user-read-playback-state"
+open "https://accounts.spotify.com/authorize?client_id=$SPOTIFY_CLIENT_ID&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fapi%2Fcallback&scope=user-read-currently-playing%20user-read-playback-state%20user-top-read"
 ```
 
 Approve access. Spotify redirects to `/api/callback` (`app/api/callback/route.ts`), which prints `Authorization Code: …`. Copy the code.
 
-The scopes are what `/api/now-playing` needs ([Scopes](https://developer.spotify.com/documentation/web-api/concepts/scopes)): `user-read-currently-playing` and `user-read-playback-state`.
+The scopes ([Scopes](https://developer.spotify.com/documentation/web-api/concepts/scopes)): `user-read-currently-playing` and `user-read-playback-state` for `/api/now-playing`, and `user-top-read` for the Now page's "On repeat" widget. A refresh token keeps the scopes it was created with, so after adding a scope you need a new one: repeat steps 3–4.
 
 ## 4. Exchange the code for a refresh token
 
@@ -104,6 +104,6 @@ Don't use `NEXT_PUBLIC_` names for these. That prefix inlines the value into the
 | `invalid_grant`, `Invalid authorization code` | Code exchange              | The code expired or was already used. Repeat step 3.                                                                                          |
 | `invalid_grant`, `Invalid refresh token`      | Server log                 | The token was revoked, or belongs to another app. Repeat steps 3–4.                                                                           |
 | `403` from currently-playing                  | Server log                 | The Spotify account isn't allowed to use the app. Apps in development mode only work for the owner and users added under **User Management**. |
-| `401` from currently-playing                  | Server log                 | The token lacks the scopes. Repeat step 3 with both scopes.                                                                                   |
+| `401` from currently-playing                  | Server log                 | The token lacks the scopes. Repeat steps 3–4 with all three scopes.                                                                           |
 
 If you regenerate the client secret, update it in `.env` and Vercel. Run the check in step 5 again afterwards; if the refresh token is rejected, repeat steps 3–4.
