@@ -10,13 +10,15 @@ import FloatingNav from "@/components/FloatingNav";
 import HomeTabs from "@/components/HomePageTabs";
 import LocalTime from "@/components/LocalTime";
 import MobileMenu from "@/components/MobileMenu";
-import NowPlayingPill from "@/components/NowPlayingPill";
+import NowPlayingCard from "@/components/NowPlayingCard";
 import PageAnimationContainer from "@/components/PageAnimationContainer";
 import ScrambleText from "@/components/ScrambleText";
 import SocialLinks from "@/components/SocialLinks";
 import HeroWashes from "@/components/ui/hero-washes";
 import { Separator } from "@/components/ui/separator";
+import WeatherIcon from "@/components/WeatherIcon";
 import type { HomePageData } from "@/lib/sanity/queries";
+import type { Weather } from "@/lib/weather";
 import { CALENDAR_THEME } from "@/src/data/calendarTheme";
 import useNowPlaying from "@/src/hooks/useNowPlaying";
 import useTabs from "@/src/hooks/useTabs";
@@ -31,12 +33,14 @@ const GitHubCalendar = dynamic(
 export type HomeShellProps = {
   home: HomePageData;
   resumeLink: string;
+  /** Current weather in Mumbai, or `null` when Open-Meteo failed. */
+  weather: Weather | null;
   /** The selected tab's route. */
   children: ReactNode;
 };
 
 /** The home hero and tab bar, shared by every tab route via `app/(home)/layout.tsx`. */
-const HomeShell = ({ home, resumeLink, children }: HomeShellProps) => {
+const HomeShell = ({ home, resumeLink, weather, children }: HomeShellProps) => {
   const { title, subtitle } = home;
   // The Sanity subtitle ends with "<br> <small>...Mumbai📍...</small>"; split
   // it off so the local time can sit right after the location.
@@ -88,21 +92,35 @@ const HomeShell = ({ home, resumeLink, children }: HomeShellProps) => {
             />
           </div>
         </div>
-        {/* min-w-0: a flex item won't shrink below its content, so a long
-            track name in the pill would widen the page on mobile. */}
         <h2 className="mt-2 min-w-0 text-sm leading-relaxed text-foreground/85 sm:text-base">
           <span dangerouslySetInnerHTML={{ __html: intro }} />
           {location && (
             <>
               <br />
               <span dangerouslySetInnerHTML={{ __html: location }} />{" "}
-              <LocalTime className="text-[10px] sm:text-xs" />
-              <br />
-              <NowPlayingPill track={nowPlaying} className="mt-1" />
+              {/* <small> to match the location, which Sanity wraps in one. */}
+              <small>
+                <LocalTime />
+                {weather && (
+                  <span
+                    data-volatile
+                    title="Current weather in Mumbai"
+                    className="text-muted-foreground"
+                  >
+                    {" "}
+                    ·{" "}
+                    <span className="font-semibold text-foreground/85">
+                      <WeatherIcon code={weather.code} isDay={weather.isDay} />{" "}
+                      {weather.temperature}°C
+                    </span>
+                  </span>
+                )}
+              </small>
             </>
           )}
         </h2>
       </div>
+      <NowPlayingCard track={nowPlaying} className="mt-4" />
 
       <div className="my-4">
         <SocialLinks align="left" resumeLink={resumeLink} />

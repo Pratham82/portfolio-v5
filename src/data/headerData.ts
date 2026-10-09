@@ -44,16 +44,16 @@ export type SocialLinksType = {
 
 export const socialLinks = [
   {
-    id: SocialLinkType.GITHUB,
-    link: "https://github.com/pratham82",
-    label: "GitHub",
-    handle: "pratham82",
-  },
-  {
     id: SocialLinkType.LINKEDIN,
     link: "https://www.linkedin.com/in/prathameshmali/",
     label: "LinkedIn",
     handle: "in/prathameshmali",
+  },
+  {
+    id: SocialLinkType.GITHUB,
+    link: "https://github.com/pratham82",
+    label: "GitHub",
+    handle: "pratham82",
   },
   {
     id: SocialLinkType.TWITTER,

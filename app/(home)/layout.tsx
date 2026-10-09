@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 import HomeShell from "@/components/home/HomeShell";
 import { getHomePage, getResumeLink } from "@/lib/sanity/queries";
+import { getMumbaiWeather } from "@/lib/weather";
 
 // Keep in sync with SANITY_REVALIDATE (segment config must be a literal).
 export const revalidate = 3600;
@@ -11,13 +12,14 @@ export const revalidate = 3600;
  * the hero and tab bar, so it stays mounted while switching tabs.
  */
 const HomeLayout = async ({ children }: { children: ReactNode }) => {
-  const [home, resumeLink] = await Promise.all([
+  const [home, resumeLink, weather] = await Promise.all([
     getHomePage(),
     getResumeLink(),
+    getMumbaiWeather(),
   ]);
 
   return (
-    <HomeShell home={home} resumeLink={resumeLink}>
+    <HomeShell home={home} resumeLink={resumeLink} weather={weather}>
       {children}
     </HomeShell>
   );
