@@ -46,7 +46,9 @@ const iconSwitch = (id: SocialLinkType): React.JSX.Element => {
       return (
         <span className="flex items-center gap-1.5 rounded-md border px-2 py-1 text-sm">
           <FileArrowDownIcon size={16} />
-          Resume
+          {/* Shorter label on mobile. */}
+          <span className="sm:hidden">CV</span>
+          <span className="hidden sm:inline">Resume</span>
         </span>
       );
     default:

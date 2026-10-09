@@ -85,7 +85,7 @@ flowchart TB
 
     subgraph Client["Client Components ('use client')"]
         HomeShell["components/home/HomeShell<br/>hero · tab links · keyboard shortcuts · mobile menu"]
-        Widgets["Now playing pill · GitHub calendar · mascot"]
+        Widgets["Now playing card · GitHub calendar · mascot"]
         Sections["components/sections/*<br/>Experience · Projects · BlogList · Uses · Games · Now"]
         Copy["CodeCopyEnhancer"]
         Back["BackButton"]
@@ -121,7 +121,7 @@ All routes in `app/(home)` inherit `revalidate = 3600` from the layout, because 
 | `/links/[slug]` | Static + ISR (1h) | Sanity `link`, body rendered as MDX; `dynamicParams = true`, so links published after a deploy render on first visit |
 | `/about` | Static + ISR (1h) | Hard-coded social cards (`components/AboutMe.tsx`) |
 | `/guides/ai-guide` | Static | Hard-coded content |
-| `/api/now-playing` | Dynamic | Spotify (polled by the hero pill every 60s) |
+| `/api/now-playing` | Dynamic | Spotify (polled by the hero card every 60s) |
 | `/api/callback` | Dynamic | One-time Spotify OAuth helper |
 | `/api/revalidate` | Dynamic | Sanity publish webhook (expires the `sanity` cache tag) |
 
