@@ -8,28 +8,38 @@ import PageTitle from "@/components/PageTitle";
 import ProjectCard from "@/components/ProjectCard";
 import { Button } from "@/components/ui/button";
 import { HoverItem, HoverList } from "@/components/ui/hover-list";
-import { IProject } from "@/interface/projects.interface";
+import { IAllProject } from "@/interface/projects.interface";
 import { cn } from "@/lib/utils";
-import getProjectsByCategories from "@/src/utils/getProjectsByCategories";
 
-const Projects = ({ projects }: { projects: IProject[] }) => {
-  const filteredProjects = getProjectsByCategories(projects);
-  const filteredProjectCategories = Object.keys(filteredProjects);
+/** Full-stack, real-time or multi-service builds. Everything else is "Playground". */
+const COMPLEX_PROJECTS = new Set([
+  "Chat App",
+  "Real Time notes",
+  "Subscriptions Manager",
+  "LaunchPad",
+  "Contact manager",
+  "CRUD API",
+  "Issue Tracker",
+  "SNKR Town",
+  "Code Tube",
+]);
 
-  const updateCategoriesOrder = [
-    "React",
-    ...filteredProjectCategories.filter((skill) => skill !== "React"),
-  ];
-  const [selectedProject, setSelectedProject] = useState(
-    updateCategoriesOrder?.[0] || "NeoG Camp",
+const GROUPS = ["Featured", "Playground"] as const;
+
+const Projects = ({ projects }: { projects: IAllProject[] }) => {
+  const [selected, setSelected] = useState<(typeof GROUPS)[number]>(GROUPS[0]);
+
+  const visible = projects.filter(
+    ({ projectName }) =>
+      COMPLEX_PROJECTS.has(projectName) === (selected === GROUPS[0]),
   );
 
   return (
     <PageAnimationContainer>
       <PageTitle>Projects</PageTitle>
       <div className="flex flex-wrap gap-1 py-3">
-        {updateCategoriesOrder.map((val) => {
-          const isSelected = val === selectedProject;
+        {GROUPS.map((val) => {
+          const isSelected = val === selected;
           return (
             <Button
               key={val}
@@ -42,7 +52,7 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
-              onClick={() => setSelectedProject(val)}
+              onClick={() => setSelected(val)}
             >
               {val}
             </Button>
@@ -50,15 +60,15 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
         })}
       </div>
       <motion.div
-        key={selectedProject}
+        key={selected}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
       >
         <HoverList className="grid grid-cols-1 sm:grid-cols-2">
-          {filteredProjects?.[selectedProject]?.map(({ project }) => (
-            <HoverItem id={project.title} key={project.title}>
-              <ProjectCard {...project} />
+          {visible.map(({ projectName, project }) => (
+            <HoverItem id={projectName} key={projectName}>
+              <ProjectCard {...project} title={project.title || projectName} />
             </HoverItem>
           ))}
         </HoverList>

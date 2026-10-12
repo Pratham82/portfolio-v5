@@ -4,7 +4,7 @@ import {
 } from "@/interface/about.interface";
 import { IHomePageResponse } from "@/interface/home.interface";
 import { Author } from "@/interface/post.interface";
-import { IProject, IProjectsPage } from "@/interface/projects.interface";
+import { IAllProject, IProjectsPage } from "@/interface/projects.interface";
 import { getResumeExperience, ResumeJob } from "@/lib/resume";
 import {
   allExperience,
@@ -97,10 +97,10 @@ export const getExperiencePage = async (): Promise<ExperiencePageData> => {
   };
 };
 
-export const getProjects = async (): Promise<IProject[]> => {
+export const getProjects = async (): Promise<IAllProject[]> => {
   const { allProject } = await sanityQuery<IProjectsPage>(allProjects);
 
-  return allProject?.map(({ project }) => project) ?? [];
+  return allProject ?? [];
 };
 
 export const getResumeLink = async (): Promise<string> =>
