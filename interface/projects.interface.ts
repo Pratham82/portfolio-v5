@@ -10,6 +10,7 @@ export interface IProject {
   subTitle: string;
   techStackUsed?: string[] | null;
   projectCategory: string;
+  projectType: "application" | "experiment";
   githubURL: IUrl;
   liveURL: IUrl;
 }

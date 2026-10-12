@@ -8,31 +8,30 @@ import PageTitle from "@/components/PageTitle";
 import ProjectCard from "@/components/ProjectCard";
 import { Button } from "@/components/ui/button";
 import { HoverItem, HoverList } from "@/components/ui/hover-list";
-import { IProject } from "@/interface/projects.interface";
+import { IAllProject } from "@/interface/projects.interface";
 import { cn } from "@/lib/utils";
-import getProjectsByCategories from "@/src/utils/getProjectsByCategories";
 
-const Projects = ({ projects }: { projects: IProject[] }) => {
-  const filteredProjects = getProjectsByCategories(projects);
-  const filteredProjectCategories = Object.keys(filteredProjects);
+const GROUPS = [
+  { label: "Applications", type: "application" },
+  { label: "Experiments", type: "experiment" },
+] as const;
 
-  const updateCategoriesOrder = [
-    "React",
-    ...filteredProjectCategories.filter((skill) => skill !== "React"),
-  ];
-  const [selectedProject, setSelectedProject] = useState(
-    updateCategoriesOrder?.[0] || "NeoG Camp",
+const Projects = ({ projects }: { projects: IAllProject[] }) => {
+  const [selected, setSelected] = useState<(typeof GROUPS)[number]>(GROUPS[0]);
+
+  const visible = projects.filter(
+    ({ project }) => project.projectType === selected.type,
   );
 
   return (
     <PageAnimationContainer>
       <PageTitle>Projects</PageTitle>
       <div className="flex flex-wrap gap-1 py-3">
-        {updateCategoriesOrder.map((val) => {
-          const isSelected = val === selectedProject;
+        {GROUPS.map((group) => {
+          const isSelected = group === selected;
           return (
             <Button
-              key={val}
+              key={group.type}
               size="xs"
               variant={isSelected ? "secondary" : "ghost"}
               aria-pressed={isSelected}
@@ -42,23 +41,23 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
-              onClick={() => setSelectedProject(val)}
+              onClick={() => setSelected(group)}
             >
-              {val}
+              {group.label}
             </Button>
           );
         })}
       </div>
       <motion.div
-        key={selectedProject}
+        key={selected.type}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
       >
         <HoverList className="grid grid-cols-1 sm:grid-cols-2">
-          {filteredProjects?.[selectedProject]?.map(({ project }) => (
-            <HoverItem id={project.title} key={project.title}>
-              <ProjectCard {...project} />
+          {visible.map(({ projectName, project }) => (
+            <HoverItem id={projectName} key={projectName}>
+              <ProjectCard {...project} title={project.title || projectName} />
             </HoverItem>
           ))}
         </HoverList>

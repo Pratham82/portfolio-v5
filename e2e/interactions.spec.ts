@@ -209,6 +209,7 @@ test("projects category filter switches categories", async ({ page }) => {
   await settle(page);
 
   const categories = page.getByTestId("home-tab-content").locator("button");
+  await expect(categories).toHaveCount(2);
   await expect(categories.first()).toHaveAttribute("aria-pressed", "true");
 
   const second = categories.nth(1);

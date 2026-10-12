@@ -70,13 +70,13 @@ export const ExperienceSkeleton = () => (
   </Status>
 );
 
-/** `Projects` + `ProjectCard`: filter chips, then a 1 / 2 column card grid. */
+/** `Projects` + `ProjectCard`: two filter pills, then a 1 / 2 column card grid. */
 export const ProjectsSkeleton = () => (
   <Status>
     <Title width="w-24" />
     <div className="flex flex-wrap gap-1 py-3">
-      {["w-13", "w-21", "w-19", "w-11", "w-16", "w-20", "w-14"].map((w) => (
-        <Bone key={w} className={cn("h-6", w)} />
+      {["w-16", "w-20"].map((w, i) => (
+        <Bone key={i} className={cn("h-6", w)} />
       ))}
     </div>
     <div className="-mx-3 grid grid-cols-1 sm:grid-cols-2">
