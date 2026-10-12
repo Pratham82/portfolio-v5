@@ -11,38 +11,27 @@ import { HoverItem, HoverList } from "@/components/ui/hover-list";
 import { IAllProject } from "@/interface/projects.interface";
 import { cn } from "@/lib/utils";
 
-/** Full-stack, real-time or multi-service builds. Everything else is "Playground". */
-const COMPLEX_PROJECTS = new Set([
-  "Chat App",
-  "Real Time notes",
-  "Subscriptions Manager",
-  "LaunchPad",
-  "Contact manager",
-  "CRUD API",
-  "Issue Tracker",
-  "SNKR Town",
-  "Code Tube",
-]);
-
-const GROUPS = ["Featured", "Playground"] as const;
+const GROUPS = [
+  { label: "Applications", type: "application" },
+  { label: "Experiments", type: "experiment" },
+] as const;
 
 const Projects = ({ projects }: { projects: IAllProject[] }) => {
   const [selected, setSelected] = useState<(typeof GROUPS)[number]>(GROUPS[0]);
 
   const visible = projects.filter(
-    ({ projectName }) =>
-      COMPLEX_PROJECTS.has(projectName) === (selected === GROUPS[0]),
+    ({ project }) => project.projectType === selected.type,
   );
 
   return (
     <PageAnimationContainer>
       <PageTitle>Projects</PageTitle>
       <div className="flex flex-wrap gap-1 py-3">
-        {GROUPS.map((val) => {
-          const isSelected = val === selected;
+        {GROUPS.map((group) => {
+          const isSelected = group === selected;
           return (
             <Button
-              key={val}
+              key={group.type}
               size="xs"
               variant={isSelected ? "secondary" : "ghost"}
               aria-pressed={isSelected}
@@ -52,15 +41,15 @@ const Projects = ({ projects }: { projects: IAllProject[] }) => {
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
-              onClick={() => setSelected(val)}
+              onClick={() => setSelected(group)}
             >
-              {val}
+              {group.label}
             </Button>
           );
         })}
       </div>
       <motion.div
-        key={selected}
+        key={selected.type}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
