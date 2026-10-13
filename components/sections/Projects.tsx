@@ -12,16 +12,22 @@ import { IAllProject } from "@/interface/projects.interface";
 import { cn } from "@/lib/utils";
 
 const GROUPS = [
-  { label: "Applications", type: "application" },
-  { label: "Experiments", type: "experiment" },
+  { label: "Featured", type: "application" },
+  { label: "Mini Projects", type: "experiment" },
 ] as const;
+
+const PINNED_FIRST = "Links Vault";
 
 const Projects = ({ projects }: { projects: IAllProject[] }) => {
   const [selected, setSelected] = useState<(typeof GROUPS)[number]>(GROUPS[0]);
 
-  const visible = projects.filter(
-    ({ project }) => project.projectType === selected.type,
-  );
+  const visible = projects
+    .filter(({ project }) => project.projectType === selected.type)
+    .sort(
+      (a, b) =>
+        Number(b.projectName === PINNED_FIRST) -
+        Number(a.projectName === PINNED_FIRST),
+    );
 
   return (
     <PageAnimationContainer>
